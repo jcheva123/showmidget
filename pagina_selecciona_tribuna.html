@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seleccionar Tribuna</title>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Oswald', sans-serif;
+            text-align: center;
+            padding: 10px;
+            margin: 0;
+            background-color: black; /* Cambiado a negro */
+        }
+
+        h1 {
+            color: white; /* Color blanco */
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.6); /* Sombreado del texto */
+        }
+
+        .tribuna-btn {
+            display: inline-block;
+            width: 240px;
+            height: 240px;
+            line-height: 30px;
+            margin: 5px;
+            color: #fff;
+	    font-family: 'Oswald', sans-serif;
+            font-size: 34px;
+            border: none;
+            cursor: pointer;
+            border-radius: 40px;
+            font-weight: bold; /* Fuente en negrita */
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7); /* Sombreado del texto de los botones */
+        }
+
+        .rojo { background-color: red; }        /* Recta Principal */
+        .blanco { background-color: white; color: black; border: 1px solid black; } /* Platea */
+        .verde { background-color: green; }      /* Recta Opuesta */
+        .azul { background-color: blue; }        /* Boxes */
+
+        .hidden { display: none; }
+
+        .volver-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+	font-family: 'Oswald', sans-serif;
+            font-size: 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 10px;
+            background-color: black; /* Color negro por defecto */
+            color: black; /* Texto negro por defecto en la página inicial */
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7); /* Sombreado del texto */
+        }
+
+        .volver-btn-blanco {
+            color: white; /* Texto blanco cuando se selecciona una tribuna */
+        }
+
+        .volverinicio-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+font-family: 'Oswald', sans-serif;
+            font-size: 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 10px;
+            background-color: #333;
+            color: #fff;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7); /* Sombreado del texto */
+        }
+
+        #mensaje-brillo {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 40px;
+            padding: 20px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 1s ease-in-out;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7); /* Sombreado del texto */
+        }
+
+        #creditos {
+            margin-top: 20px;
+font-family: 'Roboto', sans-serif;            
+font-size: 14px;
+            color: #999;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7); /* Sombreado del texto */
+        }
+
+        .hidden-creditos {
+            display: none;
+        }
+
+        /* Estilo para centrar el botón "VOLVER A INICIO" */
+        #volver-inicio {
+            display: block;
+            margin: 20px auto;
+        }
+    </style>
+</head>
+<body>
+    <h1 id="titulo">ELEGÍ TU TRIBUNA</h1>
+    <div id="opciones">
+        <button class="tribuna-btn rojo" onclick="cambiarTribuna('red')">RECTA PRINCIPAL</button>
+        <button class="tribuna-btn blanco" onclick="cambiarTribuna('white')">PLATEA</button>
+        <button class="tribuna-btn verde" onclick="cambiarTribuna('green')">RECTA OPUESTA</button> <!-- Cambiado a verde -->
+        <button class="tribuna-btn azul" onclick="cambiarTribuna('blue')">BOXES</button> <!-- Cambiado a azul -->
+    </div>
+    <button id="volver" class="volver-btn hidden" onclick="mostrarOpciones()">Volver</button>
+    <button id="volver-inicio" class="volverinicio-btn">VOLVER A INICIO</button>
+
+    <div id="mensaje-brillo">SUBÍ AL MÁXIMO EL BRILLO DE TU PANTALLA</div>
+    <!-- Créditos al estilo de créditos -->
+    <div id="creditos">
+        <a href="http://www.primate.com.ar" target="_blank" style="color: #999; text-decoration: none;">PRIMATE ®</a>
+    </div>
+
+    <script>
+        let strobeInterval;
+
+        function cambiarTribuna(color) {
+            const opciones = document.getElementById('opciones');
+            const titulo = document.getElementById('titulo');
+            const volver = document.getElementById('volver');
+            const mensaje = document.getElementById('mensaje-brillo');
+            const creditos = document.getElementById('creditos');
+
+            // Esconder opciones y mostrar botón "Volver"
+            opciones.classList.add('hidden');
+            titulo.classList.add('hidden');
+            volver.classList.remove('hidden');
+            volver.classList.add('volver-btn-blanco'); // Cambiar el color del texto a blanco
+            volver.style.backgroundColor = 'gray'; // Cambiar el fondo a gris
+
+            // Esconder créditos cuando se selecciona una tribuna
+            creditos.classList.add('hidden-creditos');
+
+            // Ocultar botón "VOLVER A INICIO"
+            document.getElementById('volver-inicio').style.display = 'none';
+
+            // Parpadeo del fondo
+            let strobe = true;
+            if (strobeInterval) {
+                clearInterval(strobeInterval);
+            }
+
+            strobeInterval = setInterval(() => {
+                document.body.style.backgroundColor = strobe ? 'black' : color;
+                strobe = !strobe;
+            }, 250); // Parpadeo cada 250ms
+
+            // Mostrar el mensaje de brillo
+            mensaje.style.visibility = 'visible';
+            mensaje.style.opacity = '1';
+
+            // Ocultar el mensaje después de 3 segundos
+            setTimeout(() => {
+                mensaje.style.opacity = '0';
+                setTimeout(() => {
+                    mensaje.style.visibility = 'hidden';
+                }, 1000); // Desaparece suavemente en 1 segundo
+            }, 3000); // Se muestra por 3 segundos
+        }
+
+        function mostrarOpciones() {
+            // Restaurar el estado original
+            document.body.style.backgroundColor = '';
+            document.getElementById('opciones').classList.remove('hidden');
+            document.getElementById('titulo').classList.remove('hidden');
+            document.getElementById('volver').classList.add('hidden');
+
+            // Restaurar el estilo del botón "Volver"
+            const volver = document.getElementById('volver');
+            volver.classList.remove('volver-btn-blanco'); // Quita la clase blanca
+            volver.style.backgroundColor = 'black'; // Asegurarse que el fondo sea negro
+            volver.style.color = 'black'; // Asegurarse que el texto sea negro
+
+            // Mostrar créditos cuando se regresa a la página de inicio
+            document.getElementById('creditos').classList.remove('hidden-creditos');
+
+            // Detener el parpadeo
+            if (strobeInterval) {
+                clearInterval(strobeInterval);
+            }
+
+            // Mostrar el botón "VOLVER A INICIO" al volver a la página inicial
+            document.getElementById('volver-inicio').style.display = 'block';
+        }
+
+        // Redirigir a index.html al hacer clic en "VOLVER A INICIO"
+        document.getElementById('volver-inicio').addEventListener('click', () => {
+            window.location.href = 'index.html';
+        });
+
+        // Ocultar el botón "Volver" en la página principal
+        window.onload = () => {
+            document.getElementById('volver').classList.add('hidden');
+        };
+    </script>
+</body>
+</html>

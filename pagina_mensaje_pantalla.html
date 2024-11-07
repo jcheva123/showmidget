@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" user-scalable="no">
+    <title>Mensajes en Pantalla</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            background-color: grey; /* Fondo inicial gris */
+            color: white;
+            overflow: hidden;
+        font-family: 'Oswald', sans-serif;
+            user-select: none; /* Desactiva la selección de texto */
+        }
+        #input-container {
+            position: absolute;
+            top: 20px; /* Coloca todo bien arriba */
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            z-index: 10;
+            width: 80%; /* Para que todo el contenido esté más centrado */
+        }
+        #text-input {
+    font-family: 'Roboto', sans-serif;            
+font-size: 5vw; /* Área de texto más grande */
+            padding: 15px;
+            color: white;
+            width: 100%; /* Ocupa el 100% del ancho del contenedor */
+            max-width: 800px; /* Limita el ancho máximo */
+            box-sizing: border-box;
+            text-align: center; /* Texto centrado en el input */
+            border-radius: 10px; /* Bordes redondeados */
+            border: 1px solid #ccc; /* Borde del área de texto */
+            background-color: #333; /* Fondo del área de texto */
+        }
+        #send-button {
+font-family: 'Roboto', sans-serif;           
+ font-size: 4vw; /* Botón también más grande */
+            padding: 10px 20px;
+            margin-top: 10px;
+            background-color: #444;
+            border: none;
+            color: white;
+            cursor: pointer;
+            border-radius: 10px; /* Bordes redondeados */
+        }
+        #back-button {
+            display: none;
+            position: absolute;
+            top: 20px; /* Se coloca bien arriba */
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2vw;
+            padding: 10px 20px;
+            background-color: #444;
+            border: none;
+            color: white;
+            cursor: pointer;
+            z-index: 10;
+            border-radius: 10px; /* Bordes redondeados */
+        }
+        #home-button {
+            position: absolute;
+            top: 180px; /* Un poco más abajo que el botón de volver */
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2vw;
+            padding: 10px 20px;
+            background-color: #000;
+            border: none;
+            color: white;
+            cursor: pointer;
+            z-index: 10;
+            border-radius: 10px; /* Bordes redondeados */
+        }
+        #char-counter {
+            margin-top: 5px;
+            font-size: 2vw;
+        }
+        #message {
+            position: absolute;
+            bottom: 0%; /* Empieza más abajo para no aparecer tan avanzado */
+            left: 50%;
+            transform: translateX(-50%) rotate(90deg);
+            white-space: nowrap;
+    font-family: 'Roboto', sans-serif;         
+   font-size: 30vw;
+            animation: scroll-up 12s linear infinite; /* Aumenta la velocidad cambiando la duración a 10s */
+            user-select: none;
+            font-weight: bold; /* Añadir esta línea para poner el texto en negrita */
+        }
+        @keyframes scroll-up {
+            0% {
+                bottom: -200%; /* Empieza fuera de la pantalla por la parte inferior */
+            }
+            100% {
+                bottom: calc(100% + 125vw); /* Termina fuera de la pantalla por la parte superior */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="input-container">
+        <input type="text" id="text-input" maxlength="30" placeholder="Escribe tu mensaje" />
+        <div id="char-counter">RESTAN 30 CARACTERES</div>
+        <button id="send-button">ENVIAR</button>
+    </div>
+    <button id="back-button">VOLVER</button>
+    <button id="home-button" onclick="window.location.href='index.html'">VOLVER A INICIO</button> <!-- Botón para volver a la página principal -->
+    <div id="message"></div>
+
+    <script>
+        const sendButton = document.getElementById('send-button');
+        const backButton = document.getElementById('back-button');
+        const homeButton = document.getElementById('home-button'); // Botón "Volver a Inicio"
+        const textInput = document.getElementById('text-input');
+        const message = document.getElementById('message');
+        const charCounter = document.getElementById('char-counter');
+
+        // Actualiza el contador de caracteres restantes
+        textInput.addEventListener('input', () => {
+            const remainingChars = 30 - textInput.value.length;
+            charCounter.textContent = `Restan ${remainingChars} caracteres`;
+        });
+
+        sendButton.addEventListener('click', () => {
+            let text = textInput.value.trim();
+            if (text) {
+                // Añadir 6 espacios al principio y 10 al final del mensaje
+                text = '  ' + text + '             '; // Se añaden espacios
+
+                textInput.style.display = 'none';
+                sendButton.style.display = 'none';
+                backButton.style.display = 'block';
+                homeButton.style.display = 'none'; // Ocultar botón "Volver a Inicio"
+                charCounter.style.display = 'none';
+                message.textContent = text;
+                document.body.style.backgroundColor = 'black'; // Cambia el fondo a negro
+
+                // Ajusta la duración de la animación según el tamaño del mensaje
+                const messageLength = text.length;
+                const scrollDuration = Math.max(4, (messageLength / 3)); // Aumenta la velocidad de scroll
+
+                // Reinicia la posición para comenzar la animación desde abajo
+                message.style.animation = 'none'; // Detener la animación
+                message.offsetHeight; // Forzar reflow
+                message.style.animation = `scroll-up ${scrollDuration}s linear infinite`; // Asigna la nueva animación con duración ajustada
+                message.style.bottom = '-300%'; // Comienza más abajo 
+            }
+        });
+
+        backButton.addEventListener('click', () => {
+            textInput.style.display = 'block';
+            sendButton.style.display = 'block';
+            charCounter.style.display = 'block';
+            backButton.style.display = 'none';
+            homeButton.style.display = 'block'; // Mostrar botón "Volver a Inicio" al volver
+            message.textContent = '';
+            message.style.animation = 'none'; // Detener el scroll
+            document.body.style.backgroundColor = 'grey'; // Vuelve al fondo gris
+            textInput.value = '';
+            charCounter.textContent = 'Restan 30 caracteres'; // Reinicia el contador
+        });
+
+        const colors = ['red', 'yellow', 'blue', 'lightgreen', 'orange'];
+        let currentColorIndex = 0;
+
+        // Cambiar color al hacer clic en el mensaje animado
+        message.addEventListener('click', () => {
+            currentColorIndex = (currentColorIndex + 1) % colors.length; // Cambia al siguiente color
+            message.style.color = colors[currentColorIndex];
+        });
+
+        // Al hacer clic en "Volver", restaurar el color a blanco
+        backButton.addEventListener('click', () => {
+            textInput.style.display = 'block';
+            sendButton.style.display = 'block';
+            backButton.style.display = 'none';
+            homeButton.style.display = 'block'; // Mostrar botón "Volver a Inicio" al volver
+            message.textContent = '';
+            message.style.animation = 'none'; // Detener el scroll
+            message.style.color = 'white'; // Restaurar el color a blanco para el próximo mensaje
+        });
+    </script>
+</body>
+</html>
