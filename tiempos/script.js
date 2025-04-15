@@ -1,10 +1,14 @@
 async function loadRaces() {
-    const fechaSelect = document.getElementById("fecha-select").value;
-    if (!fechaSelect) {
+    const fechaSelect = document.getElementById("fecha-select");
+    const fechaValue = fechaSelect.value;
+    if (!fechaValue) {
         document.querySelector("#race-list ul").innerHTML = "";
         document.querySelector("table tbody").innerHTML = "";
         return;
     }
+
+    // Guardar fecha seleccionada
+    localStorage.setItem("selectedFecha", fechaValue);
 
     const raceList = document.querySelector("#race-list ul");
     const resultsBody = document.querySelector("table tbody");
@@ -23,7 +27,7 @@ async function loadRaces() {
     ];
 
     // Obtener lista de carreras cacheadas
-    const cacheKeyList = `${fechaSelect}_race_list`;
+    const cacheKeyList = `${fechaValue}_race_list`;
     let cachedRaces = localStorage.getItem(cacheKeyList);
     cachedRaces = cachedRaces ? JSON.parse(cachedRaces) : { races: [], timestamp: 0 };
 
@@ -36,7 +40,7 @@ async function loadRaces() {
 
     for (const race of raceTypes) {
         try {
-            const cacheKey = `${fechaSelect}_${race}`;
+            const cacheKey = `${fechaValue}_${race}`;
             let data;
 
             // Verificar caché
@@ -50,7 +54,7 @@ async function loadRaces() {
 
             // Si no hay datos válidos, descargar sin caché
             if (!data) {
-                const response = await fetch(`https://raw.githubusercontent.com/jcheva123/tiemposweb-2025/main/resultados/${fechaSelect}/${race}.json`, {
+                const response = await fetch(`https://raw.githubusercontent.com/jcheva123/tiemposweb-2025/main/resultados/${fechaValue}/${race}.json`, {
                     cache: "no-store"
                 });
                 if (!response.ok) continue;
@@ -67,7 +71,7 @@ async function loadRaces() {
                 .replace("prefinal", "Prefinal")
                 .replace("final", "Final");
             li.textContent = raceName;
-            li.onclick = () => loadResults(fechaSelect, race);
+            li.onclick = () => loadResults(fechaValue, race);
             raceList.appendChild(li);
 
             // Actualizar lista de carreras
@@ -135,3 +139,24 @@ async function loadResults(fecha, race) {
         alert(`No se encontraron resultados para ${race.replace(/^(\w+)(\d+)$/, "$1 $2")} en ${fecha}.`);
     }
 }
+
+// Al cargar la página, restaurar la fecha seleccionada
+document.addEventListener("DOMContentLoaded", () => {
+    const fechaSelect = document.getElementById("fecha-select");
+    const savedFecha = localStorage.getItem("selectedFecha");
+    if (savedFecha) {
+        fechaSelect.value = savedFecha;
+        loadRaces();
+    }
+});
+
+// Modificar el botón Actualizar Datos
+document.querySelector("#race-list button").addEventListener("click", () => {
+    const fechaSelect = document.getElementById("fecha-select").value;
+    if (fechaSelect) {
+        localStorage.setItem("selectedFecha", fechaSelect);
+    }
+    localStorage.clear();
+    localStorage.setItem("selectedFecha", fechaSelect);
+    location.reload();
+});
