@@ -235,3 +235,18 @@ tbody tr:hover {
         min-width: 40px;
     }
 }
+
+.button {
+    padding: 6px 12px;
+    font-size: 1em;
+    background: #ffcc00;
+    color: #1a1a1a;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.button:hover {
+    background: #e6b800;
+}
