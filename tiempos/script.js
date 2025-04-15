@@ -27,9 +27,9 @@ async function loadRaces() {
     let cachedRaces = localStorage.getItem(cacheKeyList);
     cachedRaces = cachedRaces ? JSON.parse(cachedRaces) : { races: [], timestamp: 0 };
 
-    // Invalidar caché si pasaron 2 minutos (120000 ms)
+    // Invalidar caché si pasó 1 minuto (60000 ms)
     const now = Date.now();
-    const cacheDuration = 120000; // 2 minutos
+    const cacheDuration = 60000; // 1 minuto
     if (now - cachedRaces.timestamp > cacheDuration) {
         cachedRaces = { races: [], timestamp: now };
     }
@@ -39,7 +39,7 @@ async function loadRaces() {
             const cacheKey = `${fechaSelect}_${race}`;
             let data;
 
-            // Verificar caché para el JSON
+            // Verificar caché
             const cachedData = localStorage.getItem(cacheKey);
             if (cachedData) {
                 const parsed = JSON.parse(cachedData);
@@ -48,7 +48,7 @@ async function loadRaces() {
                 }
             }
 
-            // Si no hay datos válidos, descargar sin caché del navegador
+            // Si no hay datos válidos, descargar sin caché
             if (!data) {
                 const response = await fetch(`https://raw.githubusercontent.com/jcheva123/tiemposweb-2025/main/resultados/${fechaSelect}/${race}.json`, {
                     cache: "no-store"
@@ -92,7 +92,7 @@ async function loadResults(fecha, race) {
     try {
         const cacheKey = `${fecha}_${race}`;
         const now = Date.now();
-        const cacheDuration = 120000; // 2 minutos
+        const cacheDuration = 60000; // 1 minuto
         let data;
 
         // Verificar caché
