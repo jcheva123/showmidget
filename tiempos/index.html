@@ -13,9 +13,8 @@
     <main>
         <section id="date-selector">
             <label for="fecha-select">Seleccionar Fecha:</label>
-            <select id="fecha-select">
+            <select id="fecha-select" onchange="loadRaces()">
                 <option value="">-- Elegir Fecha --</option>
-                <!-- Fechas 1 a 18 -->
                 <option value="Fecha 1">Fecha 1</option>
                 <option value="Fecha 2">Fecha 2</option>
                 <option value="Fecha 3">Fecha 3</option>
@@ -35,11 +34,10 @@
                 <option value="Fecha 17">Fecha 17</option>
                 <option value="Fecha 18">Fecha 18</option>
             </select>
-            <button onclick="loadRaces()">Cargar Carreras</button>
-                    <button onclick="localStorage.clear(); location.reload();">Actualizar Datos</button>
         </section>
         <section id="race-list">
             <h2>Carreras Disponibles</h2>
+            <button class="btn" onclick="localStorage.clear(); location.reload();">Actualizar Datos</button>
             <ul></ul>
         </section>
         <section id="results">
@@ -63,10 +61,10 @@
         </section>
     </main>
     <script src="script.js"></script>
-<div id="creditos" style="text-align: center; font-size: 12px; margin-top: 20px;">
-    <a href="http://www.primate.com.ar" target="_blank" style="color: #999; text-decoration: none;">
-        by PRIMATE ®
-    </a>
-</div>
+    <div id="creditos" style="text-align: center; font-size: 12px; margin-top: 20px;">
+        <a href="http://www.primate.com.ar" target="_blank" style="color: #999; text-decoration: none;">
+            by PRIMATE ®
+        </a>
+    </div>
 </body>
 </html>
