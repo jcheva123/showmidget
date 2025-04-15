@@ -1,7 +1,8 @@
 async function loadRaces() {
     const fechaSelect = document.getElementById("fecha-select").value;
     if (!fechaSelect) {
-        alert("Por favor, selecciona una Fecha.");
+        document.querySelector("#race-list ul").innerHTML = "";
+        document.querySelector("table tbody").innerHTML = "";
         return;
     }
 
@@ -26,9 +27,9 @@ async function loadRaces() {
     let cachedRaces = localStorage.getItem(cacheKeyList);
     cachedRaces = cachedRaces ? JSON.parse(cachedRaces) : { races: [], timestamp: 0 };
 
-    // Invalidar caché si pasaron 5 minutos (300000 ms)
+    // Invalidar caché si pasaron 2 minutos (120000 ms)
     const now = Date.now();
-    const cacheDuration = 300000; // 5 minutos
+    const cacheDuration = 120000; // 2 minutos
     if (now - cachedRaces.timestamp > cacheDuration) {
         cachedRaces = { races: [], timestamp: now };
     }
@@ -47,9 +48,11 @@ async function loadRaces() {
                 }
             }
 
-            // Si no hay datos válidos en caché, descargar
+            // Si no hay datos válidos, descargar sin caché del navegador
             if (!data) {
-                const response = await fetch(`https://raw.githubusercontent.com/jcheva123/tiemposweb-2025/main/resultados/${fechaSelect}/${race}.json`);
+                const response = await fetch(`https://raw.githubusercontent.com/jcheva123/tiemposweb-2025/main/resultados/${fechaSelect}/${race}.json`, {
+                    cache: "no-store"
+                });
                 if (!response.ok) continue;
                 data = await response.json();
                 localStorage.setItem(cacheKey, JSON.stringify({ data, timestamp: now }));
@@ -89,7 +92,7 @@ async function loadResults(fecha, race) {
     try {
         const cacheKey = `${fecha}_${race}`;
         const now = Date.now();
-        const cacheDuration = 300000; // 5 minutos
+        const cacheDuration = 120000; // 2 minutos
         let data;
 
         // Verificar caché
@@ -101,9 +104,11 @@ async function loadResults(fecha, race) {
             }
         }
 
-        // Si no hay datos válidos, descargar
+        // Si no hay datos válidos, descargar sin caché
         if (!data) {
-            const response = await fetch(`https://raw.githubusercontent.com/jcheva123/tiemposweb-2025/main/resultados/${fecha}/${race}.json`);
+            const response = await fetch(`https://raw.githubusercontent.com/jcheva123/tiemposweb-2025/main/resultados/${fecha}/${race}.json`, {
+                cache: "no-store"
+            });
             if (!response.ok) throw new Error("JSON no encontrado");
             data = await response.json();
             localStorage.setItem(cacheKey, JSON.stringify({ data, timestamp: now }));
