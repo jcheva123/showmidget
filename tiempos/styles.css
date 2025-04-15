@@ -77,29 +77,34 @@ section {
 }
 
 #race-list h2 {
-    font-size: 1.5em;
+    font-size: 1.2em;
     color: #ffcc00;
     margin-bottom: 10px;
+    text-align: center;
 }
 
 #race-list ul {
     list-style: none;
     padding: 0;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
-    gap: 8px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    max-width: 600px;
+    margin: 0 auto;
 }
 
 #race-list li {
-    padding: 6px 8px;
+    padding: 8px 10px;
     background: #333;
     border: 2px solid #ffcc00;
     border-radius: 4px;
     cursor: pointer;
-    font-size: 0.8em;
+    font-size: 0.9em;
     text-align: center;
-    min-width: 60px;
     transition: background 0.3s, transform 0.2s;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 #race-list li:hover {
@@ -182,10 +187,9 @@ tbody tr:hover {
         max-width: 300px;
     }
 
-    #race-list li {
-        width: 100%;
-        max-width: 100px;
-        margin: 0 auto;
+    #race-list ul {
+        grid-template-columns: repeat(2, 1fr);
+        max-width: 100%;
     }
 
     table {
@@ -220,7 +224,7 @@ tbody tr:hover {
 
     #race-list h2,
     #results h2 {
-        font-size: 1.2em;
+        font-size: 1.1em;
     }
 
     table {
@@ -245,6 +249,10 @@ tbody tr:hover {
     th:nth-child(6), td:nth-child(6),
     th:nth-child(7), td:nth-child(7) {
         min-width: 40px;
+    }
+
+    #race-list ul {
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
