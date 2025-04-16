@@ -56,7 +56,7 @@ section {
     background: rgba(30, 35, 38, 0.95);
     padding: 25px;
     border-radius: 16px;
-    /* Removed box-shadow from outer section */
+    /* No shadow on outer section */
 }
 
 #date-selector {
@@ -84,7 +84,7 @@ section {
 }
 
 #fecha-select {
-    padding: 5px;
+    padding: 10px;
     font-size: 1.1em;
     border: 2px solid white;
     border-radius: 8px;
@@ -102,7 +102,7 @@ section {
 }
 
 #date-selector button {
-    padding: 10px 20px;
+    padding:_Level 1: 10px 20px;
     font-size: 1.1em;
     background: #ff4444;
     color: white;
@@ -132,7 +132,7 @@ section {
 
 #race-list h2,
 #results h2 {
-    font-size: 1.5em; /* Reduced font size */
+    font-size: 1.5em; /* Smaller font size */
     color: white;
     font-family: 'Oswald', sans-serif;
     margin-bottom: 15px;
@@ -147,7 +147,7 @@ section {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 12px;
-    max-width: 600px; /* Reduced to fit narrower buttons */
+    max-width: 600px; /* Adjusted for narrower buttons */
     margin: 0 auto;
 }
 
@@ -174,7 +174,7 @@ section {
 
 .table-container {
     overflow-x: auto;
-    padding: 0px;
+    padding: 10px;
 }
 
 table {
@@ -188,7 +188,7 @@ table {
 }
 
 th, td {
-    padding: 6px;
+    padding: 12px;
     text-align: center;
     border: 1px solid #444;
 }
@@ -226,31 +226,6 @@ tbody tr:nth-child(even) {
 tbody tr:hover {
     background: #555;
     transition: background 0.2s ease;
-}
-
-.updated-race {
-    animation: highlight 3s ease-out; /* Increased duration for visibility */
-    background: #ffdd00 !important;
-    color: #1c2526 !important;
-    border: 2px solid #ffee33 !important;
-}
-
-@keyframes highlight {
-    0% {
-        background: #ffdd00;
-        transform: scale(1.02);
-        border-color: #ffee33;
-    }
-    50% {
-        background: #ffee33;
-        transform: scale(1);
-        border-color: #ffdd00;
-    }
-    100% {
-        background: #3a3a3a;
-        transform: scale(1);
-        border-color: #444;
-    }
 }
 
 .penalty {
@@ -305,7 +280,7 @@ tbody tr:hover {
     }
 
     #race-list li {
-        max-width: 120px; /* Even narrower for small screens */
+        max-width: 120px; /* Narrower for small screens */
         font-size: 0.8em;
         padding: 6px;
     }
