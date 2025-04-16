@@ -1,0 +1,106 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row =>
+                    row.some(cell => cell !== '' && cell !== null && cell !== undefined)
+                );
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tiempos - SHOW MIDGET</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>TIEMPOS SHOW MIDGET</h1>
+    </header>
+    <main>
+        <section id="date-selector">
+            <label for="fecha-select">Seleccionar Fecha:</label>
+            <select id="fecha-select">
+                <option value="2025-04-16">16/04/2025</option>
+                <option value="2025-04-23">23/04/2025</option>
+            </select>
+            <button class="button">Cargar</button>
+        </section>
+        <section id="race-list">
+            <h2>Carreras</h2>
+            <ul>
+                <li>Carrera 1</li>
+                <li>Carrera 2</li>
+                <li>Carrera 3</li>
+                <li>Carrera 4</li>
+                <li>Carrera 5</li>
+                <li>Carrera 6</li>
+            </ul>
+        </section>
+        <section id="results">
+            <h2>Resultados</h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Pos</th>
+                            <th>Nº</th>
+                            <th>Piloto</th>
+                            <th>Tiempo</th>
+                            <th>Dif</th>
+                            <th>Vueltas</th>
+                            <th>Penalidad</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>99</td>
+                            <td>Juan Pérez</td>
+                            <td>1:30.456</td>
+                            <td>0.000</td>
+                            <td>10</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>23</td>
+                            <td>María Gómez</td>
+                            <td>1:30.789</td>
+                            <td>+0.333</td>
+                            <td>10</td>
+                            <td>-</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        <section id="creditos">
+            <p>Desarrollado por <a href="http://www.primate.com.ar" target="_blank">PRIMATE ®</a></p>
+        </section>
+    </main>
+    <script src="highlight.js"></script>
+</body>
+</html>
