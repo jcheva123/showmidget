@@ -10,7 +10,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Simulate adding a new race result (replace with actual data logic)
     const simulateRaceUpdate = () => {
         const tbody = document.querySelector('#results tbody');
-        if (!tbody) return;
+        if (!tbody) {
+            console.error('Results table body not found');
+            return;
+        }
 
         const rows = tbody.querySelectorAll('tr');
         if (rows.length > 0) {
