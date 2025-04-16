@@ -4,10 +4,27 @@ document.addEventListener('DOMContentLoaded', () => {
         row.classList.add('updated-race');
         setTimeout(() => {
             row.classList.remove('updated-race');
-        }, 2000); // Matches the CSS animation duration
+        }, 3000); // Matches the CSS animation duration (3s)
     };
 
-    // Simulate adding a new race result (replace with actual data logic)
+    // Function to add a new race result (for simulation)
+    const addNewRaceResult = (tbody) => {
+        const newRow = document.createElement('tr');
+        const position = tbody.querySelectorAll('tr').length + 1;
+        newRow.innerHTML = `
+            <td>${position}</td>
+            <td>${Math.floor(Math.random() * 100)}</td>
+            <td>Piloto ${position}</td>
+            <td>1:${30 + Math.random() * 5.toFixed(3)}</td>
+            <td>+${(Math.random() * 1).toFixed(3)}</td>
+            <td>10</td>
+            <td>-</td>
+        `;
+        tbody.appendChild(newRow);
+        highlightRow(newRow);
+    };
+
+    // Simulate race updates
     const simulateRaceUpdate = () => {
         const tbody = document.querySelector('#results tbody');
         if (!tbody) {
@@ -15,31 +32,49 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        const rows = tbody.querySelectorAll('tr');
-        if (rows.length > 0) {
-            // Randomly select a row to highlight (for demo purposes)
+        // 50% chance to add a new row, 50% to highlight an existing one
+        if (Math.random() > 0.5 || tbody.querySelectorAll('tr').length === 0) {
+            addNewRaceResult(tbody);
+        } else {
+            const rows = tbody.querySelectorAll('tr');
             const randomRow = rows[Math.floor(Math.random() * rows.length)];
             highlightRow(randomRow);
-        } else {
-            // If no rows exist, create a sample row (for demo purposes)
-            const newRow = document.createElement('tr');
-            newRow.innerHTML = `
-                <td>1</td>
-                <td>99</td>
-                <td>Juan Pérez</td>
-                <td>1:30.456</td>
-                <td>0.000</td>
-                <td>10</td>
-                <td>-</td>
-            `;
-            tbody.appendChild(newRow);
-            highlightRow(newRow);
         }
     };
 
-    // Simulate periodic updates every 10 seconds
-    setInterval(simulateRaceUpdate, 10000);
+    // Simulate updates every 8 seconds (more frequent for testing)
+    setInterval(simulateRaceUpdate, 8000);
 
-    // Initial call to test highlighting
-    simulateRaceUpdate();
+    // Initial update after 1 second to ensure table is loaded
+    setTimeout(simulateRaceUpdate, 1000);
 });
+
+// Example function to integrate with actual data (uncomment and customize)
+/*
+function fetchRaceUpdates() {
+    fetch('your-api-endpoint')
+        .then(response => response.json())
+        .then(data => {
+            const tbody = document.querySelector('#results tbody');
+            if (!tbody) {
+                console.error('Results table body not found');
+                return;
+            }
+            data.forEach(result => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${result.position}</td>
+                    <td>${result.number}</td>
+                    <td>${result.driver}</td>
+                    <td>${result.time}</td>
+                    <td>${result.difference}</td>
+                    <td>${result.laps}</td>
+                    <td>${result.penalty || '-'}</td>
+                `;
+                tbody.appendChild(row);
+                highlightRow(row);
+            });
+        })
+        .catch(error => console.error('Error fetching race updates:', error));
+}
+*/
