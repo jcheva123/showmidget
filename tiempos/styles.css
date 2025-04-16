@@ -1,16 +1,24 @@
-@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;700&family=Roboto:wght@300;400;500&display=swap');
 
 * {
     box-sizing: border-box;
 }
 
 body {
-    font-family: 'Rajdhani', sans-serif;
+    font-family: 'Roboto', sans-serif;
     margin: 0;
     padding: 20px;
-    background: linear-gradient(135deg, #1c2526 0%, #2e3b3e 100%);
+    background: linear-gradient(45deg, red, black, red, black);
+    background-size: 400% 400%;
+    animation: gradientAnimation 15s ease infinite;
     color: #e0e0e0;
     overflow-x: hidden;
+}
+
+@keyframes gradientAnimation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
 header {
@@ -20,8 +28,10 @@ header {
 
 header h1 {
     font-size: 2.5em;
-    color: #ffdd00;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    color: white;
+    font-family: 'Oswald', sans-serif;
+    font-weight: bold;
+    text-shadow: 4px 4px 4px rgba(0, 0, 0, 0.4);
     animation: slideIn 1.2s ease-out;
 }
 
@@ -46,13 +56,13 @@ section {
     background: rgba(30, 35, 38, 0.95);
     padding: 25px;
     border-radius: 16px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.4);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 section:hover {
     transform: translateY(-5px);
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+    box-shadow: 8px 8px 8px rgba(0, 0, 0, 0.5);
 }
 
 #date-selector {
@@ -68,22 +78,25 @@ section:hover {
 
 #date-selector label {
     font-size: 1.2em;
-    color: #ffdd00;
+    color: white;
+    font-family: 'Oswald', sans-serif;
+    text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.4);
 }
 
 #fecha-select {
     padding: 10px;
     font-size: 1.1em;
-    border: 2px solid #ffdd00;
+    border: 2px solid white;
     border-radius: 8px;
     background: #2e2e2e;
     color: #e0e0e0;
     min-width: 180px;
+    font-family: 'Roboto', sans-serif;
     transition: border-color 0.3s ease, background 0.3s ease;
 }
 
 #fecha-select:focus {
-    border-color: #ffee33;
+    border-color: #ff4444;
     background: #3a3a3a;
     outline: none;
 }
@@ -91,56 +104,63 @@ section:hover {
 #date-selector button {
     padding: 10px 20px;
     font-size: 1.1em;
-    background: #ffdd00;
-    color: #1c2526;
-    border: none;
+    background: #ff4444;
+    color: white;
+    border: 2px solid black;
     border-radius: 8px;
     cursor: pointer;
+    font-family: 'Oswald', sans-serif;
     font-weight: bold;
+    text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.4);
     transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
 }
 
 #date-selector button:hover {
-    background: #ffee33;
+    background: #ff6666;
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(255, 221, 0, 0.5);
+    box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.4);
 }
 
 #race-list h2,
 #results h2 {
     font-size: 1.8em;
-    color: #ffdd00;
+    color: white;
+    font-family: 'Oswald', sans-serif;
     margin-bottom: 15px;
     text-transform: uppercase;
     letter-spacing: 1px;
+    text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.4);
 }
 
 #race-list ul {
     list-style: none;
     padding: 0;
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* Fixed 3 columns */
+    grid-template-columns: repeat(3, 1fr);
     gap: 12px;
-    max-width: 900px;
+    max-width: 750px;
     margin: 0 auto;
 }
 
 #race-list li {
     padding: 10px;
-    background: #2e2e2e;
-    border: 2px solid #ffdd00;
+    background: #2c2c2c;
+    border: 2px solid white;
     border-radius: 8px;
     cursor: pointer;
     font-size: 1em;
     text-align: center;
+    font-family: 'Oswald', sans-serif;
+    color: white;
+    text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.4);
     transition: background 0.3s ease, transform 0.2s ease, border-color 0.3s ease;
-    max-width: 200px; /* Narrower buttons */
+    max-width: 200px;
 }
 
 #race-list li:hover {
     background: #4a4a4a;
     transform: scale(1.03);
-    border-color: #ffee33;
+    border-color: #ff4444;
 }
 
 .table-container {
@@ -155,7 +175,7 @@ table {
     background: #2e2e2e;
     border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.4);
 }
 
 th, td {
@@ -165,21 +185,24 @@ th, td {
 }
 
 th {
-    background: #ffdd00;
-    color: #1c2526;
+    background: #ff4444;
+    color: white;
+    font-family: 'Oswald', sans-serif;
     font-weight: bold;
     font-size: 1em;
     text-transform: uppercase;
+    text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.4);
 }
 
 td {
     font-size: 0.9em;
     color: #e0e0e0;
+    font-family: 'Roboto', sans-serif;
 }
 
 tbody tr:first-child {
-    background: #ffee33;
-    color: #1c2526;
+    background: #ff6666;
+    color: white;
     font-weight: bold;
 }
 
@@ -198,17 +221,17 @@ tbody tr:hover {
 
 .updated-race {
     animation: highlight 2s ease-out;
-    background: #ff4444 !important;
-    color: #fff !important;
+    background: #ffdd00 !important;
+    color: #1c2526 !important;
 }
 
 @keyframes highlight {
     0% {
-        background: #ff4444;
+        background: #ffdd00;
         transform: scale(1.02);
     }
     50% {
-        background: #ff6666;
+        background: #ffee33;
         transform: scale(1);
     }
     100% {
@@ -218,7 +241,7 @@ tbody tr:hover {
 }
 
 .penalty {
-    color: #ff4444;
+    color: #ffdd00;
     font-weight: bold;
 }
 
@@ -241,7 +264,7 @@ tbody tr:hover {
     }
 
     #race-list ul {
-        grid-template-columns: repeat(2, 1fr); /* 2 columns on smaller screens */
+        grid-template-columns: repeat(2, 1fr);
     }
 
     table {
@@ -263,7 +286,7 @@ tbody tr:hover {
     }
 
     #race-list ul {
-        grid-template-columns: 1fr; /* 1 column on very small screens */
+        grid-template-columns: 1fr;
     }
 
     table {
@@ -278,25 +301,28 @@ tbody tr:hover {
 .button {
     padding: 10px 20px;
     font-size: 1.1em;
-    background: #ffdd00;
-    color: #1c2526;
-    border: none;
+    background: #ff4444;
+    color: white;
+    border: 2px solid black;
     border-radius: 8px;
     cursor: pointer;
+    font-family: 'Oswald', sans-serif;
     font-weight: bold;
+    text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.4);
     transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
 }
 
 .button:hover {
-    background: #ffee33;
+    background: #ff6666;
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(255, 221, 0, 0.5);
+    box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.4);
 }
 
 /* Créditos */
 #creditos {
     text-align: center;
     margin-top: 40px;
+    font-family: 'Roboto', sans-serif;
 }
 
 #creditos a {
@@ -307,6 +333,6 @@ tbody tr:hover {
 }
 
 #creditos a:hover {
-    color: #ffdd00;
+    color: #ff4444;
     text-decoration: underline;
 }
