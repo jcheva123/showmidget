@@ -56,13 +56,7 @@ section {
     background: rgba(30, 35, 38, 0.95);
     padding: 25px;
     border-radius: 16px;
-    box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.4);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-section:hover {
-    transform: translateY(-5px);
-    box-shadow: 8px 8px 8px rgba(0, 0, 0, 0.5);
+    /* Removed box-shadow from outer section */
 }
 
 #date-selector {
@@ -74,6 +68,12 @@ section:hover {
     padding: 15px;
     background: rgba(255, 255, 255, 0.05);
     border-radius: 12px;
+    box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.4);
+    transition: transform 0.3s ease;
+}
+
+#date-selector:hover {
+    transform: translateY(-5px);
 }
 
 #date-selector label {
@@ -121,9 +121,18 @@ section:hover {
     box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.4);
 }
 
+#race-list, #results {
+    box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.4);
+    transition: transform 0.3s ease;
+}
+
+#race-list:hover, #results:hover {
+    transform: translateY(-5px);
+}
+
 #race-list h2,
 #results h2 {
-    font-size: 1.8em;
+    font-size: 1.5em; /* Reduced font size */
     color: white;
     font-family: 'Oswald', sans-serif;
     margin-bottom: 15px;
@@ -138,23 +147,23 @@ section:hover {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 12px;
-    max-width: 750px;
+    max-width: 600px; /* Reduced to fit narrower buttons */
     margin: 0 auto;
 }
 
 #race-list li {
-    padding: 10px;
+    padding: 8px;
     background: #2c2c2c;
     border: 2px solid white;
     border-radius: 8px;
     cursor: pointer;
-    font-size: 1em;
+    font-size: 0.9em;
     text-align: center;
     font-family: 'Oswald', sans-serif;
     color: white;
     text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.4);
     transition: background 0.3s ease, transform 0.2s ease, border-color 0.3s ease;
-    max-width: 200px;
+    max-width: 160px; /* Narrower buttons */
 }
 
 #race-list li:hover {
@@ -220,23 +229,27 @@ tbody tr:hover {
 }
 
 .updated-race {
-    animation: highlight 2s ease-out;
+    animation: highlight 3s ease-out; /* Increased duration for visibility */
     background: #ffdd00 !important;
     color: #1c2526 !important;
+    border: 2px solid #ffee33 !important;
 }
 
 @keyframes highlight {
     0% {
         background: #ffdd00;
         transform: scale(1.02);
+        border-color: #ffee33;
     }
     50% {
         background: #ffee33;
         transform: scale(1);
+        border-color: #ffdd00;
     }
     100% {
         background: #3a3a3a;
         transform: scale(1);
+        border-color: #444;
     }
 }
 
@@ -264,7 +277,8 @@ tbody tr:hover {
     }
 
     #race-list ul {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(3, 1fr); /* 3 columns on mobile */
+        max-width: 500px;
     }
 
     table {
@@ -282,11 +296,18 @@ tbody tr:hover {
     }
 
     #race-list h2, #results h2 {
-        font-size: 1.4em;
+        font-size: 1.2em;
     }
 
     #race-list ul {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(3, 1fr); /* 3 columns on small screens */
+        max-width: 400px;
+    }
+
+    #race-list li {
+        max-width: 120px; /* Even narrower for small screens */
+        font-size: 0.8em;
+        padding: 6px;
     }
 
     table {
