@@ -119,12 +119,14 @@ section:hover {
     list-style: none;
     padding: 0;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    grid-template-columns: repeat(3, 1fr); /* Fixed 3 columns */
     gap: 12px;
+    max-width: 900px;
+    margin: 0 auto;
 }
 
 #race-list li {
-    padding: 12px;
+    padding: 10px;
     background: #2e2e2e;
     border: 2px solid #ffdd00;
     border-radius: 8px;
@@ -132,6 +134,7 @@ section:hover {
     font-size: 1em;
     text-align: center;
     transition: background 0.3s ease, transform 0.2s ease, border-color 0.3s ease;
+    max-width: 200px; /* Narrower buttons */
 }
 
 #race-list li:hover {
@@ -238,7 +241,7 @@ tbody tr:hover {
     }
 
     #race-list ul {
-        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        grid-template-columns: repeat(2, 1fr); /* 2 columns on smaller screens */
     }
 
     table {
@@ -257,6 +260,10 @@ tbody tr:hover {
 
     #race-list h2, #results h2 {
         font-size: 1.4em;
+    }
+
+    #race-list ul {
+        grid-template-columns: 1fr; /* 1 column on very small screens */
     }
 
     table {
