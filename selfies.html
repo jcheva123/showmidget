@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SHOW MIDGET – Selfies</title>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  <meta name="theme-color" content="#000000">
+  <style>
+    :root{
+      --bg1:#7F0000; --bg2:#000000; --ink:#0b0f1a; --gold:#FFC928;
+      --card: rgba(255,255,255,.06); --border: rgba(255,255,255,.14); --white:#fff;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;color:var(--white);
+      font-family:'Roboto',system-ui,-apple-system,Segoe UI,Ubuntu,Helvetica,Arial,sans-serif;
+      min-height:100dvh; display:flex; flex-direction:column; align-items:stretch;
+      background: linear-gradient(45deg, var(--bg1), var(--bg2), var(--bg1), var(--bg2));
+      background-size: 400% 400%;
+      animation: gradientAnimation 14s ease-in-out infinite;
+      text-align:center;
+    }
+    @keyframes gradientAnimation{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+    .wrap{width:100%;max-width:680px;margin:0 auto;padding:14px 16px 28px;flex:1}
+    .topbar{display:flex;align-items:center;gap:8px;margin:8px 0 12px;justify-content:center}
+    .back{background:#222;color:#fff;border:none;border-radius:12px;padding:10px 14px;font-size:1rem;cursor:pointer}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;backdrop-filter:blur(6px)}
+    h1{margin:6px 0 12px;font-family:'Oswald',sans-serif}
+    button.action{
+      background:var(--sand,#af9b6f);color:var(--ink);border:none;
+      padding:14px 20px;font-size:1.2rem;border-radius:14px;cursor:pointer;font-weight:800;
+      width:100%;max-width:420px;margin:10px auto;font-family:'Oswald',sans-serif;letter-spacing:.2px
+    }
+    #preview{width:100%;max-width:320px;margin:16px auto;display:none;border-radius:14px;box-shadow:0 6px 14px rgba(0,0,0,.3)}
+    #estado{margin-top:14px;font-size:1rem}
+    #estado.mensaje-exito{color:#8fff8f;font-weight:700}
+    footer{margin-top:22px;opacity:.8}
+    input[type="file"]{display:none}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <button class="back" onclick="location.href='index.html'">⬅️ Volver</button>
+      <button class="back" onclick="location.href='info.html'">ℹ️ Info</button>
+    </div>
+
+    <div class="card">
+      <h1>📸 Enviá tu Selfie</h1>
+
+      <input type="file" accept="image/*" capture="user" id="fileInput"/>
+      <button class="action" onclick="document.getElementById('fileInput').click()">📸 Abrir cámara</button>
+
+      <img id="preview" alt="Vista previa"/>
+      <button class="action" onclick="enviar()">📤 Enviar</button>
+      <div id="estado"></div>
+    </div>
+
+    <footer>SHOW MIDGET</footer>
+  </div>
+
+  <!-- Formulario oculto para Apps Script -->
+  <form id="formulario" method="POST" target="invisibleFrame"
+        action="https://script.google.com/macros/s/AKfycbxYP3sljeWslfTu9fy7LBuBJ8_n-ZXnIayvKo90Jqik3D_LEOLwl6c0qksm5mY3rRnY-w/exec">
+    <input type="hidden" name="imageData" id="imageDataInput"/>
+  </form>
+  <iframe name="invisibleFrame" style="display:none"></iframe>
+
+<script>
+  const fileInput = document.getElementById('fileInput');
+  const preview   = document.getElementById('preview');
+  const estado    = document.getElementById('estado');
+  const form      = document.getElementById('formulario');
+  const imageDataInput = document.getElementById('imageDataInput');
+  let imagenBase64 = "";
+
+  fileInput.addEventListener('change', function(){
+    const file = this.files[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e){
+      imagenBase64 = e.target.result;
+      preview.src = imagenBase64;
+      preview.style.display = 'block';
+      estado.textContent = '';
+    };
+    reader.readAsDataURL(file);
+  });
+
+  function enviar(){
+    if(!imagenBase64){
+      estado.textContent='⚠️ Primero seleccioná una imagen.';
+      return;
+    }
+    imageDataInput.value = imagenBase64;
+    estado.textContent='⏳ Enviando...';
+    form.submit();
+    setTimeout(()=>{
+      estado.textContent='✅ Selfie enviada correctamente.';
+      estado.className='mensaje-exito';
+      preview.style.display='none';
+      fileInput.value='';
+      imagenBase64='';
+    }, 2000);
+  }
+</script>
+</body>
+</html>

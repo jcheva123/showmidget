@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SHOW MIDGET – Mensajes</title>
+  <meta name="description" content="Envío de mensajes para mostrarse en pantalla durante el espectáculo."/>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  <meta name="theme-color" content="#000000">
+  <style>
+    :root{
+      --bg1:#7F0000; --bg2:#000000; --ink:#0b0f1a; --gold:#FFC928;
+      --card: rgba(255,255,255,.06); --border: rgba(255,255,255,.14); --white:#fff;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;color:var(--white);
+      font-family:'Roboto',system-ui,-apple-system,Segoe UI,Ubuntu,Helvetica,Arial,sans-serif;
+      min-height:100dvh; display:flex; flex-direction:column;
+      background: linear-gradient(45deg, var(--bg1), var(--bg2), var(--bg1), var(--bg2));
+      background-size: 400% 400%;
+      animation: gradientAnimation 14s ease-in-out infinite;
+    }
+    @keyframes gradientAnimation{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+    .wrap{width:100%;max-width:680px;margin:0 auto;padding:14px 16px 28px;flex:1}
+    .topbar{display:flex;align-items:center;gap:8px;margin:8px 0 12px}
+    .back{background:#222;color:#fff;border:none;border-radius:12px;padding:10px 14px;font-size:1rem;cursor:pointer}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;backdrop-filter:blur(6px)}
+    h1{margin:6px 0 6px;font-family:'Oswald',sans-serif}
+    .hint{opacity:.9}
+    label{display:block;margin-top:12px;margin-bottom:6px}
+    input,textarea,button{
+      width:100%;padding:14px;border-radius:14px;border:1px solid #cfd6e4;font-size:1rem
+    }
+    textarea{min-height:140px}
+    button{
+      cursor:pointer;background:var(--gold);border:none;color:var(--ink);
+      font-weight:800;font-family:'Oswald',sans-serif;letter-spacing:.2px
+    }
+    .result{margin-top:10px;font-size:.95rem}
+    .result.ok{font-size:1.05rem}
+    .contador{margin-top:6px;font-size:.95rem;opacity:.95;text-align:center;transition:color .2s ease}
+    .contador.alerta{color:#ff5c5c;font-weight:700}
+    footer{margin-top:22px;text-align:center;opacity:.8}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <button class="back" onclick="location.href='index.html'">⬅️ Volver</button>
+      <button class="back" onclick="location.href='info.html'">ℹ️ Info</button>
+    </div>
+    <div class="card">
+      <h1>Enviá tu mensaje</h1>
+      <p class="hint">Mensaje breve y respetuoso. Se modera antes de salir en pantalla. Máx. 80 caracteres.</p>
+
+      <label for="nombre">Tu nombre (opcional)</label>
+      <input id="nombre" maxlength="30" placeholder="Nombre" />
+
+      <label for="mensaje">Mensaje</label>
+      <textarea id="mensaje" maxlength="80" placeholder="Escribí tu mensaje…" required></textarea>
+      <div id="contador" class="contador">Restan 80 caracteres</div>
+
+      <button id="enviar">Enviar mensaje</button>
+      <div id="resultado" class="result"></div>
+    </div>
+
+    <footer>SHOW MIDGET</footer>
+  </div>
+
+<script>
+  // Reusa tu Google Form existente
+  const FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLScqZJieBCb75INgLVjFqcVehodF86JomU5XMpa-0JN6cYzqpw/formResponse";
+  const ENTRY_MENSAJE = "entry.1663842386";
+
+  const LS_KEY = 'showmidget_nombre';
+  const nombreEl = document.getElementById('nombre');
+  const mensajeEl = document.getElementById('mensaje');
+  const btn = document.getElementById('enviar');
+  const res = document.getElementById('resultado');
+  const contadorEl = document.getElementById('contador');
+  const MAX = mensajeEl.maxLength;
+
+  nombreEl.value = localStorage.getItem(LS_KEY) || '';
+
+  function actualizarContador() {
+    const restantes = MAX - mensajeEl.value.length;
+    contadorEl.textContent = `Restan ${restantes} caracteres`;
+    if(restantes <= 10){
+      contadorEl.classList.add('alerta');
+    } else {
+      contadorEl.classList.remove('alerta');
+    }
+  }
+  mensajeEl.addEventListener('input', actualizarContador);
+  actualizarContador();
+
+  btn.addEventListener('click', () => {
+    const nombre = (nombreEl.value || '').trim().slice(0,30);
+    const mensaje = (mensajeEl.value || '').trim().slice(0,80);
+
+    if(!mensaje){
+      res.textContent = '❌ Escribí un mensaje antes de enviar.';
+      res.className = 'result';
+      return;
+    }
+
+    const mensajeCompleto = nombre ? `${mensaje} - ${nombre}` : mensaje;
+    const fd = new FormData();
+    fd.append(ENTRY_MENSAJE, mensajeCompleto);
+
+    btn.disabled = true; btn.textContent = 'Enviando…';
+    fetch(FORM_URL, { method: 'POST', mode: 'no-cors', body: fd })
+      .then(() => {
+        if(nombre) localStorage.setItem(LS_KEY, nombre);
+        mensajeEl.value = '';
+        actualizarContador();
+        res.textContent = '✅ ¡Gracias! Tu mensaje fue enviado.';
+        res.className = 'result ok';
+      })
+      .catch(() => {
+        res.textContent = '⚠️ No se pudo enviar. Intentá nuevamente.';
+        res.className = 'result';
+      })
+      .finally(() => {
+        btn.disabled = false; btn.textContent = 'Enviar mensaje';
+      });
+  });
+</script>
+</body>
+</html>
