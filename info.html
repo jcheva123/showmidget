@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>SHOW MIDGET – Info</title>
-  <meta name="description" content="Redes oficiales y sponsors del espectáculo."/>
+  <title>Club Midgistas del Sur – Info</title>
+  <meta name="description" content="Redes oficiales y sponsors del Club Midgistas del Sur."/>
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
   <meta name="theme-color" content="#000000">
   <style>
@@ -29,7 +29,19 @@
     .card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;backdrop-filter:blur(6px);margin-bottom:16px}
     h1{margin:6px 0 12px;font-family:'Oswald',sans-serif}
     h2{margin:6px 0 12px;font-size:1.1rem;opacity:.95}
-    a.link{display:inline-block;margin:6px 0;padding:10px 14px;border-radius:12px;background:var(--sand);color:var(--ink);font-weight:800;text-decoration:none;font-family:'Oswald',sans-serif}
+    .brand{
+      display:flex;align-items:center;gap:14px;margin-bottom:8px;flex-wrap:wrap
+    }
+    .brand img{
+      width:220px;max-width:46vw;height:auto; border-radius:12px; box-shadow:0 8px 18px rgba(0,0,0,.3)
+    }
+    .brand .title{
+      display:flex; flex-direction:column; gap:4px
+    }
+    .brand .title .cms{font-family:'Oswald',sans-serif; font-size:clamp(1.6rem, 6vw, 2.2rem); font-weight:800; line-height:1.05}
+    .brand .title .sub{opacity:.9}
+    a.link{display:flex;align-items:center;gap:10px;margin:8px 0;padding:12px 14px;border-radius:12px;background:var(--sand);color:var(--ink);font-weight:800;text-decoration:none;font-family:'Oswald',sans-serif;letter-spacing:.2px}
+    a.link span{font-family:'Roboto',sans-serif;font-weight:600;letter-spacing:0}
     .hashtags{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
     .tag{display:inline-block;background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.18);padding:8px 12px;border-radius:999px;font-weight:700}
     ul{margin:14px 0 0;padding-left:0;list-style:none}
@@ -45,17 +57,25 @@
     </div>
 
     <div class="card">
-      <h1>Redes</h1>
-      <!-- Editá libremente los enlaces -->
-      <a class="link" href="https://x.com/ShowMidget" target="_blank" rel="noopener noreferrer">@ShowMidget</a>
-      <a class="link" href="https://www.instagram.com/showmidget" target="_blank" rel="noopener noreferrer">Instagram</a>
-      <a class="link" href="https://www.facebook.com/showmidget" target="_blank" rel="noopener noreferrer">Facebook</a>
+      <div class="brand">
+        <img src="logocmslow.png" alt="Logo Club Midgistas del Sur" />
+        <div class="title">
+          <div class="cms">Club Midgistas del Sur</div>
+          <div class="sub">Sitio de enlaces y sponsors</div>
+        </div>
+      </div>
+
+      <h1>Redes oficiales</h1>
+      <a class="link" href="https://www.instagram.com/clubmidgistas/" target="_blank" rel="noopener noreferrer">📸 Instagram <span>@clubmidgistas</span></a>
+      <a class="link" href="https://www.facebook.com/ShowMidget/" target="_blank" rel="noopener noreferrer">📘 Facebook <span>/ShowMidget</span></a>
+      <a class="link" href="https://clubmidgistasdelsur.com.ar/" target="_blank" rel="noopener noreferrer">🌐 Web <span>clubmidgistasdelsur.com.ar</span></a>
+      <a class="link" href="https://api.whatsapp.com/send?phone=542915738087" target="_blank" rel="noopener noreferrer">💬 WhatsApp <span>+54 291 573-8087</span></a>
 
       <h2>Hashtags</h2>
       <div class="hashtags">
-        <span class="tag">#ShowMidget</span>
+        <span class="tag">#ClubMidgistasDelSur</span>
         <span class="tag">#Midgets</span>
-        <span class="tag">#BahiaBlanca</span>
+        <span class="tag">#BahíaBlanca</span>
       </div>
     </div>
 
