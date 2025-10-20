@@ -1,7 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;700&family=Roboto:wght@300;400;500&display=swap');
 /* posiciones.v2.css — Dark, líder destacado, zebra stripes, responsive */
 /* Fuerza fondo oscuro si la base fuese clara */
 html, body { background: #0b0f1a; color: #e9edf3; }
-
+  font-family: 'Roboto', sans-serif; transition: border-color .3s ease, background .3s ease;
 /* Contenedor principal y tabla oscura al estilo resultados */
 #results .table-container{
   background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
@@ -9,6 +10,7 @@ html, body { background: #0b0f1a; color: #e9edf3; }
   border-radius: 16px;
   box-shadow: 0 12px 30px rgba(0,0,0,.45);
   overflow: hidden;
+  font-family: 'Roboto', sans-serif; transition: border-color .3s ease, background .3s ease;
 }
 #tbl{ width: 100%; border-collapse: separate; border-spacing: 0; }
 #tbl thead th{
@@ -17,6 +19,7 @@ html, body { background: #0b0f1a; color: #e9edf3; }
   position: sticky; top: 0; z-index: 2;
   padding: 10px 12px; text-align: center;
   border-bottom: 1px solid rgba(255,255,255,.25);
+  font-family: 'Roboto', sans-serif; transition: border-color .3s ease, background .3s ease;
 }
 #tbl thead th.th-left, #tbl thead th[data-k="nombre"]{ text-align: left; }
 
@@ -24,24 +27,27 @@ html, body { background: #0b0f1a; color: #e9edf3; }
 #tbl tbody td.c { text-align: center; }
 #tbl tbody td.name { text-align: left; }
 #tbl tbody td.strong { font-weight: 800; }
-
+  font-family: 'Roboto', sans-serif; transition: border-color .3s ease, background .3s ease;
 /* Zebra stripes para legibilidad */
 #tbl tbody tr:nth-child(odd)  td { background: rgba(255,255,255,.04); }
 #tbl tbody tr:nth-child(even) td { background: rgba(255,255,255,.06); }
-
+  font-family: 'Roboto', sans-serif; transition: border-color .3s ease, background .3s ease;
 /* Líder (posición 1 / mayor total) claramente destacado */
 #tbl tbody tr.leader td{
-
+  background: linear-gradient(90deg, rgba(255,80,80,.55), rgba(255,80,80,.30) 45%, rgba(255,255,255,0) 100%);
   color: #fff;
+  font-family: 'Roboto', sans-serif; transition: border-color .3s ease, background .3s ease;
 }
 #tbl tbody tr.leader td:first-child{
   position: relative;
   font-weight: 900;
+  font-family: 'Roboto', sans-serif; transition: border-color .3s ease, background .3s ease;
 }
 #tbl tbody tr.leader td:first-child::before{
-  content: "";
+  content: "🏆";
   position: absolute;
   left: 8px; transform: translateY(-1px);
+  font-family: 'Roboto', sans-serif; transition: border-color .3s ease, background .3s ease;
 }
 /* dar espacio al trofeo sin tocar el valor */
 #tbl tbody tr.leader td:first-child{ padding-left: 28px; }
@@ -50,9 +56,11 @@ html, body { background: #0b0f1a; color: #e9edf3; }
 @media (max-width: 520px){
   #tbl thead th, #tbl tbody td { padding: 8px 10px; }
   #results .results-toolbar{ gap: 8px; flex-wrap: wrap; }
+  font-family: 'Roboto', sans-serif; transition: border-color .3s ease, background .3s ease;
 }
 
 /* Mantener el metadato discreto */
+  font-family: 'Roboto', sans-serif; transition: border-color .3s ease, background .3s ease;
 .meta-row{ color:#aab3c1; margin: 8px 2px 10px; font-size: .9rem; }
 #creditos{ text-align:center; font-size:12px; margin:18px 0 10px; }
 #creditos a{ color:#9aa3ad; text-decoration:none; }
