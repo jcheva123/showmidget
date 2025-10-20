@@ -28,6 +28,7 @@
 <main>
   <section id="date-selector">
     <label for="fecha-select">Seleccionar Fecha:</label>
+    <!-- Si tu script ya maneja el change por JS, podés quitar el onchange -->
     <select id="fecha-select" onchange="loadRaces()">
       <option value="">-- Elegir Fecha --</option>
       <option value="Fecha 1">Fecha 1</option>
@@ -52,12 +53,14 @@
   </section>
 
   <section id="race-list">
-<div style="display:flex; align-items:center; justify-content:space-between; gap:8px;">
-  <h2 style="margin:0;">Carreras Disponibles</h2>
-  <div style="display:flex; gap:8px;">
-    <button id="update-btn" class="button" type="button" title="Refrescar datos">↻ Actualizar Datos</button>
-</div>
-
+    <div style="display:flex; align-items:center; justify-content:space-between; gap:8px;">
+      <h2 style="margin:0;">Carreras Disponibles</h2>
+      <div style="display:flex; gap:8px;">
+        <button id="update-btn" class="button" type="button" title="Refrescar datos">↻ Actualizar Datos</button>
+        <!-- Botón de compartir eliminado de la UI; se deja oculto para compatibilidad con enhancements.js -->
+        <button id="share-btn" class="button" type="button" hidden aria-hidden="true" style="display:none">Compartir</button>
+      </div>
+    </div>
     <ul></ul>
   </section>
 
@@ -106,4 +109,3 @@
 </div>
 </body>
 </html>
-
