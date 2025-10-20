@@ -1,11 +1,58 @@
-/* posiciones.v2.css — Ajustes mínimos sobre tu styles.css */
-/* Alinear nombre a la izquierda y reforzar Total */
-#tbl th[data-k="nombre"], #tbl td.name { text-align: left; }
-#tbl td.c { text-align: center; }
-#tbl td.strong { font-weight: 700; }
+/* posiciones.v2.css — Dark, líder destacado, zebra stripes, responsive */
+/* Fuerza fondo oscuro si la base fuese clara */
+html, body { background: #0b0f1a; color: #e9edf3; }
 
-/* Reservar ancho cómodo para la columna de nombre */
-#tbl thead th[data-k="nombre"], #tbl tbody td.name { min-width: 200px; }
+/* Contenedor principal y tabla oscura al estilo resultados */
+#results .table-container{
+  background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 16px;
+  box-shadow: 0 12px 30px rgba(0,0,0,.45);
+  overflow: hidden;
+}
+#tbl{ width: 100%; border-collapse: separate; border-spacing: 0; }
+#tbl thead th{
+  background: linear-gradient(180deg, rgba(255,70,70,.95), rgba(255,70,70,.85));
+  color: #fff; font-weight: 800; letter-spacing: .5px;
+  position: sticky; top: 0; z-index: 2;
+  padding: 10px 12px; text-align: center;
+  border-bottom: 1px solid rgba(255,255,255,.25);
+}
+#tbl thead th.th-left, #tbl thead th[data-k="nombre"]{ text-align: left; }
 
-/* Opcional: hacer que la tabla no se estire demasiado en desktop grande */
-main { max-width: 900px; margin: 0 auto; }
+#tbl tbody td{ padding: 10px 12px; border-bottom: 1px solid rgba(255,255,255,.06); }
+#tbl tbody td.c { text-align: center; }
+#tbl tbody td.name { text-align: left; }
+#tbl tbody td.strong { font-weight: 800; }
+
+/* Zebra stripes para legibilidad */
+#tbl tbody tr:nth-child(odd)  td { background: rgba(255,255,255,.04); }
+#tbl tbody tr:nth-child(even) td { background: rgba(255,255,255,.06); }
+
+/* Líder (posición 1 / mayor total) claramente destacado */
+#tbl tbody tr.leader td{
+  background: linear-gradient(90deg, rgba(255,80,80,.55), rgba(255,80,80,.30) 45%, rgba(255,255,255,0) 100%);
+  color: #fff;
+}
+#tbl tbody tr.leader td:first-child{
+  position: relative;
+  font-weight: 900;
+}
+#tbl tbody tr.leader td:first-child::before{
+  content: "🏆";
+  position: absolute;
+  left: 8px; transform: translateY(-1px);
+}
+/* dar espacio al trofeo sin tocar el valor */
+#tbl tbody tr.leader td:first-child{ padding-left: 28px; }
+
+/* Responsive: apretar un poco en teléfonos */
+@media (max-width: 520px){
+  #tbl thead th, #tbl tbody td { padding: 8px 10px; }
+  #results .results-toolbar{ gap: 8px; flex-wrap: wrap; }
+}
+
+/* Mantener el metadato discreto */
+.meta-row{ color:#aab3c1; margin: 8px 2px 10px; font-size: .9rem; }
+#creditos{ text-align:center; font-size:12px; margin:18px 0 10px; }
+#creditos a{ color:#9aa3ad; text-decoration:none; }
