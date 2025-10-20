@@ -31,7 +31,7 @@ html, body { background: #0b0f1a; color: #e9edf3; }
 
 /* Líder (posición 1 / mayor total) claramente destacado */
 #tbl tbody tr.leader td{
-  background: linear-gradient(90deg, rgba(255,80,80,.55), rgba(255,80,80,.30) 45%, rgba(255,255,255,0) 100%);
+
   color: #fff;
 }
 #tbl tbody tr.leader td:first-child{
@@ -39,7 +39,7 @@ html, body { background: #0b0f1a; color: #e9edf3; }
   font-weight: 900;
 }
 #tbl tbody tr.leader td:first-child::before{
-  content: "🏆";
+  content: "1️⃣";
   position: absolute;
   left: 8px; transform: translateY(-1px);
 }
