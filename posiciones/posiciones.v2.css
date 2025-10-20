@@ -39,7 +39,7 @@ html, body { background: #0b0f1a; color: #e9edf3; }
   font-weight: 900;
 }
 #tbl tbody tr.leader td:first-child::before{
-  content: "1️⃣";
+  content: "";
   position: absolute;
   left: 8px; transform: translateY(-1px);
 }
