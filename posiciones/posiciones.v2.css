@@ -1,0 +1,11 @@
+/* posiciones.v2.css — Ajustes mínimos sobre tu styles.css */
+/* Alinear nombre a la izquierda y reforzar Total */
+#tbl th[data-k="nombre"], #tbl td.name { text-align: left; }
+#tbl td.c { text-align: center; }
+#tbl td.strong { font-weight: 700; }
+
+/* Reservar ancho cómodo para la columna de nombre */
+#tbl thead th[data-k="nombre"], #tbl tbody td.name { min-width: 200px; }
+
+/* Opcional: hacer que la tabla no se estire demasiado en desktop grande */
+main { max-width: 900px; margin: 0 auto; }

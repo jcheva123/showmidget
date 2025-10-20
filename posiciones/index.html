@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0b0f1a" />
+  <title>🏆 Tabla de posiciones — Estival</title>
+
+  <!-- Usa tu hoja base con estética rojo/negro -->
+  <link rel="stylesheet" href="styles.css" />
+  <!-- Patch mínimo para esta página -->
+  <link rel="stylesheet" href="posiciones.v2.css" />
+</head>
+<body>
+
+  <!-- Topbar como en resultados -->
+  <nav id="topbar-volver" style="position:sticky; top:0; z-index:999; background:#0b0f1a; padding:8px 12px; border-bottom:1px solid rgba(255,255,255,.15);">
+    <button class="button" onclick="window.location.href='../index.html'">⬅️ Resultados</button>
+  </nav>
+
+  <header>
+    <h1>🏆 Tabla de posiciones</h1>
+  </header>
+
+  <main>
+    <section id="results">
+      <div class="results-toolbar">
+        <h2 style="margin:0;">General</h2>
+        <input id="results-search" type="search" placeholder="Buscar por N° o nombre…" inputmode="search" autocomplete="off" />
+      </div>
+
+      <div class="meta-row">
+        <!-- Solo mostramos 'Cumplidas X fechas' y 'Actualizado', NO el nombre del PDF -->
+        <span id="meta" aria-live="polite"></span>
+      </div>
+
+      <div class="table-container">
+        <table id="tbl">
+          <thead>
+            <tr>
+              <th data-k="pos">Pos.</th>
+              <th data-k="nro">N°</th>
+              <th data-k="nombre" class="th-left">Nombre</th>
+              <th data-k="total">Total</th>
+            </tr>
+          </thead>
+          <tbody><!-- filas dinámicas --></tbody>
+        </table>
+        <div id="skeleton" class="skeleton" hidden>
+          <div class="row"></div><div class="row"></div><div class="row"></div><div class="row"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="creditos">
+    <a href="http://www.primate.com.ar" target="_blank">by PRIMATE ®</a>
+  </div>
+
+  <script src="posiciones.v2.js"></script>
+</body>
+</html>
