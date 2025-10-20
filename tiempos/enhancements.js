@@ -216,6 +216,46 @@
     }
   }
 
+  // --- Anti-duplicados en la lista de carreras + bloqueo de llamadas simultáneas ---
+(() => {
+  const qs = (s, el = document) => el.querySelector(s);
+
+  // Dedup por texto visible (SERIE 1, SERIE 2, etc.)
+  function dedupeRaceList() {
+    const ul = qs('#race-list ul');
+    if (!ul) return;
+    const seen = new Set();
+    [...ul.children].forEach(li => {
+      const key = li.textContent.trim().toLowerCase();
+      if (seen.has(key)) li.remove();
+      else seen.add(key);
+    });
+  }
+
+  // Envuelve loadRaces para evitar doble ejecución en paralelo (throttle)
+  if (typeof window.loadRaces === 'function') {
+    const original = window.loadRaces;
+    let inFlight = false;
+    window.loadRaces = async (...args) => {
+      if (inFlight) return;            // evita segunda llamada mientras corre
+      inFlight = true;
+      try {
+        const res = await original(...args);
+        dedupeRaceList();              // limpia por si hubo doble disparo externo
+        return res;
+      } finally {
+        inFlight = false;
+      }
+    };
+  }
+
+  // También dedupe inmediatamente tras un cambio de fecha, por si otro script llama aparte
+  document.getElementById('fecha-select')?.addEventListener('change', () => {
+    // pequeño delay para dar tiempo a que se construya la lista
+    setTimeout(dedupeRaceList, 0);
+  });
+})();
+
   // Cuando cambia de Fecha (o se restaura), prefetchear
   on('change', () => {
     const fecha = fechaSelect.value;
@@ -230,3 +270,4 @@
     navigator.serviceWorker.register('./service-worker.js').catch(() => {});
   }
 })();
+
