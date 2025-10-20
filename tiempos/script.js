@@ -151,7 +151,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // Modificar el botón Actualizar Datos
-document.querySelector("#race-list button").addEventListener("click", () => {
+document.getElementById("update-btn").addEventListener("click", () => {
     const fechaSelect = document.getElementById("fecha-select").value;
     if (fechaSelect) {
         localStorage.setItem("selectedFecha", fechaSelect);
@@ -160,3 +160,4 @@ document.querySelector("#race-list button").addEventListener("click", () => {
     localStorage.setItem("selectedFecha", fechaSelect);
     location.reload();
 });
+
