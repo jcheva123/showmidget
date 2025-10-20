@@ -1,8 +1,23 @@
-// posiciones.v2.js — SOLO: Pos, N°, Nombre, Total (sin mostrar PDF)
-const STATE = { rows: [], sortKey: 'pos', sortDir: 'asc' };
+// posiciones.v2.js — dark, líder destacado, zebra rows; SOLO: Pos, N°, Nombre, Total
+const STATE = { rows: [], sortKey: 'pos', sortDir: 'asc', leader: null };
 
 function fmt(n){ if(n==null) return ''; return Number.isInteger(n)? String(n) : Number(n).toFixed(2); }
 function safe(s){ return (s==null?'':String(s)); }
+
+function computeLeader(){
+  // 1) Preferir el de menor 'pos'; 2) si no hay pos, el de mayor 'total'
+  let leader = null;
+  const withPos = STATE.rows.filter(r => typeof r.pos === 'number');
+  if(withPos.length){
+    leader = withPos.sort((a,b)=> a.pos - b.pos || (b.total ?? -Infinity) - (a.total ?? -Infinity))[0];
+  } else {
+    const withTotal = STATE.rows.filter(r => typeof r.total === 'number');
+    if(withTotal.length){
+      leader = withTotal.sort((a,b)=> (b.total ?? -Infinity) - (a.total ?? -Infinity))[0];
+    }
+  }
+  STATE.leader = leader ? { nro: leader.nro, nombre: leader.nombre } : null;
+}
 
 function renderMeta(meta){
   const el = document.getElementById('meta');
@@ -18,6 +33,8 @@ function renderTable(rows){
   tb.innerHTML = '';
   for(const r of rows){
     const tr = document.createElement('tr');
+    const isLeader = STATE.leader && r.nro === STATE.leader.nro && r.nombre === STATE.leader.nombre;
+    if(isLeader) tr.classList.add('leader');
     tr.innerHTML = `
       <td class="c">${fmt(r.pos)}</td>
       <td class="c">${fmt(r.nro)}</td>
@@ -63,11 +80,12 @@ async function loadJSON(){
     const data = await res.json();
     if(!data || !Array.isArray(data.standings)) throw new Error('JSON sin "standings"');
     STATE.rows = data.standings.map(r => ({
-      pos: r.pos ?? null,
-      nro: r.nro ?? null,
+      pos: (typeof r.pos === 'number') ? r.pos : (r.pos ? Number(r.pos) : null),
+      nro: (typeof r.nro === 'number') ? r.nro : (r.nro ? Number(r.nro) : null),
       nombre: r.nombre ?? '',
       total: (typeof r.total === 'number') ? r.total : (r.total ? Number(r.total) : null)
     }));
+    computeLeader();
     renderMeta(data.meta || {});
     applyFilter();
   }catch(err){
