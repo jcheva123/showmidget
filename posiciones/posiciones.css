@@ -1,13 +1,24 @@
-/* Patch para posiciones (usa tu styles.css base). */
-body.compact #tbl thead th:nth-child(4),
-body.compact #tbl thead th:nth-child(5),
-body.compact #tbl thead th:nth-child(6),
-body.compact #tbl thead th:nth-child(7),
-body.compact #tbl thead th:nth-child(10),
-body.compact #tbl tbody td:nth-child(4),
-body.compact #tbl tbody td:nth-child(5),
-body.compact #tbl tbody td:nth-child(6),
-body.compact #tbl tbody td:nth-child(7),
-body.compact #tbl tbody td:nth-child(10) { display:none; }
+/* posiciones.css — adapta la estética al estilo rojo/negro existente */
+/* Usa la base de styles.css, solo ajustamos detalles específicos de esta tabla */
 
-#tbl tbody td:nth-child(9){ font-weight:600; }
+#tbl th.th-left, #tbl td.l { text-align: left; }
+#tbl td.c { text-align: center; }
+#tbl td.strong { font-weight: 700; }
+
+/* Ensanchar la columna de nombre para que respire */
+#tbl thead th[data-k="nombre"], #tbl tbody td.l { min-width: 180px; }
+
+/* Podio sutil como en resultados */
+#tbl tbody tr:nth-child(1) { background: #ff6666; color: #fff; font-weight: bold; }
+#tbl tbody tr:nth-child(2) { background: linear-gradient(90deg, rgba(192,192,192,.20), transparent); }
+#tbl tbody tr:nth-child(3) { background: linear-gradient(90deg, rgba(205,127,50,.20), transparent); }
+
+/* Sticky y hover ya vienen del styles base; afinamos contraste */
+#tbl thead th { position: sticky; top: 0; z-index: 1; }
+
+/* Responsive tweaks */
+@media (max-width: 480px){
+  #results .results-toolbar { gap: 8px; }
+  #results-search { flex: 1 1 220px; max-width: 280px; }
+  #tbl thead th, #tbl tbody td { padding: 8px; }
+}
