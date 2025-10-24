@@ -1,6 +1,6 @@
-// script.js (estable, sin probes masivos y con fallback a CDN)
+// script.js — robusto (timeout, múltiples CDNs, cache, no probes)
 
-// ========== Config ==========
+// ===== Config =====
 const RACE_TYPES = [
   "serie1","serie2","serie3","serie4","serie5","serie6","serie7","serie8","serie9","serie10","serie11","serie12","serie13",
   "repechaje1","repechaje2","repechaje3","repechaje4","repechaje5","repechaje6",
@@ -8,13 +8,18 @@ const RACE_TYPES = [
   "prefinal","final"
 ];
 
-const BASE_RAW = "https://raw.githubusercontent.com/jcheva123/tiemposweb-2025/main/resultados/";
-const BASE_CDN = "https://cdn.jsdelivr.net/gh/jcheva123/tiemposweb-2025@main/resultados/";
-const CACHE_MS_RESULTS = 60000; // 60s como usabas antes
+// Las 3 rutas en cascada
+const BASES = [
+  (fecha, race) => `https://raw.githubusercontent.com/jcheva123/tiemposweb-2025/main/resultados/${encodeURIComponent(fecha)}/${race}.json`,
+  (fecha, race) => `https://cdn.jsdelivr.net/gh/jcheva123/tiemposweb-2025@main/resultados/${encodeURIComponent(fecha)}/${race}.json`,
+  (fecha, race) => `https://cdn.statically.io/gh/jcheva123/tiemposweb-2025/main/resultados/${encodeURIComponent(fecha)}/${race}.json`,
+];
 
-// ========== Utils ==========
-const $ = (s, el = document) => el.querySelector(s);
-const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+const CACHE_MS_RESULTS = 60000; // 60s
+
+// ===== Utils =====
+const $  = (s, el=document) => el.querySelector(s);
+const $$ = (s, el=document) => [...el.querySelectorAll(s)];
 
 function prettyRaceName(race) {
   return race
@@ -25,120 +30,141 @@ function prettyRaceName(race) {
     .replace("final", "Final");
 }
 
-function buildURL(base, fecha, race) {
-  // encode Fecha (tiene espacios) y mantiene nombre de archivo
-  const f = encodeURIComponent(fecha);
-  return `${base}${f}/${race}.json`;
+function showAlert(msg){ try{ (window.showToast||alert)(msg); }catch{ alert(msg); } }
+
+function sleep(ms){ return new Promise(r=>setTimeout(r,ms)); }
+
+function fetchWithTimeout(url, opts={}, ms=8000) {
+  const ctrl = new AbortController();
+  const t = setTimeout(()=>ctrl.abort(), ms);
+  return fetch(url, {...opts, signal: ctrl.signal, cache:'no-store'}).finally(()=>clearTimeout(t));
 }
 
-async function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
-
-// Intenta Raw y luego CDN. Reintenta 3 veces con backoff si 429/red
-async function fetchJSONWithFallback(fecha, race, retries = 3) {
-  const urls = [buildURL(BASE_RAW, fecha, race), buildURL(BASE_CDN, fecha, race)];
-  let delay = 500;
-  for (let attempt = 0; attempt < retries; attempt++) {
-    for (const url of urls) {
+// Descarga con fallback RAW->CDNs + backoff (429/502/red)
+async function fetchJSONWithFallback(fecha, race, retries = 2) {
+  let delay = 600;
+  for (let attempt = 0; attempt <= retries; attempt++) {
+    for (const make of BASES) {
+      const url = make(fecha, race);
       try {
-        const res = await fetch(url, { cache: "no-store" });
+        const res = await fetchWithTimeout(url, {}, 9000);
         if (res.ok) return await res.json();
-        if (res.status === 404) {
-          const e = new Error("not-found"); e.code = 404; throw e;
-        }
-        if (res.status !== 429) throw new Error(`status-${res.status}`);
+        if (res.status === 404) { const e = new Error('not-found'); e.code=404; throw e; }
+        // 429/5xx caen al catch
       } catch (err) {
-        if (err.code === 404) throw err; // no reintentar 404
-        // otros errores -> probar siguiente URL o reintentar tras backoff
+        if (err?.code === 404) throw err; // no reintentar si no existe
+        // intenta siguiente base o backoff
       }
     }
-    await sleep(delay + Math.random() * 250);
+    // Backoff con jitter
+    await sleep(delay + Math.random()*300);
     delay *= 2;
   }
-  throw new Error("fetch-failed");
+  throw new Error('fetch-failed');
 }
 
-// ========== UI: cargar lista sin hacer fetch ==========
+// ===== Poblado de lista SIN probes =====
 async function loadRaces() {
-  const fechaSelect = $("#fecha-select");
-  const fechaValue = fechaSelect.value;
+  const fecha = $("#fecha-select")?.value || "";
+  const ul = $("#race-list ul");
+  const tbody = $("table tbody");
+  if (!ul || !tbody) return;
 
-  const raceList = $("#race-list ul");
-  const resultsBody = $("table tbody");
-  raceList.innerHTML = "";
-  resultsBody.innerHTML = "";
+  ul.innerHTML = "";
+  tbody.innerHTML = "";
 
-  if (!fechaValue) return;
+  if (!fecha) return;
 
-  // Guardar fecha seleccionada
-  localStorage.setItem("selectedFecha", fechaValue);
+  localStorage.setItem("selectedFecha", fecha);
 
-  // Poblar lista sin golpear la red
   for (const race of RACE_TYPES) {
     const li = document.createElement("li");
     li.textContent = prettyRaceName(race);
-    li.onclick = () => loadResults(fechaValue, race);
-    raceList.appendChild(li);
+    li.onclick = () => loadResults(fecha, race);
+    ul.appendChild(li);
   }
 }
 
-// ========== Cargar resultados al tocar una carrera ==========
+// ===== Cargar resultados al toque (con cache y guardas) =====
+const inflight = new Map(); // evita dobles llamadas al mismo key
+
 async function loadResults(fecha, race) {
+  const tbody = $("table tbody");
+  if (!tbody) return;
+
   const cacheKey = `${fecha}_${race}`;
   const now = Date.now();
-  const tbody = $("table tbody");
-  tbody.innerHTML = "";
 
-  try {
-    // Cache
-    const cached = localStorage.getItem(cacheKey);
-    if (cached) {
-      const parsed = JSON.parse(cached);
-      if (now - parsed.timestamp <= CACHE_MS_RESULTS) {
-        renderResults(parsed.data, tbody);
-        return;
-      }
-    }
-
-    // Red con fallback (Raw -> CDN) + backoff
-    const data = await fetchJSONWithFallback(fecha, race);
-    localStorage.setItem(cacheKey, JSON.stringify({ data, timestamp: now }));
-    renderResults(data, tbody);
-    setLastUpdatedUI();
-    highlightSelectedLI(race);
-
-  } catch (error) {
-    if (error.code === 404) {
-      // Marcar esa carrera como no disponible (opcional: ocultarla)
-      disableRaceLI(race);
-      alert(`No hay datos para ${prettyRaceName(race)} en ${fecha}.`);
+  // Cache hit
+  const cached = localStorage.getItem(cacheKey);
+  if (cached) {
+    const parsed = JSON.parse(cached);
+    if (now - parsed.timestamp <= CACHE_MS_RESULTS) {
+      renderResults(parsed.data, tbody);
+      highlightSelectedLI(race);
       return;
     }
-    console.error("Error loading results:", error);
-    alert("No se pudieron cargar los resultados. Probá nuevamente.");
   }
+
+  // Evitar dobles llamadas para el mismo key
+  if (inflight.has(cacheKey)) {
+    await inflight.get(cacheKey);
+    const again = localStorage.getItem(cacheKey);
+    if (again) {
+      const parsed = JSON.parse(again);
+      renderResults(parsed.data, tbody);
+      highlightSelectedLI(race);
+    }
+    return;
+  }
+
+  // Request única con fallback/timeout
+  const p = (async () => {
+    try {
+      const data = await fetchJSONWithFallback(fecha, race);
+      localStorage.setItem(cacheKey, JSON.stringify({ data, timestamp: now }));
+      renderResults(data, tbody);
+      highlightSelectedLI(race);
+    } catch (err) {
+      if (err?.code === 404) {
+        disableRaceLI(race);
+        showAlert(`No hay datos para ${prettyRaceName(race)} en ${fecha}.`);
+      } else {
+        console.error('Error loading results:', err);
+        // Si hay cache viejo, mostrarlo en emergencia
+        if (cached) {
+          const parsed = JSON.parse(cached);
+          renderResults(parsed.data, tbody);
+          showAlert('Mostrando datos en caché por problemas de red.');
+        } else {
+          showAlert('No se pudieron cargar los resultados. Probá nuevamente.');
+        }
+      }
+    } finally {
+      inflight.delete(cacheKey);
+    }
+  })();
+
+  inflight.set(cacheKey, p);
+  await p;
 }
 
 function renderResults(data, tbody) {
-  (data?.results || []).forEach(result => {
-    const tr = document.createElement("tr");
+  tbody.innerHTML = "";
+  const rows = (data?.results || []);
+  for (const r of rows) {
+    const tr = document.createElement('tr');
     tr.innerHTML = `
-      <td>${result.position ?? ""}</td>
-      <td>${result.number ?? ""}</td>
-      <td>${result.name ?? ""}</td>
-      <td>${result.rec ?? ""}</td>
-      <td>${result.t_final || "N/A"}</td>
-      <td>${result.laps || "N/A"}</td>
-      <td class="${result.penalty ? 'penalty' : ''}">${result.penalty ?? "N/A"}</td>
+      <td>${r.position ?? ""}</td>
+      <td>${r.number ?? ""}</td>
+      <td>${r.name ?? ""}</td>
+      <td>${r.rec ?? ""}</td>
+      <td>${r.t_final || "N/A"}</td>
+      <td>${r.laps || "N/A"}</td>
+      <td class="${r.penalty ? 'penalty' : ''}">${r.penalty ?? "N/A"}</td>
     `;
     tbody.appendChild(tr);
-  });
-}
-
-function setLastUpdatedUI() {
-  const el = $("#last-updated");
-  if (!el) return;
-  el.hidden = false;
-  el.textContent = `Actualizado: ${new Date().toLocaleTimeString()}`;
+  }
 }
 
 function highlightSelectedLI(race) {
@@ -151,26 +177,21 @@ function highlightSelectedLI(race) {
 function disableRaceLI(race) {
   const pretty = prettyRaceName(race);
   const li = $$("#race-list li").find(li => li.textContent.trim() === pretty);
-  if (li) {
-    li.style.opacity = ".5";
-    li.style.pointerEvents = "none";
-    li.title = "No disponible";
-  }
+  if (li) { li.style.opacity = '.5'; li.style.pointerEvents = 'none'; li.title = 'No disponible'; }
 }
 
-// ========== Estado inicial ==========
+// ===== Estado inicial =====
 document.addEventListener("DOMContentLoaded", () => {
-  const fechaSelect = $("#fecha-select");
-  const savedFecha = localStorage.getItem("selectedFecha");
-  if (savedFecha) fechaSelect.value = savedFecha;
+  const sel = $("#fecha-select");
+  const saved = localStorage.getItem("selectedFecha");
+  if (sel && saved) sel.value = saved;
   loadRaces();
 });
 
-// ========== Botón "Actualizar Datos" ==========
-document.getElementById("update-btn").addEventListener("click", () => {
-  const fechaValue = $("#fecha-select").value || "";
-  // mantener la fecha, limpiar lo demás
+// ===== Botón actualizar =====
+document.getElementById("update-btn")?.addEventListener("click", () => {
+  const fecha = $("#fecha-select")?.value || "";
   localStorage.clear();
-  localStorage.setItem("selectedFecha", fechaValue);
+  if (fecha) localStorage.setItem("selectedFecha", fecha);
   location.reload();
 });
