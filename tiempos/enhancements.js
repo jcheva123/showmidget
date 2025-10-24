@@ -1,97 +1,103 @@
-// enhancements.js
-(() => {
-  const qs = (s, el = document) => el.querySelector(s);
-  const qsa = (s, el = document) => [...el.querySelectorAll(s)];
-  const on = (t, f, el = window, opts) => el.addEventListener(t, f, opts);
+// enhancements.js (robusto, sin override de fetch y sin auto-refresh)
 
-  const progress = qs('#progress');
-  const offlineBanner = qs('#offline-banner');
-  const toastEl = qs('#toast');
-  const skeleton = qs('#skeleton');
-  const fechaSelect = qs('#fecha-select');
-  const raceListUL = qs('#race-list ul');
-  const searchInput = qs('#results-search');
-  const lastUpdated = qs('#last-updated');
-  const selectedPill = qs('#selected-pill');
-  const shareBtn = qs('#share-btn');
+// Helpers
+const qs = (s, el = document) => el.querySelector(s);
+const qsa = (s, el = document) => [...el.querySelectorAll(s)];
+const on  = (t, f, el = window, o) => el.addEventListener(t, f, o);
 
-  let refreshTimer = null;
-  const REFRESH_MS = 20000;
-const PREFETCH_RACES = []; // desactivado para evitar 429
+// ===== Ensure required UI nodes exist (self-healing) =====
+function ensureEl(id, tag = 'div', attrs = {}) {
+  let el = document.getElementById(id);
+  if (!el) {
+    el = document.createElement(tag);
+    el.id = id;
+    Object.entries(attrs).forEach(([k, v]) => el.setAttribute(k, v));
+    document.body.appendChild(el);
+  }
+  return el;
+}
 
+const progress      = ensureEl('progress');
+const offlineBanner = ensureEl('offline-banner');
+const toastEl       = ensureEl('toast');
 
-  const showToast = (msg, ms = 2200) => {
-    toastEl.textContent = msg;
+Object.assign(progress.style, {
+  position: 'sticky', top: '0', left: '0', right: '0', height: '3px',
+  background: 'linear-gradient(90deg, #ff4444, #ffffff)', transform: 'scaleX(0)',
+  transformOrigin: 'left', transition: 'transform .25s ease', zIndex: '1000'
+});
+Object.assign(offlineBanner.style, {
+  position: 'sticky', top: '0', zIndex: '1000', background: '#9a2a2a', color: '#fff',
+  textAlign: 'center', padding: '6px 10px', fontSize: '.9rem',
+  borderBottom: '1px solid rgba(255,255,255,.2)'
+});
+toastEl.hidden = true;
+Object.assign(toastEl.style, {
+  position: 'fixed', left: '50%', bottom: '18px', transform: 'translateX(-50%)',
+  background: 'rgba(30,35,38,.95)', border: '1px solid rgba(255,255,255,.18)',
+  color: '#fff', padding: '10px 14px', borderRadius: '10px',
+  boxShadow: '0 6px 24px rgba(0,0,0,.35)', zIndex: '1001', maxWidth: '90vw'
+});
+
+function showToast(msg, ms = 2200) {
+  try {
+    toastEl.textContent = String(msg);
     toastEl.hidden = false;
     clearTimeout(showToast._t);
     showToast._t = setTimeout(() => (toastEl.hidden = true), ms);
-  };
-
-  // Reemplazar alert por toast para UX móvil
-  const _alert = window.alert.bind(window);
-  window.alert = (msg) => showToast(String(msg));
-
-  // Indicadores de conexión
-  const updateOnlineUI = () => (offlineBanner.hidden = navigator.onLine);
-  updateOnlineUI();
-  on('online', updateOnlineUI);
-  on('offline', updateOnlineUI);
-
-  // Envolver fetch para barra de progreso en llamadas a /resultados/
-  const origFetch = window.fetch.bind(window);
-  let inflight = 0;
-  window.fetch = async (...args) => {
-    const url = typeof args[0] === 'string' ? args[0] : (args[0] && args[0].url) || '';
-    const isResultados = url.includes('/resultados/');
-    if (isResultados) {
-      if (++inflight === 1) progress.classList.add('active');
-      skeleton && (skeleton.hidden = false);
-    }
-    try {
-      const res = await origFetch(...args);
-      return res;
-    } finally {
-      if (isResultados) {
-        if (--inflight === 0) progress.classList.remove('active');
-        skeleton && (skeleton.hidden = true);
-      }
-    }
-  };
-
-  // Hookear loadResults para: deep-link, pill, last-updated, auto-refresh
-  if (typeof window.loadResults === 'function') {
-    const origLoadResults = window.loadResults;
-    window.loadResults = async (fecha, race) => {
-      // Guardar "contexto actual" para otras features
-      window.__current = { fecha, race };
-      setSelectedPill(fecha, race);
-      setQueryParams(fecha, race);
-      clearInterval(refreshTimer);
-      try {
-        await origLoadResults(fecha, race);
-        setLastUpdated();
-        startAutoRefresh();
-      } catch (e) {
-        showToast('No se pudieron cargar los resultados.');
-        throw e;
-      }
-    };
+  } catch {
+    // fallback duro si algo raro pasa
+    alert(String(msg));
   }
+}
 
-  function setSelectedPill(fecha, race) {
-    const pretty = prettyRaceName(race);
-    selectedPill.hidden = false;
-    selectedPill.textContent = `${fecha} · ${pretty}`;
-    // resaltar <li> activo
-    qsa('#race-list li').forEach(li => li.classList.remove('active'));
-    const li = qsa('#race-list li').find(li => li.textContent.trim() === pretty);
-    if (li) li.classList.add('active');
-  }
+// Online/Offline indicator
+const updateOnlineUI = () => (offlineBanner.hidden = navigator.onLine);
+updateOnlineUI();
+on('online', updateOnlineUI);
+on('offline', updateOnlineUI);
 
-  function setLastUpdated() {
-    lastUpdated.hidden = false;
-    lastUpdated.textContent = `Actualizado: ${new Date().toLocaleTimeString()}`;
-  }
+// ===== Progress helpers (sin tocar fetch global) =====
+let _busy = 0;
+function beginBusy() {
+  if (++_busy === 1) progress.style.transform = 'scaleX(1)';
+}
+function endBusy() {
+  if (_busy > 0 && --_busy === 0) progress.style.transform = 'scaleX(0)';
+}
+
+// ===== Dedupe “Carreras Disponibles” y UX =====
+function dedupeRaceList() {
+  const ul = qs('#race-list ul'); if (!ul) return;
+  const seen = new Set();
+  [...ul.children].forEach(li => {
+    const key = li.textContent.trim().toLowerCase();
+    if (seen.has(key)) li.remove();
+    else seen.add(key);
+  });
+}
+
+document.getElementById('fecha-select')?.addEventListener('change', () => {
+  setTimeout(dedupeRaceList, 0);
+});
+
+// Resaltar <li> al click y hacer scroll suave a resultados
+on('click', (e) => {
+  const li = e.target.closest('#race-list li');
+  if (!li) return;
+  qsa('#race-list li').forEach(el => el.classList.remove('active'));
+  li.classList.add('active');
+  qs('#results')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}, document);
+
+// ===== Wrap de loadResults para progreso + “pill” + timestamp =====
+(function wrapLoadResults() {
+  if (typeof window.loadResults !== 'function') return;
+
+  const selectedPill = ensureEl('selected-pill', 'span');
+  const lastUpdated  = ensureEl('last-updated', 'span');
+  selectedPill.hidden = true;
+  lastUpdated.hidden  = true;
 
   function prettyRaceName(race) {
     return race
@@ -102,172 +108,22 @@ const PREFETCH_RACES = []; // desactivado para evitar 429
       .replace('final', 'Final');
   }
 
-  function parseRaceKey(pretty) {
-    const t = pretty.toLowerCase();
-    if (t.startsWith('serie ')) return 'serie' + t.split(' ')[1];
-    if (t.startsWith('repechaje ')) return 'repechaje' + t.split(' ')[1];
-    if (t.startsWith('semifinal ')) return 'semifinal' + t.split(' ')[1];
-    if (t === 'prefinal') return 'prefinal';
-    if (t === 'final') return 'final';
-    return null;
-  }
+  const orig = window.loadResults;
+  window.loadResults = async (fecha, race) => {
+    // UI pre
+    selectedPill.hidden = false;
+    selectedPill.textContent = `${fecha} · ${prettyRaceName(race)}`;
+    beginBusy();
 
-  function setQueryParams(fecha, race) {
-    const url = new URL(location.href);
-    url.searchParams.set('fecha', fecha);
-    url.searchParams.set('race', race);
-    history.replaceState({}, '', url);
-  }
-
-  // Deep-link al entrar con ?fecha=&race=
-  on('DOMContentLoaded', async () => {
-    const url = new URL(location.href);
-    const qFecha = url.searchParams.get('fecha');
-    const qRace = url.searchParams.get('race');
-
-    if (qFecha) {
-      fechaSelect.value = qFecha;
-      if (typeof window.loadRaces === 'function') {
-        await window.loadRaces();
-      }
-      if (qRace) {
-        // Esperar a que existan los LI y simular click
-        const waitLI = () =>
-          new Promise((r) => {
-            const id = setInterval(() => {
-              const li = qsa('#race-list li').find(li => parseRaceKey(li.textContent.trim()) === qRace);
-              if (li) { clearInterval(id); r(li); }
-            }, 120);
-          });
-        const li = await waitLI();
-        li.click();
-        // scroll hacia resultados
-        qs('#results')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    }
-  });
-
-  // Al click en la lista, además del onClick original: resalto y compartible
-  on('click', (e) => {
-    const li = e.target.closest('#race-list li');
-    if (!li) return;
-    qsa('#race-list li').forEach(el => el.classList.remove('active'));
-    li.classList.add('active');
-    // Mejor UX: bajar directo a resultados
-    qs('#results')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }, document);
-
-  // Búsqueda rápida en tabla
-  on('input', () => {
-    const q = searchInput.value.trim().toLowerCase();
-    const rows = qsa('table tbody tr');
-    rows.forEach(tr => {
-      const num = tr.children[1]?.textContent?.toLowerCase() || '';
-      const name = tr.children[2]?.textContent?.toLowerCase() || '';
-      tr.hidden = !(num.includes(q) || name.includes(q));
-    });
-  }, searchInput, { passive: true });
-
-  // Compartir
-  on('click', async () => {
-    const ctx = window.__current;
-    if (!ctx) { showToast('Elegí una carrera para compartir.'); return; }
-    const url = new URL(location.href);
     try {
-      if (navigator.share) {
-        await navigator.share({ title: document.title, url: url.toString() });
-      } else {
-        await navigator.clipboard.writeText(url.toString());
-        showToast('Enlace copiado.');
-      }
-    } catch { /* cancelado */ }
-  }, shareBtn);
-
-  // Auto-refresh de la carrera seleccionada
-  function startAutoRefresh() {
-    clearInterval(refreshTimer);
-    refreshTimer = setInterval(async () => {
-      const ctx = window.__current;
-      if (!ctx || !navigator.onLine) return;
-      try {
-        await window.loadResults(ctx.fecha, ctx.race);
-      } catch { /* ya se muestra toast en error */ }
-    }, REFRESH_MS);
-  }
-
-  // Prefetch silencioso de carreras “probables”
-  async function prefetchLikely(fecha) {
-    const base = `https://raw.githubusercontent.com/jcheva123/tiemposweb-2025/main/resultados/${fecha}/`;
-    const now = Date.now();
-    const cacheDuration = 60000; // mismo que tu script
-
-    for (const race of PREFETCH_RACES) {
-      const key = `${fecha}_${race}`;
-      const cached = localStorage.getItem(key);
-      if (cached) {
-        const parsed = JSON.parse(cached);
-        if (now - parsed.timestamp <= cacheDuration) continue;
-      }
-      try {
-        const res = await fetch(base + race + '.json', { cache: 'no-store' });
-        if (!res.ok) continue;
-        const data = await res.json();
-        localStorage.setItem(key, JSON.stringify({ data, timestamp: now }));
-      } catch { /* ignorar */ }
+      await orig(fecha, race);
+      lastUpdated.hidden = false;
+      lastUpdated.textContent = `Actualizado: ${new Date().toLocaleTimeString()}`;
+    } catch (e) {
+      showToast('No se pudieron cargar los resultados.');
+      throw e;
+    } finally {
+      endBusy();
     }
-  }
-
-  // --- Anti-duplicados en la lista de carreras + bloqueo de llamadas simultáneas ---
-(() => {
-  const qs = (s, el = document) => el.querySelector(s);
-
-  // Dedup por texto visible (SERIE 1, SERIE 2, etc.)
-  function dedupeRaceList() {
-    const ul = qs('#race-list ul');
-    if (!ul) return;
-    const seen = new Set();
-    [...ul.children].forEach(li => {
-      const key = li.textContent.trim().toLowerCase();
-      if (seen.has(key)) li.remove();
-      else seen.add(key);
-    });
-  }
-
-  // Envuelve loadRaces para evitar doble ejecución en paralelo (throttle)
-  if (typeof window.loadRaces === 'function') {
-    const original = window.loadRaces;
-    let inFlight = false;
-    window.loadRaces = async (...args) => {
-      if (inFlight) return;            // evita segunda llamada mientras corre
-      inFlight = true;
-      try {
-        const res = await original(...args);
-        dedupeRaceList();              // limpia por si hubo doble disparo externo
-        return res;
-      } finally {
-        inFlight = false;
-      }
-    };
-  }
-
-  // También dedupe inmediatamente tras un cambio de fecha, por si otro script llama aparte
-  document.getElementById('fecha-select')?.addEventListener('change', () => {
-    // pequeño delay para dar tiempo a que se construya la lista
-    setTimeout(dedupeRaceList, 0);
-  });
-})();
-
-  // Cuando cambia de Fecha (o se restaura), prefetchear
-  on('change', () => {
-    const fecha = fechaSelect.value;
-  //  if (fecha) prefetchLikely(fecha);
-  }, fechaSelect);
-
-  // (Opcional) Pull-to-refresh suave en móviles
-  // Se mantiene simple para no interferir con scroll nativo
-
-  // (Opcional PWA) registrar service worker si existe
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./service-worker.js').catch(() => {});
-  }
+  };
 })();
