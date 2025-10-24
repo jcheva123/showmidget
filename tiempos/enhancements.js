@@ -17,7 +17,8 @@
 
   let refreshTimer = null;
   const REFRESH_MS = 20000;
-  const PREFETCH_RACES = ['final', 'prefinal', 'semifinal4', 'semifinal3', 'semifinal2', 'semifinal1'];
+const PREFETCH_RACES = []; // desactivado para evitar 429
+
 
   const showToast = (msg, ms = 2200) => {
     toastEl.textContent = msg;
@@ -259,7 +260,7 @@
   // Cuando cambia de Fecha (o se restaura), prefetchear
   on('change', () => {
     const fecha = fechaSelect.value;
-    if (fecha) prefetchLikely(fecha);
+  //  if (fecha) prefetchLikely(fecha);
   }, fechaSelect);
 
   // (Opcional) Pull-to-refresh suave en móviles
@@ -270,4 +271,3 @@
     navigator.serviceWorker.register('./service-worker.js').catch(() => {});
   }
 })();
-
