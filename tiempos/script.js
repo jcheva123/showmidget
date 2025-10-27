@@ -1,4 +1,4 @@
-/* script.js (idempotente + actualizado) */
+/* script.js (sin datos viejos + “Actualizado: fecha, hora, Fecha · Carrera”) */
 (() => {
   if (window.__APP_LOADED__) return;
   window.__APP_LOADED__ = true;
@@ -49,6 +49,29 @@
             .replace(/^repechaje(\d+)$/,'Repechaje $1')
             .replace(/^semifinal(\d+)$/,'Semifinal $1')
             .replace('prefinal','Prefinal').replace('final','Final');
+  }
+
+  // ===== Estado de carga (limpia tabla y muestra skeleton inmediatamente) =====
+  let isLoading = false;
+  function beginLoading(fecha, race) {
+    isLoading = true;
+    const tbody = $("table tbody");
+    const skl = $("#skeleton");
+    if (tbody) tbody.innerHTML = "";          // ← sin datos viejos
+    if (skl) skl.hidden = false;              // ← muestra skeleton
+    const last = $("#last-updated");
+    if (last) {
+      last.hidden = false;
+      last.textContent = `Cargando… • ${fecha} · ${prettyRaceName(race)}`;
+    }
+    // (opcional) bloquear clicks mientras carga para evitar spam:
+    // $("#race-list")?.classList.add("busy");
+  }
+  function endLoading() {
+    isLoading = false;
+    const skl = $("#skeleton");
+    if (skl) skl.hidden = true;
+    // $("#race-list")?.classList.remove("busy");
   }
 
   // ===== Fechas desde manifiesto =====
@@ -104,19 +127,30 @@
   // ===== Resultados (1 request por toque) con cache y “Actualizado:” =====
   const inflight = new Map();
 
+  function setUpdated(fecha, race, data) {
+    const el = $("#last-updated");
+    if (!el) return;
+    const stamp = data?.generated_at || null;
+    let when;
+    if (stamp) {
+      const dt = new Date(stamp);
+      when = `${dt.toLocaleDateString()} ${dt.toLocaleTimeString()}`;
+    } else {
+      const dt = new Date();
+      when = `${dt.toLocaleDateString()} ${dt.toLocaleTimeString()}`;
+    }
+    el.hidden = false;
+    el.textContent = `Actualizado: ${when} • ${fecha} · ${prettyRaceName(race)}`;
+  }
+
   async function loadResults(fecha, race) {
     const tbody = $("table tbody");
     if (!tbody) return;
+
+    beginLoading(fecha, race);
+
     const cacheKey = `${fecha}_${race}`;
     const now = Date.now();
-
-    const setUpdated = (data) => {
-      const el = $("#last-updated");
-      if (!el) return;
-      const stamp = data?.generated_at || null;
-      el.hidden = false;
-      el.textContent = `Actualizado: ${ stamp ? new Date(stamp).toLocaleString() : new Date().toLocaleTimeString() }`;
-    };
 
     // cache
     const cached = localStorage.getItem(cacheKey);
@@ -124,22 +158,24 @@
       const parsed = JSON.parse(cached);
       if (now - parsed.timestamp <= CACHE_MS_RESULTS) {
         renderResults(parsed.data, tbody);
-        setUpdated(parsed.data);
+        setUpdated(fecha, race, parsed.data);
+        endLoading();
         highlightSelectedLI(race);
         return;
       }
     }
 
-    // evitar dobles llamadas
+    // evitar dobles llamadas para el mismo recurso
     if (inflight.has(cacheKey)) {
       await inflight.get(cacheKey);
       const again = localStorage.getItem(cacheKey);
       if (again) {
         const parsed = JSON.parse(again);
         renderResults(parsed.data, tbody);
-        setUpdated(parsed.data);
-        highlightSelectedLI(race);
+        setUpdated(fecha, race, parsed.data);
       }
+      endLoading();
+      highlightSelectedLI(race);
       return;
     }
 
@@ -148,8 +184,7 @@
         const data = await fetchJSONFallback(PATH_JSON(fecha, race));
         localStorage.setItem(cacheKey, JSON.stringify({ data, timestamp: now }));
         renderResults(data, tbody);
-        setUpdated(data);
-        highlightSelectedLI(race);
+        setUpdated(fecha, race, data);
       } catch (err) {
         if (err?.code === 404) {
           disableRaceLI(race);
@@ -159,7 +194,7 @@
           if (cached) {
             const parsed = JSON.parse(cached);
             renderResults(parsed.data, tbody);
-            setUpdated(parsed.data);
+            setUpdated(fecha, race, parsed.data);
             window.showToast?.('Mostrando datos en caché por problemas de red.');
           } else {
             window.showToast?.('No se pudieron cargar los resultados.');
@@ -167,6 +202,8 @@
         }
       } finally {
         inflight.delete(cacheKey);
+        endLoading();
+        highlightSelectedLI(race);
       }
     })();
 
