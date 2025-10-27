@@ -108,7 +108,7 @@
         const fres = Array.isArray(fresh?.fechas) ? fresh.fechas : [];
         if (fres.length !== fechas.length || JSON.stringify(fres) !== JSON.stringify(fechas)) {
           fechas = fres;
-          window.showToast?.("Fechas actualizadas desde GitHub");
+          window.showToast?.("Fecha actualizada");
         }
       } catch {}
 
@@ -279,3 +279,4 @@
   window.loadRaces   = loadRaces;
   window.loadResults = loadResults;
 })();
+
