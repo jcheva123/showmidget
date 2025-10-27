@@ -1,92 +1,149 @@
-// script.js — robusto (timeout, múltiples CDNs, cache, no probes)
+// script.js — Fechas/Carreras dinámicas con manifiestos + cache + fallbacks
 
 // ===== Config =====
-const RACE_TYPES = [
-  "serie1","serie2","serie3","serie4","serie5","serie6","serie7","serie8","serie9","serie10","serie11","serie12","serie13",
-  "repechaje1","repechaje2","repechaje3","repechaje4","repechaje5","repechaje6",
-  "semifinal1","semifinal2","semifinal3","semifinal4",
-  "prefinal","final"
-];
+const RACE_LABELS = {
+  serie:       n => `Serie ${n}`,
+  repechaje:   n => `Repechaje ${n}`,
+  semifinal:   n => `Semifinal ${n}`,
+  prefinal:    () => `Prefinal`,
+  final:       () => `Final`,
+};
 
-// Las 3 rutas en cascada
+// Bases de descarga (Raw -> jsDelivr -> Statically)
 const BASES = [
-  (fecha, race) => `https://raw.githubusercontent.com/jcheva123/tiemposweb-2025/main/resultados/${encodeURIComponent(fecha)}/${race}.json`,
-  (fecha, race) => `https://cdn.jsdelivr.net/gh/jcheva123/tiemposweb-2025@main/resultados/${encodeURIComponent(fecha)}/${race}.json`,
-  (fecha, race) => `https://cdn.statically.io/gh/jcheva123/tiemposweb-2025/main/resultados/${encodeURIComponent(fecha)}/${race}.json`,
+  (p) => `https://raw.githubusercontent.com/jcheva123/tiemposweb-2025/main/${p}`,
+  (p) => `https://cdn.jsdelivr.net/gh/jcheva123/tiemposweb-2025@main/${p}`,
+  (p) => `https://cdn.statically.io/gh/jcheva123/tiemposweb-2025/main/${p}`,
 ];
 
-const CACHE_MS_RESULTS = 60000; // 60s
+const PATH_FECHAS = "resultados/fechas.json";
+const PATH_INDEX  = (fecha) => `resultados/${encodeURIComponent(fecha)}/index.json`;
+const PATH_JSON   = (fecha, race) => `resultados/${encodeURIComponent(fecha)}/${race}.json`;
+
+const CACHE_MS_RESULTS = 60000; // 60s cache resultados
 
 // ===== Utils =====
 const $  = (s, el=document) => el.querySelector(s);
 const $$ = (s, el=document) => [...el.querySelectorAll(s)];
-
-function prettyRaceName(race) {
-  return race
-    .replace(/^serie(\d+)$/, "Serie $1")
-    .replace(/^repechaje(\d+)$/, "Repechaje $1")
-    .replace(/^semifinal(\d+)$/, "Semifinal $1")
-    .replace("prefinal", "Prefinal")
-    .replace("final", "Final");
-}
-
-function showAlert(msg){ try{ (window.showToast||alert)(msg); }catch{ alert(msg); } }
-
-function sleep(ms){ return new Promise(r=>setTimeout(r,ms)); }
+const showToast = (msg) => { try { (window.showToast||alert)(msg); } catch { alert(msg); } };
 
 function fetchWithTimeout(url, opts={}, ms=8000) {
   const ctrl = new AbortController();
-  const t = setTimeout(()=>ctrl.abort(), ms);
-  return fetch(url, {...opts, signal: ctrl.signal, cache:'no-store'}).finally(()=>clearTimeout(t));
+  const t = setTimeout(() => ctrl.abort(), ms);
+  return fetch(url, { ...opts, signal: ctrl.signal, cache: 'no-store' })
+    .finally(() => clearTimeout(t));
 }
 
-// Descarga con fallback RAW->CDNs + backoff (429/502/red)
-async function fetchJSONWithFallback(fecha, race, retries = 2) {
+async function fetchJSONFallback(path, retries=2) {
   let delay = 600;
   for (let attempt = 0; attempt <= retries; attempt++) {
-    for (const make of BASES) {
-      const url = make(fecha, race);
+    for (const mk of BASES) {
+      const url = mk(path);
       try {
         const res = await fetchWithTimeout(url, {}, 9000);
         if (res.ok) return await res.json();
-        if (res.status === 404) { const e = new Error('not-found'); e.code=404; throw e; }
-        // 429/5xx caen al catch
+        if (res.status === 404) { const e = new Error('not-found'); e.code = 404; throw e; }
       } catch (err) {
-        if (err?.code === 404) throw err; // no reintentar si no existe
-        // intenta siguiente base o backoff
+        if (err?.code === 404) throw err;
       }
     }
-    // Backoff con jitter
-    await sleep(delay + Math.random()*300);
+    await new Promise(r => setTimeout(r, delay + Math.random()*300));
     delay *= 2;
   }
   throw new Error('fetch-failed');
 }
 
-// ===== Poblado de lista SIN probes =====
-async function loadRaces() {
-  const fecha = $("#fecha-select")?.value || "";
-  const ul = $("#race-list ul");
-  const tbody = $("table tbody");
-  if (!ul || !tbody) return;
+function prettyRaceName(race) {
+  // race: "serie1", "repechaje2", "semifinal3", "prefinal", "final"
+  if (/^serie(\d+)$/i.test(race))      return RACE_LABELS.serie(RegExp.$1);
+  if (/^repechaje(\d+)$/i.test(race))  return RACE_LABELS.repechaje(RegExp.$1);
+  if (/^semifinal(\d+)$/i.test(race))  return RACE_LABELS.semifinal(RegExp.$1);
+  if (race === "prefinal")             return RACE_LABELS.prefinal();
+  if (race === "final")                return RACE_LABELS.final();
+  return race;
+}
 
-  ul.innerHTML = "";
-  tbody.innerHTML = "";
+// ===== Cargar Fechas desde manifiesto =====
+async function loadFechas() {
+  const sel = $("#fecha-select");
+  if (!sel) return;
 
-  if (!fecha) return;
+  // Limpiar opciones y dejar placeholder
+  sel.innerHTML = `<option value="">-- Elegir Fecha --</option>`;
 
-  localStorage.setItem("selectedFecha", fecha);
+  try {
+    const data = await fetchJSONFallback(PATH_FECHAS);  // { fechas: ["Fecha 1","Fecha 3",...] }
+    const fechas = Array.isArray(data?.fechas) ? data.fechas : [];
 
-  for (const race of RACE_TYPES) {
-    const li = document.createElement("li");
-    li.textContent = prettyRaceName(race);
-    li.onclick = () => loadResults(fecha, race);
-    ul.appendChild(li);
+    // Ordenar por número si están en formato "Fecha N"
+    fechas.sort((a,b) => {
+      const na = parseInt((a.match(/\d+/)||[])[0]||0,10);
+      const nb = parseInt((b.match(/\d+/)||[])[0]||0,10);
+      return na - nb;
+    });
+
+    // Repoblar opciones
+    for (const f of fechas) {
+      const opt = document.createElement('option');
+      opt.value = f;
+      opt.textContent = f;
+      sel.appendChild(opt);
+    }
+
+    // Restaurar seleccionada si existe en la lista, si no elegir la última (más reciente)
+    const saved = localStorage.getItem("selectedFecha");
+    if (saved && fechas.includes(saved)) sel.value = saved;
+    else if (fechas.length) sel.value = fechas[fechas.length - 1];
+
+    // Cargar carreras para la seleccion actual (si hay)
+    if (sel.value) await loadRaces();
+
+  } catch (err) {
+    // Sin manifiesto → no mostramos fechas (evitamos falsos positivos)
+    console.warn("No se pudo leer fechas.json:", err);
+    showToast("Aún no hay Fechas publicadas.");
   }
 }
 
-// ===== Cargar resultados al toque (con cache y guardas) =====
-const inflight = new Map(); // evita dobles llamadas al mismo key
+// ===== Cargar Carreras disponibles (index.json de la fecha) =====
+async function loadRaces() {
+  const fecha = $("#fecha-select")?.value || "";
+  const ul    = $("#race-list ul");
+  const tbody = $("table tbody");
+  if (!fecha || !ul || !tbody) return;
+
+  ul.innerHTML = "";
+  tbody.innerHTML = "";
+  localStorage.setItem("selectedFecha", fecha);
+
+  try {
+    const data = await fetchJSONFallback(PATH_INDEX(fecha)); // { races:["serie1","serie2",...]}
+    const races = Array.isArray(data?.races) ? data.races : [];
+
+    if (!races.length) {
+      showToast(`No hay carreras publicadas aún en ${fecha}.`);
+      return;
+    }
+
+    for (const race of races) {
+      const li = document.createElement("li");
+      li.textContent = prettyRaceName(race);
+      li.onclick = () => loadResults(fecha, race);
+      ul.appendChild(li);
+    }
+
+  } catch (err) {
+    if (err?.code === 404) {
+      showToast(`No hay índice de carreras para ${fecha}.`);
+    } else {
+      console.error("Error al cargar index.json:", err);
+      showToast("Problema de red al cargar carreras.");
+    }
+  }
+}
+
+// ===== Resultados (1 request por toque) con cache =====
+const inflight = new Map();
 
 async function loadResults(fecha, race) {
   const tbody = $("table tbody");
@@ -95,7 +152,7 @@ async function loadResults(fecha, race) {
   const cacheKey = `${fecha}_${race}`;
   const now = Date.now();
 
-  // Cache hit
+  // Cache
   const cached = localStorage.getItem(cacheKey);
   if (cached) {
     const parsed = JSON.parse(cached);
@@ -106,7 +163,7 @@ async function loadResults(fecha, race) {
     }
   }
 
-  // Evitar dobles llamadas para el mismo key
+  // Evitar dobles llamadas al mismo recurso
   if (inflight.has(cacheKey)) {
     await inflight.get(cacheKey);
     const again = localStorage.getItem(cacheKey);
@@ -118,26 +175,24 @@ async function loadResults(fecha, race) {
     return;
   }
 
-  // Request única con fallback/timeout
   const p = (async () => {
     try {
-      const data = await fetchJSONWithFallback(fecha, race);
+      const data = await fetchJSONFallback(PATH_JSON(fecha, race));
       localStorage.setItem(cacheKey, JSON.stringify({ data, timestamp: now }));
       renderResults(data, tbody);
       highlightSelectedLI(race);
     } catch (err) {
       if (err?.code === 404) {
         disableRaceLI(race);
-        showAlert(`No hay datos para ${prettyRaceName(race)} en ${fecha}.`);
+        showToast(`Aún no está publicado ${prettyRaceName(race)} en ${fecha}.`);
       } else {
         console.error('Error loading results:', err);
-        // Si hay cache viejo, mostrarlo en emergencia
         if (cached) {
           const parsed = JSON.parse(cached);
           renderResults(parsed.data, tbody);
-          showAlert('Mostrando datos en caché por problemas de red.');
+          showToast('Mostrando datos en caché por problemas de red.');
         } else {
-          showAlert('No se pudieron cargar los resultados. Probá nuevamente.');
+          showToast('No se pudieron cargar los resultados.');
         }
       }
     } finally {
@@ -182,10 +237,8 @@ function disableRaceLI(race) {
 
 // ===== Estado inicial =====
 document.addEventListener("DOMContentLoaded", () => {
-  const sel = $("#fecha-select");
-  const saved = localStorage.getItem("selectedFecha");
-  if (sel && saved) sel.value = saved;
-  loadRaces();
+  // Borro opciones fijas del HTML y cargo desde manifiesto
+  loadFechas();
 });
 
 // ===== Botón actualizar =====
@@ -195,3 +248,7 @@ document.getElementById("update-btn")?.addEventListener("click", () => {
   if (fecha) localStorage.setItem("selectedFecha", fecha);
   location.reload();
 });
+
+// Expone funciones si algún otro script las invoca
+window.loadRaces   = loadRaces;
+window.loadResults = loadResults;
