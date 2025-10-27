@@ -1,129 +1,91 @@
-// enhancements.js (robusto, sin override de fetch y sin auto-refresh)
+/* enhancements.js (safe, idempotente) */
+(() => {
+  if (window.__ENH_LOADED__) return;           // guard: no doble carga
+  window.__ENH_LOADED__ = true;
 
-// Helpers
-const qs = (s, el = document) => el.querySelector(s);
-const qsa = (s, el = document) => [...el.querySelectorAll(s)];
-const on  = (t, f, el = window, o) => el.addEventListener(t, f, o);
+  // Helpers locales (no contaminan global)
+  const qs  = (s, el = document) => el.querySelector(s);
+  const qsa = (s, el = document) => [...el.querySelectorAll(s)];
+  const on  = (t, f, el = window, o) => el.addEventListener(t, f, o);
 
-// ===== Ensure required UI nodes exist (self-healing) =====
-function ensureEl(id, tag = 'div', attrs = {}) {
-  let el = document.getElementById(id);
-  if (!el) {
-    el = document.createElement(tag);
-    el.id = id;
-    Object.entries(attrs).forEach(([k, v]) => el.setAttribute(k, v));
-    document.body.appendChild(el);
+  // Toast (expone UNA sola vez en window)
+  if (!window.showToast) {
+    const el = document.getElementById('toast') || (() => {
+      const d = document.createElement('div');
+      d.id = 'toast'; d.hidden = true;
+      Object.assign(d.style, {
+        position:'fixed', left:'50%', bottom:'18px', transform:'translateX(-50%)',
+        background:'rgba(30,35,38,.95)', border:'1px solid rgba(255,255,255,.18)',
+        color:'#fff', padding:'10px 14px', borderRadius:'10px', boxShadow:'0 6px 24px rgba(0,0,0,.35)',
+        zIndex:'1001', maxWidth:'90vw'
+      });
+      document.body.appendChild(d);
+      return d;
+    })();
+
+    window.showToast = (msg, ms = 2200) => {
+      try {
+        el.textContent = String(msg);
+        el.hidden = false;
+        clearTimeout(window.__TOAST_T__);
+        window.__TOAST_T__ = setTimeout(() => (el.hidden = true), ms);
+      } catch { alert(String(msg)); }
+    };
   }
-  return el;
-}
 
-const progress      = ensureEl('progress');
-const offlineBanner = ensureEl('offline-banner');
-const toastEl       = ensureEl('toast');
-
-Object.assign(progress.style, {
-  position: 'sticky', top: '0', left: '0', right: '0', height: '3px',
-  background: 'linear-gradient(90deg, #ff4444, #ffffff)', transform: 'scaleX(0)',
-  transformOrigin: 'left', transition: 'transform .25s ease', zIndex: '1000'
-});
-Object.assign(offlineBanner.style, {
-  position: 'sticky', top: '0', zIndex: '1000', background: '#9a2a2a', color: '#fff',
-  textAlign: 'center', padding: '6px 10px', fontSize: '.9rem',
-  borderBottom: '1px solid rgba(255,255,255,.2)'
-});
-toastEl.hidden = true;
-Object.assign(toastEl.style, {
-  position: 'fixed', left: '50%', bottom: '18px', transform: 'translateX(-50%)',
-  background: 'rgba(30,35,38,.95)', border: '1px solid rgba(255,255,255,.18)',
-  color: '#fff', padding: '10px 14px', borderRadius: '10px',
-  boxShadow: '0 6px 24px rgba(0,0,0,.35)', zIndex: '1001', maxWidth: '90vw'
-});
-
-function showToast(msg, ms = 2200) {
-  try {
-    toastEl.textContent = String(msg);
-    toastEl.hidden = false;
-    clearTimeout(showToast._t);
-    showToast._t = setTimeout(() => (toastEl.hidden = true), ms);
-  } catch {
-    // fallback duro si algo raro pasa
-    alert(String(msg));
+  // Dedupe lista de carreras (defensivo)
+  function dedupeRaceList() {
+    const ul = qs('#race-list ul'); if (!ul) return;
+    const seen = new Set();
+    [...ul.children].forEach(li => {
+      const k = li.textContent.trim().toLowerCase();
+      if (seen.has(k)) li.remove(); else seen.add(k);
+    });
   }
-}
-
-// Online/Offline indicator
-const updateOnlineUI = () => (offlineBanner.hidden = navigator.onLine);
-updateOnlineUI();
-on('online', updateOnlineUI);
-on('offline', updateOnlineUI);
-
-// ===== Progress helpers (sin tocar fetch global) =====
-let _busy = 0;
-function beginBusy() {
-  if (++_busy === 1) progress.style.transform = 'scaleX(1)';
-}
-function endBusy() {
-  if (_busy > 0 && --_busy === 0) progress.style.transform = 'scaleX(0)';
-}
-
-// ===== Dedupe “Carreras Disponibles” y UX =====
-function dedupeRaceList() {
-  const ul = qs('#race-list ul'); if (!ul) return;
-  const seen = new Set();
-  [...ul.children].forEach(li => {
-    const key = li.textContent.trim().toLowerCase();
-    if (seen.has(key)) li.remove();
-    else seen.add(key);
+  document.getElementById('fecha-select')?.addEventListener('change', () => {
+    setTimeout(dedupeRaceList, 0);
   });
-}
 
-document.getElementById('fecha-select')?.addEventListener('change', () => {
-  setTimeout(dedupeRaceList, 0);
-});
+  // UX: resaltar <li> y hacer scroll a resultados
+  on('click', (e) => {
+    const li = e.target.closest('#race-list li');
+    if (!li) return;
+    qsa('#race-list li').forEach(el => el.classList.remove('active'));
+    li.classList.add('active');
+    qs('#results')?.scrollIntoView({ behavior:'smooth', block:'start' });
+  }, document);
 
-// Resaltar <li> al click y hacer scroll suave a resultados
-on('click', (e) => {
-  const li = e.target.closest('#race-list li');
-  if (!li) return;
-  qsa('#race-list li').forEach(el => el.classList.remove('active'));
-  li.classList.add('active');
-  qs('#results')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-}, document);
+  // Enriquecer loadResults UNA sola vez (muestra “Actualizado:” si script.js lo setea)
+  if (typeof window.loadResults === 'function' && !window.__WRAP_LOADRES__) {
+    window.__WRAP_LOADRES__ = true;
+    const orig = window.loadResults;
+    const $pill = document.getElementById('selected-pill') || (() => {
+      const s = document.createElement('span'); s.id = 'selected-pill'; s.hidden = true;
+      document.querySelector('.meta-row')?.appendChild(s); return s;
+    })();
+    const $last = document.getElementById('last-updated') || (() => {
+      const s = document.createElement('span'); s.id = 'last-updated'; s.hidden = true;
+      document.querySelector('.meta-row')?.appendChild(s); return s;
+    })();
 
-// ===== Wrap de loadResults para progreso + “pill” + timestamp =====
-(function wrapLoadResults() {
-  if (typeof window.loadResults !== 'function') return;
-
-  const selectedPill = ensureEl('selected-pill', 'span');
-  const lastUpdated  = ensureEl('last-updated', 'span');
-  selectedPill.hidden = true;
-  lastUpdated.hidden  = true;
-
-  function prettyRaceName(race) {
-    return race
-      .replace(/^serie(\d+)$/, 'Serie $1')
-      .replace(/^repechaje(\d+)$/, 'Repechaje $1')
-      .replace(/^semifinal(\d+)$/, 'Semifinal $1')
-      .replace('prefinal', 'Prefinal')
-      .replace('final', 'Final');
-  }
-
-  const orig = window.loadResults;
-  window.loadResults = async (fecha, race) => {
-    // UI pre
-    selectedPill.hidden = false;
-    selectedPill.textContent = `${fecha} · ${prettyRaceName(race)}`;
-    beginBusy();
-
-    try {
-      await orig(fecha, race);
-      lastUpdated.hidden = false;
-      lastUpdated.textContent = `Actualizado: ${new Date().toLocaleTimeString()}`;
-    } catch (e) {
-      showToast('No se pudieron cargar los resultados.');
-      throw e;
-    } finally {
-      endBusy();
+    function prettyRaceName(r) {
+      return r.replace(/^serie(\d+)$/,'Serie $1')
+              .replace(/^repechaje(\d+)$/,'Repechaje $1')
+              .replace(/^semifinal(\d+)$/,'Semifinal $1')
+              .replace('prefinal','Prefinal').replace('final','Final');
     }
-  };
+
+    window.loadResults = async (fecha, race) => {
+      $pill.hidden = false;
+      $pill.textContent = `${fecha} · ${prettyRaceName(race)}`;
+      try {
+        await orig(fecha, race);
+        // script.js setea #last-updated; acá solo nos aseguramos de que se vea
+        $last.hidden = false;
+      } catch (e) {
+        window.showToast?.('No se pudieron cargar los resultados.');
+        throw e;
+      }
+    };
+  }
 })();
