@@ -12,6 +12,17 @@ body {
   color: #e0e0e0;
   overflow-x: hidden;
 }
+/* Footer con botón centrado */
+.footer-actions{
+  display: flex;
+  justify-content: center;   /* centra horizontal */
+  align-items: center;       /* alinea vertical si hay más altura */
+  padding: 16px 12px;
+  gap: 12px;
+}
+.footer-actions .button{
+  margin: 0 auto;            /* por si algún contenedor usa text-align distinto */
+}
 
 @keyframes gradientAnimation {
   0% { background-position: 0% 50%; }
