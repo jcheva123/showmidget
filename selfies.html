@@ -42,10 +42,7 @@
 </head>
 <body>
   <div class="wrap">
-    <div class="topbar">
-      <button class="back" onclick="location.href='index.html'">⬅️ Volver</button>
-      <button class="back" onclick="location.href='info.html'">ℹ️ Info</button>
-    </div>
+
 
     <div class="card">
       <h1>📸 Enviá tu Selfie</h1>
@@ -67,7 +64,10 @@
     <input type="hidden" name="imageData" id="imageDataInput"/>
   </form>
   <iframe name="invisibleFrame" style="display:none"></iframe>
-
+  <!-- Botón Volver abajo -->
+  <footer class="footer-actions">
+    <button class="button" type="button" onclick="location.href='../index.html'">⬅️ Volver</button>
+  </footer>
 <script>
   const fileInput = document.getElementById('fileInput');
   const preview   = document.getElementById('preview');
