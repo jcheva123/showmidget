@@ -1,94 +1,142 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
-  <title>Series – Orden de partida</title>
-  <meta name="theme-color" content="#0b0f1a"/>
-  <link rel="stylesheet" href="../styles.css"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SHOW MIDGET</title>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  <meta name="theme-color" content="#000000">
   <style>
-    /* Ajustes mínimos específicos de /series */
-    #grid-largada { display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:10px; }
-    .grid-col { background: rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.15); border-radius:12px; padding:10px; }
-    .grid-col h3 { margin:0 0 8px 0; font-family:'Oswald',sans-serif; font-size:1rem; color:#fff; text-transform:uppercase; letter-spacing:.5px }
-    .piloto-chip { display:flex; align-items:center; justify-content:space-between; gap:8px;
-      border:1px solid rgba(255,255,255,.2); border-radius:10px; padding:6px 8px; margin:6px 0; background:#2c2c2c }
-    .chip-nro { font-weight:700; background:#ff4444; color:#fff; border-radius:8px; padding:2px 8px; }
-    .playoff { outline:2px solid #ffdd00; }
-    /* skeleton de esta página: 3 filas */
-    #skeleton .row { height:26px }
-    @media (max-width:600px){ #grid-largada{grid-template-columns:1fr} }
+    :root{
+      --bg1:#7F0000;
+      --bg2:#000000;
+      --ink:#0b0f1a;
+      --gold:#FFC928;
+      --sand:#af9b6f;
+      --card: rgba(255,255,255,.06);
+      --border: rgba(255,255,255,.14);
+      --white: #ffffff;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:'Roboto',system-ui,-apple-system,Segoe UI,Ubuntu,Helvetica,Arial,sans-serif;
+      color:var(--white);
+      display:flex;
+      flex-direction:column;
+      min-height:100dvh;
+      background: linear-gradient(45deg, var(--bg1), var(--bg2), var(--bg1), var(--bg2));
+      background-size: 400% 400%;
+      animation: gradientAnimation 14s ease-in-out infinite;
+    }
+    @keyframes gradientAnimation{
+      0%{background-position:0% 50%}
+      50%{background-position:100% 50%}
+      100%{background-position:0% 50%}
+    }
+    header{
+      display:flex;align-items:center;justify-content:center;
+      padding:18px 16px 8px;
+      text-align:center;
+    }
+    h1{
+      margin:0;
+      font-family:'Oswald',sans-serif;
+      font-weight:700;
+      letter-spacing:.5px;
+      text-shadow: 4px 4px 4px rgba(0,0,0,.35);
+    }
+    .wrap{width:100%;max-width:840px;margin:0 auto;padding:8px 14px 24px;flex:1}
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:12px;
+      margin-top:8px;
+    }
+    @media (min-width:520px){ .grid{ gap:16px } }
+    a.btn{
+      position:relative;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height:120px;
+      border-radius:16px;
+      text-decoration:none;
+      color:var(--white);
+      font-weight:800;
+      font-family:'Oswald',sans-serif;
+      letter-spacing:.3px;
+      text-align:center;
+      background: var(--card);
+      border:1px solid var(--border);
+      backdrop-filter: blur(6px);
+      box-shadow: 0 10px 20px rgba(0,0,0,.25);
+      transition: transform .08s ease, box-shadow .2s ease, border-color .2s ease;
+    }
+    a.btn:active{ transform: scale(.98) }
+    a.btn .inner{
+      display:flex;flex-direction:column;align-items:center;gap:8px;
+      font-size:1.8rem;
+      line-height:1.05;
+    }
+    a.btn small{
+      display:block;
+      font-weight:500;
+      font-family:'Roboto',sans-serif;
+      font-size:.95rem;
+      opacity:.9;
+    }
+    .b1{ background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03)); }
+    .b2{ background: linear-gradient(180deg, rgba(37,211,102,.15), rgba(37,211,102,.08)); }
+    .b3{ background: linear-gradient(180deg, rgba(58,142,155,.15), rgba(58,142,155,.08)); }
+    .b4{ background: linear-gradient(180deg, rgba(127,0,0,.20), rgba(127,0,0,.08)); }
+    .b5{ background: linear-gradient(180deg, rgba(255,201,40,.20), rgba(255,201,40,.08)); color:#0b0f1a }
+    .b6{ background: linear-gradient(180deg, rgba(0,153,255,.20), rgba(0,153,255,.08)); } /* TABLA */
+
+    footer{
+      text-align:center;padding:16px 0 22px;opacity:.85;font-size:.95rem
+    }
+    footer a{ color:#ccc; text-decoration:none }
   </style>
 </head>
 <body>
-<nav id="topbar-volver" style="position:sticky; top:0; z-index:999; background:#0b0f1a; padding:8px 12px; border-bottom:1px solid rgba(255,255,255,.15);">
-  <button class="button" onclick="window.location.href='../index.html'">⬅️ Volver</button>
-</nav>
+  <header>
+    <h1>Club Midgistas del Sur</h1>
+  </header>
+  <main class="wrap">
+    <div class="grid">
+            <!-- NUEVO botón #7 -->
+      <a class="btn b7" href="/series">
+        <div class="inner">🏁 SERIES<small>Orden de Partida</small></div>
+      </a>
+      <a class="btn b1" href="/tiempos">
+        <div class="inner">🕑 TIEMPOS<small>Resultados y parciales</small></div>
+      </a>
+      <!-- NUEVO botón #4 -->
+      <a class="btn b6" href="/posiciones">
+        <div class="inner">📊 POSICIONES<small>Actualizada semanalmente</small></div>
+      </a>
+      <a class="btn b3" href="mensajes.html">
+        <div class="inner">💬 MENSAJES<small>Enviá tu aliento</small></div>
+      </a>
+      <a class="btn b2" href="selfies.html">
+        <div class="inner">📸 SELFIES<small>Compartí tu foto</small></div>
+      </a>
 
-<div id="progress"></div>
-<div id="offline-banner" hidden>Sin conexión. Mostrando datos recientes.</div>
 
-<header><h1>📋 Series – Orden de partida</h1></header>
-
-<main>
-  <!-- No hay selector de fecha aquí -->
-  <section id="race-list">
-    <div style="display:flex; align-items:center; justify-content:space-between; gap:8px;">
-      <h2 style="margin:0;">Series disponibles</h2>
-      <div style="display:flex; gap:8px;">
-        <button id="update-btn" class="button" type="button" title="Refrescar datos">↻ Actualizar</button>
-      </div>
+      <a class="btn b4" href="https://app.sli.do/event/kE4DFoKFjVV4Wjy8tGUste" target="_blank" rel="noopener">
+        <div class="inner">🏆 PRODE<small>Pronosticá los ganadores</small></div>
+      </a>
+      <a class="btn b5" href="info.html">
+        <div class="inner">ℹ️ INFO<small>Redes y sponsors</small></div>
+      </a>
     </div>
-    <ul></ul>
-  </section>
-
-  <section id="results" aria-live="polite">
-    <div class="results-toolbar">
-      <h2>Orden de partida</h2>
-      <input id="results-search" type="search" placeholder="Buscar por N° o nombre…" inputmode="search" autocomplete="off"/>
-    </div>
-    <div class="meta-row">
-      <span id="selected-pill" hidden></span>
-      <span id="last-updated" hidden></span>
-    </div>
-
-    <div class="table-container">
-      <table>
-        <thead>
-          <tr>
-            <th>Pos.</th>
-            <th>N°</th>
-            <th>Piloto</th>
-          </tr>
-        </thead>
-        <tbody><!-- dinámico --></tbody>
-      </table>
-      <div id="skeleton" class="skeleton" hidden>
-        <div class="row"></div><div class="row"></div><div class="row"></div>
-      </div>
-    </div>
-
-    <!-- Visual de la grilla de largada -->
-    <div id="grid-largada" hidden>
-      <div class="grid-col">
-        <h3>Fila 1 (1–4)</h3>
-        <div id="fila1"></div>
-      </div>
-      <div class="grid-col">
-        <h3>Fila 2 (5–8)</h3>
-        <div id="fila2"></div>
-      </div>
-    </div>
-  </section>
-</main>
-
-<!-- Reutilizamos utilidades (toast, etc.) -->
-<script src="../enhancements.js"></script>
-<script src="./series.js"></script>
-<div id="toast" hidden></div>
-
-<div id="creditos" style="text-align:center; font-size:12px; margin-top:20px;">
-  <a href="http://www.primate.com.ar" target="_blank" style="color:#999; text-decoration:none;">by PRIMATE ®</a>
-</div>
+  </main>
+  <footer>
+    <a href="http://www.primate.com.ar" target="_blank" rel="noopener">PRIMATE ®</a>
+  </footer>
 </body>
 </html>
+
+
