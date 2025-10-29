@@ -5,20 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
   <title>Series – Orden de partida</title>
   <meta name="theme-color" content="#0b0f1a"/>
-  <!-- REUTILIZA EL MISMO CSS DEL INDEX DE TIEMPOS -->
+  <!-- Reutiliza el mismo CSS de la página de tiempos -->
   <link rel="stylesheet" href="../styles.css"/>
 </head>
 <body>
-  <!-- Barra superior y estilos iguales a la página de tiempos -->
-  <nav id="topbar" class="topbar">
-    <div class="topbar-left">
-      <button class="button" type="button" onclick="location.href='../index.html'">⬅️ Volver</button>
-    </div>
-    <div class="topbar-right">
-      <button id="update-btn" class="button" type="button" title="Refrescar datos">↻ Actualizar</button>
-    </div>
-  </nav>
-
   <div id="progress"></div>
   <div id="offline-banner" hidden>Sin conexión. Mostrando datos recientes.</div>
 
@@ -26,14 +16,15 @@
     <h1>📋 Series – Orden de partida</h1>
   </header>
 
-  <main>
-    <!-- Misma caja que "CARRERAS DISPONIBLES" -->
+  <!-- Dejo padding-bottom para que la barra inferior no tape el contenido -->
+  <main style="padding-bottom:72px;">
+    <!-- Caja como "CARRERAS DISPONIBLES" -->
     <section id="race-list" class="card">
       <h2>CARRERAS DISPONIBLES</h2>
-      <ul><!-- botones de Serie N se generan acá --></ul>
+      <ul><!-- botones dinámicos Serie N --></ul>
     </section>
 
-    <!-- Misma caja que "RESULTADOS" -->
+    <!-- Caja como "RESULTADOS" -->
     <section id="results" class="card" aria-live="polite">
       <div class="results-toolbar">
         <h2>RESULTADOS</h2>
@@ -63,22 +54,19 @@
           <div class="row"></div><div class="row"></div>
         </div>
       </div>
-
-      <!-- Visual de grilla de largada (opcional, mantiene estética) -->
-      <div id="grid-largada" class="grid-largada" hidden>
-        <div class="grid-col">
-          <h3>Fila 1 (1–4)</h3>
-          <div id="fila1"></div>
-        </div>
-        <div class="grid-col">
-          <h3>Fila 2 (5–8)</h3>
-          <div id="fila2"></div>
-        </div>
-      </div>
     </section>
   </main>
 
-  <!-- Reutilizamos helpers/UX del sitio principal -->
+  <!-- Barra inferior fija con "Volver" -->
+  <nav id="bottombar" class="topbar" style="
+    position:fixed; left:0; right:0; bottom:0; z-index:999;
+    display:flex; justify-content:center; padding:8px 12px;
+    background:#0b0f1a; border-top:1px solid rgba(255,255,255,.15);
+  ">
+    <button class="button" type="button" onclick="location.href='../index.html'">⬅️ Volver</button>
+  </nav>
+
+  <!-- Reutilizamos helpers/UX -->
   <script defer src="../enhancements.js"></script>
   <!-- Lógica específica de /series -->
   <script defer src="./series.js"></script>
