@@ -5,10 +5,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
   <title>Series – Orden de partida</title>
   <meta name="theme-color" content="#0b0f1a"/>
-  <!-- Reutiliza el mismo CSS de la página de tiempos -->
+  <!-- Reutiliza la misma estética de tiempos -->
   <link rel="stylesheet" href="../styles.css"/>
+  <style>
+    /* Línea separadora dentro de la tabla para "Primera/Segunda fila" */
+    .row-label td{
+      background: rgba(255,255,255,.08);
+      color: #fff;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      border-top: 1px solid rgba(255,255,255,.18);
+      border-bottom: 1px solid rgba(255,255,255,.18);
+    }
+    /* Footer simple para el botón Volver */
+    .footer-actions{
+      display:flex; justify-content:center; padding:16px 12px; gap:12px;
+    }
+  </style>
 </head>
 <body>
+
   <div id="progress"></div>
   <div id="offline-banner" hidden>Sin conexión. Mostrando datos recientes.</div>
 
@@ -16,15 +33,12 @@
     <h1>📋 Series – Orden de partida</h1>
   </header>
 
-  <!-- Dejo padding-bottom para que la barra inferior no tape el contenido -->
-  <main style="padding-bottom:72px;">
-    <!-- Caja como "CARRERAS DISPONIBLES" -->
+  <main>
     <section id="race-list" class="card">
       <h2>CARRERAS DISPONIBLES</h2>
-      <ul><!-- botones dinámicos Serie N --></ul>
+      <ul><!-- botones Serie N se generan aquí --></ul>
     </section>
 
-    <!-- Caja como "RESULTADOS" -->
     <section id="results" class="card" aria-live="polite">
       <div class="results-toolbar">
         <h2>RESULTADOS</h2>
@@ -45,10 +59,8 @@
               <th>NOMBRE</th>
             </tr>
           </thead>
-          <tbody><!-- filas dinámicas --></tbody>
+          <tbody><!-- dinámico --></tbody>
         </table>
-
-        <!-- Skeleton igual al de tiempos -->
         <div id="skeleton" class="skeleton" hidden>
           <div class="row"></div><div class="row"></div><div class="row"></div>
           <div class="row"></div><div class="row"></div>
@@ -57,23 +69,19 @@
     </section>
   </main>
 
-  <!-- Barra inferior fija con "Volver" -->
-  <nav id="bottombar" class="topbar" style="
-    position:fixed; left:0; right:0; bottom:0; z-index:999;
-    display:flex; justify-content:center; padding:8px 12px;
-    background:#0b0f1a; border-top:1px solid rgba(255,255,255,.15);
-  ">
+  <!-- Botón Volver abajo -->
+  <footer class="footer-actions">
     <button class="button" type="button" onclick="location.href='../index.html'">⬅️ Volver</button>
-  </nav>
+  </footer>
 
-  <!-- Reutilizamos helpers/UX -->
+  <!-- Reutilizamos helpers del sitio -->
   <script defer src="../enhancements.js"></script>
   <!-- Lógica específica de /series -->
   <script defer src="./series.js"></script>
 
   <div id="toast" hidden></div>
 
-  <div id="creditos" style="text-align:center; font-size:12px; margin-top:20px;">
+  <div id="creditos" style="text-align:center; font-size:12px; margin-top:8px;">
     <a href="http://www.primate.com.ar" target="_blank" style="color:#999; text-decoration:none;">by PRIMATE ®</a>
   </div>
 </body>
