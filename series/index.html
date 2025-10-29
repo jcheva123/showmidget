@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+  <title>Series – Orden de partida</title>
+  <meta name="theme-color" content="#0b0f1a"/>
+  <link rel="stylesheet" href="../styles.css"/>
+  <style>
+    /* Ajustes mínimos específicos de /series */
+    #grid-largada { display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:10px; }
+    .grid-col { background: rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.15); border-radius:12px; padding:10px; }
+    .grid-col h3 { margin:0 0 8px 0; font-family:'Oswald',sans-serif; font-size:1rem; color:#fff; text-transform:uppercase; letter-spacing:.5px }
+    .piloto-chip { display:flex; align-items:center; justify-content:space-between; gap:8px;
+      border:1px solid rgba(255,255,255,.2); border-radius:10px; padding:6px 8px; margin:6px 0; background:#2c2c2c }
+    .chip-nro { font-weight:700; background:#ff4444; color:#fff; border-radius:8px; padding:2px 8px; }
+    .playoff { outline:2px solid #ffdd00; }
+    /* skeleton de esta página: 3 filas */
+    #skeleton .row { height:26px }
+    @media (max-width:600px){ #grid-largada{grid-template-columns:1fr} }
+  </style>
+</head>
+<body>
+<nav id="topbar-volver" style="position:sticky; top:0; z-index:999; background:#0b0f1a; padding:8px 12px; border-bottom:1px solid rgba(255,255,255,.15);">
+  <button class="button" onclick="window.location.href='../index.html'">⬅️ Volver</button>
+</nav>
+
+<div id="progress"></div>
+<div id="offline-banner" hidden>Sin conexión. Mostrando datos recientes.</div>
+
+<header><h1>📋 Series – Orden de partida</h1></header>
+
+<main>
+  <!-- No hay selector de fecha aquí -->
+  <section id="race-list">
+    <div style="display:flex; align-items:center; justify-content:space-between; gap:8px;">
+      <h2 style="margin:0;">Series disponibles</h2>
+      <div style="display:flex; gap:8px;">
+        <button id="update-btn" class="button" type="button" title="Refrescar datos">↻ Actualizar</button>
+      </div>
+    </div>
+    <ul></ul>
+  </section>
+
+  <section id="results" aria-live="polite">
+    <div class="results-toolbar">
+      <h2>Orden de partida</h2>
+      <input id="results-search" type="search" placeholder="Buscar por N° o nombre…" inputmode="search" autocomplete="off"/>
+    </div>
+    <div class="meta-row">
+      <span id="selected-pill" hidden></span>
+      <span id="last-updated" hidden></span>
+    </div>
+
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Pos.</th>
+            <th>N°</th>
+            <th>Piloto</th>
+          </tr>
+        </thead>
+        <tbody><!-- dinámico --></tbody>
+      </table>
+      <div id="skeleton" class="skeleton" hidden>
+        <div class="row"></div><div class="row"></div><div class="row"></div>
+      </div>
+    </div>
+
+    <!-- Visual de la grilla de largada -->
+    <div id="grid-largada" hidden>
+      <div class="grid-col">
+        <h3>Fila 1 (1–4)</h3>
+        <div id="fila1"></div>
+      </div>
+      <div class="grid-col">
+        <h3>Fila 2 (5–8)</h3>
+        <div id="fila2"></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- Reutilizamos utilidades (toast, etc.) -->
+<script src="../enhancements.js"></script>
+<script src="./series.js"></script>
+<div id="toast" hidden></div>
+
+<div id="creditos" style="text-align:center; font-size:12px; margin-top:20px;">
+  <a href="http://www.primate.com.ar" target="_blank" style="color:#999; text-decoration:none;">by PRIMATE ®</a>
+</div>
+</body>
+</html>
