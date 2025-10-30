@@ -1,399 +1,71 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="color-scheme" content="dark only" />
-  <title>Resultados Oficiales · Show Midget</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#0d0d0d" />
+  <title>Resultados | Show Midget</title>
 
-  <!-- CSS principal -->
-  <link rel="stylesheet" href="./styles.css?v=20251030-03" />
+  <!-- Estilos del sitio (mismo folder) -->
+  <link rel="stylesheet" href="./styles.css?v=20251030-04" />
 
-  <style>
-    /* Ajustes finales comunes que pediste */
-
-    /* Contenedor general */
-    body {
-      margin: 0;
-      background-color: #0d0d0f;
-      color: #fff;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Roboto", "Segoe UI", sans-serif;
-      min-height: 100dvh;
-      display: flex;
-      flex-direction: column;
-    }
-
-    header.page-header {
-      background: radial-gradient(circle at 20% 20%, #3a0000 0%, #000 70%);
-      padding: 16px 16px 12px;
-      text-align: center;
-      color: #fff;
-      border-bottom: 1px solid rgba(255,0,0,0.35);
-    }
-    .title-main {
-      font-size: 1.1rem;
-      font-weight: 600;
-      color: #fff;
-      line-height: 1.2;
-      margin: 0;
-      letter-spacing: -0.03em;
-    }
-    .subtitle-small {
-      font-size: .8rem;
-      color: #bbb;
-      font-weight: 400;
-      margin-top: 4px;
-      line-height: 1.2;
-    }
-
-    /* Bloque filtros */
-    .filters-card {
-      background: #1a1a1e;
-      border: 1px solid rgba(255,0,0,0.25);
-      border-radius: 12px;
-      padding: 12px 16px;
-      margin: 12px 16px 8px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.8);
-    }
-    .filters-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .field-group {
-      display: flex;
-      flex-direction: column;
-      min-width: 0;
-      flex: 1;
-    }
-    .field-label {
-      font-size: .75rem;
-      font-weight: 500;
-      color: #ff4d4d;
-      margin-bottom: 4px;
-      line-height: 1.2;
-    }
-    select#fechaSelect,
-    select#carreraSelect {
-      background-color: #0f0f12;
-      color: #fff;
-      border: 1px solid rgba(255,0,0,0.4);
-      border-radius: 8px;
-      padding: 10px 12px;
-      font-size: 1rem;
-      line-height: 1.2;
-      min-height: 44px;
-      appearance: none;
-    }
-    select:disabled {
-      opacity: .4;
-    }
-
-    .info-actualizado {
-      flex-basis: 100%;
-      font-size: .7rem;
-      color: #888;
-      line-height: 1.3;
-      margin-top: 4px;
-    }
-    .info-actualizado span {
-      color: #fff;
-      font-weight: 500;
-    }
-
-    /* Contenido resultados */
-    main#contentWrapper {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      padding: 0 16px 80px; /* deja espacio para footer fijo */
-    }
-
-    .race-header-card {
-      background: linear-gradient(to right, rgba(255,0,0,.18), rgba(0,0,0,0) 70%);
-      border-left: 4px solid #ff1a1a;
-      border-radius: 8px;
-      padding: 12px 12px 12px 16px;
-      margin-top: 12px;
-      margin-bottom: 8px;
-    }
-    .race-header-line1 {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: baseline;
-      gap: 8px;
-      line-height: 1.2;
-    }
-    .race-name {
-      color: #fff;
-      font-size: 1rem;
-      font-weight: 600;
-      letter-spacing: -0.03em;
-    }
-    .race-extra {
-      font-size: .8rem;
-      font-weight: 400;
-      color: #bbb;
-    }
-
-    .race-body-card {
-      background: #1a1a1e;
-      border: 1px solid rgba(255,0,0,0.25);
-      border-radius: 12px;
-      box-shadow: 0 24px 48px rgba(0,0,0,0.9);
-      overflow: hidden;
-    }
-
-    .race-table-header,
-    .race-row {
-      display: grid;
-      grid-template-columns: 2.2rem 2.8rem 1fr auto;
-      align-items: center;
-      column-gap: 8px;
-      padding: 8px 12px;
-      font-size: .9rem;
-      line-height: 1.3;
-    }
-
-    .race-table-header {
-      font-size: .7rem;
-      text-transform: uppercase;
-      letter-spacing: .05em;
-      font-weight: 600;
-      background: rgba(255,0,0,0.08);
-      color: #ff4d4d;
-      border-bottom: 1px solid rgba(255,0,0,0.25);
-    }
-
-    /* filas alternadas */
-    .race-row:nth-child(odd) {
-      background-color: rgba(255,255,255,0.02);
-    }
-    .race-row:nth-child(even) {
-      background-color: rgba(255,255,255,0.06);
-    }
-
-    .pos-col {
-      font-weight: 600;
-      color: #fff;
-      font-size: .9rem;
-    }
-    .num-col {
-      font-weight: 600;
-      color: #fff;
-      text-align: center;
-      font-size: .9rem;
-    }
-    .name-col {
-      min-width: 0;
-    }
-    .driver-name {
-      color: #fff;
-      font-weight: 500;
-      font-size: .9rem;
-      line-height: 1.2;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .penalty-note {
-      color: #ffcc00;
-      font-size: .7rem;
-      line-height: 1.2;
-      margin-top: 2px;
-    }
-    .time-col {
-      color: #fff;
-      font-weight: 600;
-      text-align: right;
-      font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
-      font-size: .9rem;
-    }
-    .time-col.penalized {
-      color: #ff4d4d;
-    }
-
-    /* footer fijo */
-    footer.footer-actions {
-      position: fixed;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0,0,0,0.9);
-      border-top: 1px solid rgba(255,0,0,0.4);
-      padding: 12px 16px calc(env(safe-area-inset-bottom,0) + 12px);
-      display: flex;
-      justify-content: center;
-      z-index: 9999;
-    }
-
-    footer.footer-actions .button {
-      appearance: none;
-      border: 1px solid rgba(255,0,0,0.5);
-      background: radial-gradient(circle at 20% 20%, #700000 0%, #200000 60%);
-      color: #fff;
-      font-size: 1rem;
-      font-weight: 600;
-      line-height: 1.2;
-      border-radius: 10px;
-      padding: 12px 16px;
-      min-width: 160px;
-      text-align: center;
-    }
-    footer.footer-actions .button:active {
-      scale: .98;
-    }
-
-    /* toast */
-    #toast {
-      position: fixed;
-      z-index: 10000;
-      left: 50%;
-      bottom: calc(env(safe-area-inset-bottom, 0) + 80px);
-      transform: translateX(-50%);
-      background: rgba(0,0,0,0.85);
-      color: #fff;
-      border: 1px solid rgba(255,0,0,0.5);
-      border-radius: 8px;
-      box-shadow: 0 32px 64px rgba(0,0,0,0.9);
-      padding: 10px 14px;
-      font-size: .8rem;
-      font-weight: 500;
-      line-height: 1.3;
-      display: none;
-      max-width: 85%;
-      text-align: center;
-    }
-    #toast .toast-title {
-      color: #ff4d4d;
-      font-size: .7rem;
-      font-weight: 600;
-      line-height: 1.2;
-      text-transform: uppercase;
-      letter-spacing: .05em;
-      display: block;
-      margin-bottom: 4px;
-    }
-    #toast .toast-body {
-      color: #fff;
-      font-size: .8rem;
-      font-weight: 500;
-      line-height: 1.2;
-      word-break: break-word;
-    }
-
-    /* estado vacío */
-    .placeholder-card {
-      color: #888;
-      background: #1a1a1e;
-      border: 1px solid rgba(255,0,0,0.25);
-      border-radius: 12px;
-      text-align: center;
-      padding: 24px 16px;
-      font-size: .9rem;
-      line-height: 1.4;
-      margin-top: 16px;
-    }
-    .placeholder-card strong {
-      color: #fff;
-      font-weight: 600;
-    }
-
-  </style>
+  <!-- Kill-switch de Service Worker + caches para evitar JS/CSS servidos como HTML -->
+  <script>
+    (function () {
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations().then(rs => rs.forEach(r => r.unregister()));
+      }
+      if (window.caches) {
+        caches.keys().then(keys => keys.forEach(k => caches.delete(k)));
+      }
+    })();
+  </script>
 </head>
 <body>
-
-  <header class="page-header">
-    <h1 class="title-main">Resultados oficiales ⏱️</h1>
-    <div class="subtitle-small">
-      Show Midget · Tiempos y clasificaciones
-    </div>
+  <header class="site-header">
+    <h1 class="title">Resultados</h1>
+    <p class="subtitle">Consulta de tiempos y posiciones</p>
   </header>
 
-  <section class="filters-card">
-    <div class="filters-row">
-      <!-- selector de fecha -->
-      <div class="field-group">
-        <label class="field-label" for="fechaSelect">Seleccionar Fecha:</label>
-        <select id="fechaSelect" aria-label="Seleccionar fecha" disabled>
-          <option>Cargando fechas...</option>
-        </select>
-      </div>
+  <main class="container">
+    <!-- Selector de fechas -->
+    <section class="toolbar">
+      <label for="fechaSelect" class="label">Seleccionar Fecha:</label>
+      <select id="fechaSelect" class="select">
+        <option>Cargando fechas...</option>
+      </select>
+    </section>
 
-      <!-- selector de carrera -->
-      <div class="field-group">
-        <label class="field-label" for="carreraSelect">Carrera:</label>
-        <select id="carreraSelect" aria-label="Seleccionar carrera" disabled>
-          <option>Seleccioná una fecha</option>
-        </select>
-      </div>
+    <!-- Lista de carreras de la fecha (SERIES, REPECHAJES, SEMIS, PRE, FINAL) -->
+    <section class="races">
+      <ul id="raceList" class="race-list"></ul>
+    </section>
 
-      <!-- info última actualización -->
-      <div class="info-actualizado">
-        <div>
-          <span id="lastUpdatedRace">-</span>
-        </div>
-        <div>
-          <span id="lastUpdatedTime">-</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <main id="contentWrapper" role="main" aria-live="polite" aria-busy="true">
-
-    <!-- Encabezado de la carrera activa -->
-    <section class="race-header-card" id="raceHeader" style="display:none;">
-      <div class="race-header-line1">
-        <div class="race-name" id="raceName">Carrera</div>
-        <div class="race-extra" id="raceExtra"></div>
+    <!-- Estado / último update -->
+    <section class="status">
+      <div id="statusText" class="status-text">
+        <!-- El script completa esto con: “Actualizado: HH:MM:SS — Fecha X — Carrera Y” -->
       </div>
     </section>
 
-    <!-- Tabla de resultados -->
-    <section class="race-body-card" id="raceResults" style="display:none;">
-      <div class="race-table-header">
-        <div>Pos.</div>
-        <div>N°</div>
-        <div>Nombre</div>
-        <div>Total</div>
-      </div>
-      <div id="raceRows"></div>
+    <!-- Resultados -->
+    <section id="results" class="results">
+      <!-- El script inyecta la tabla/lista de resultados aquí -->
     </section>
-
-    <!-- Placeholder cuando no hay nada para mostrar -->
-    <section class="placeholder-card" id="placeholderCard">
-      <strong>Esperando resultados…</strong><br />
-      Se irán publicando las series y finales oficiales.
-    </section>
-
   </main>
 
-  <!-- Footer fijo -->
+  <!-- Toast de avisos (evita errores si showToast escribe aquí) -->
+  <div id="toast" class="toast" aria-live="polite" aria-atomic="true">
+    <span id="toastMessage"></span>
+  </div>
+
+  <!-- Footer con botón Volver, centrado -->
   <footer class="footer-actions">
     <button class="button" type="button" onclick="location.href='../index.html'">⬅️ Volver</button>
   </footer>
 
-  <!-- Toast mini notificación -->
-  <div id="toast" role="status" aria-live="polite">
-    <span class="toast-title" id="toastTitle">Actualizado</span>
-    <div class="toast-body" id="toastBody">Carrera X - 00:00:00</div>
-  </div>
-
-  <!-- Romper service worker viejo + caches antes de usar JS real -->
-  <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.getRegistrations().then(rs => rs.forEach(r => r.unregister()));
-    }
-    if (window.caches) {
-      caches.keys().then(keys => keys.forEach(k => caches.delete(k)));
-    }
-  </script>
-
-  <!-- Lógica principal -->
-  <script defer src="./script.js?v=20251030-03"></script>
-  <script defer src="./enhancements.js?v=20251030-03"></script>
+  <!-- Scripts del sitio (mismo folder) -->
+  <script defer src="./script.js?v=20251030-04"></script>
+  <script defer src="./enhancements.js?v=20251030-04"></script>
 </body>
 </html>
