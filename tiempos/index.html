@@ -6,9 +6,7 @@
   <title>Resultados - Estival 2025-2026</title>
   <meta name="theme-color" content="#0b0f1a" />
   <meta http-equiv="Cache-Control" content="no-store" />
-
-  <!-- OJO: si tu CSS está en /WEB/ usamos esa ruta -->
-  <link rel="stylesheet" href="WEB/styles.css" />
+  <link rel="stylesheet" href="./styles.css" />
 </head>
 <body>
   <div id="progress"></div>
@@ -21,7 +19,7 @@
   <main>
     <section id="date-selector">
       <label for="fecha-select">Seleccionar Fecha:</label>
-      <select id="fecha-select">
+      <select id="fecha-select" onchange="loadRaces()">
         <option value="" selected disabled>Cargando fechas…</option>
       </select>
     </section>
@@ -31,7 +29,6 @@
         <h2 style="margin:0;">Carreras Disponibles</h2>
         <div style="display:flex; gap:8px;">
           <button id="update-btn" class="button" type="button" title="Refrescar datos">↻ Actualizar Datos</button>
-          <!-- oculto por ahora -->
           <button id="share-btn" class="button" type="button" hidden aria-hidden="true" style="display:none">Compartir</button>
         </div>
       </div>
@@ -74,9 +71,9 @@
 
   <div id="toast" hidden></div>
 
-  <!-- IMPORTANTE: apuntamos a /WEB/ para evitar 404 de JS/CSS -->
-  <script defer src="WEB/script.js?v=20251030"></script>
-  <script defer src="WEB/enhancements.js?v=20251030"></script>
+  <!-- Rutas relativas al mismo folder que este index -->
+  <script defer src="./script.js?v=20251030"></script>
+  <script defer src="./enhancements.js?v=20251030"></script>
 
   <footer class="footer-actions">
     <button class="button" type="button" onclick="location.href='../index.html'">⬅️ Volver</button>
