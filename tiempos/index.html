@@ -6,10 +6,11 @@
   <title>Resultados - Estival 2025-2026</title>
   <meta name="theme-color" content="#0b0f1a" />
   <meta http-equiv="Cache-Control" content="no-store" />
-  <link rel="stylesheet" href="styles.css" />
+
+  <!-- OJO: si tu CSS está en /WEB/ usamos esa ruta -->
+  <link rel="stylesheet" href="WEB/styles.css" />
 </head>
 <body>
-  <!-- Barra de progreso y banner offline -->
   <div id="progress"></div>
   <div id="offline-banner" hidden>Sin conexión. Mostrando datos recientes.</div>
 
@@ -20,8 +21,7 @@
   <main>
     <section id="date-selector">
       <label for="fecha-select">Seleccionar Fecha:</label>
-      <!-- Dejamos solo placeholder. script.js poblará dinámicamente según resultados/fechas.json -->
-      <select id="fecha-select" onchange="loadRaces()">
+      <select id="fecha-select">
         <option value="" selected disabled>Cargando fechas…</option>
       </select>
     </section>
@@ -31,7 +31,7 @@
         <h2 style="margin:0;">Carreras Disponibles</h2>
         <div style="display:flex; gap:8px;">
           <button id="update-btn" class="button" type="button" title="Refrescar datos">↻ Actualizar Datos</button>
-          <!-- Botón de compartir oculto para compatibilidad -->
+          <!-- oculto por ahora -->
           <button id="share-btn" class="button" type="button" hidden aria-hidden="true" style="display:none">Compartir</button>
         </div>
       </div>
@@ -62,7 +62,7 @@
               <th>Causa</th>
             </tr>
           </thead>
-          <tbody><!-- filas dinámicas --></tbody>
+          <tbody></tbody>
         </table>
 
         <div id="skeleton" class="skeleton" hidden>
@@ -72,14 +72,12 @@
     </section>
   </main>
 
-  <!-- Toast -->
   <div id="toast" hidden></div>
 
-  <!-- Scripts con cache-buster para evitar redefiniciones por versiones cacheadas -->
-  <script src="script.js?v=20251030"></script>
-  <script src="enhancements.js?v=20251030"></script>
+  <!-- IMPORTANTE: apuntamos a /WEB/ para evitar 404 de JS/CSS -->
+  <script defer src="WEB/script.js?v=20251030"></script>
+  <script defer src="WEB/enhancements.js?v=20251030"></script>
 
-  <!-- Botón Volver abajo, centrado con .footer-actions -->
   <footer class="footer-actions">
     <button class="button" type="button" onclick="location.href='../index.html'">⬅️ Volver</button>
   </footer>
