@@ -1,4 +1,3 @@
-<script>
 (() => {
   // ---------- Config ----------
   const OWNER_REPO_BRANCH = 'jcheva123/tiemposweb-2025@main';
@@ -12,73 +11,44 @@
   const on = (el, ev, fn) => el && el.addEventListener(ev, fn);
 
   const elFecha = $('#fecha-select');
-  const elRaceList = $('#race-list');
+  const elRaceListUL = document.querySelector('#race-list ul');
   const elBody = $('#results-body');
   const elUpdated = $('#last-updated');
-  const elSkeleton = $('#skeleton'); // opcional: si no está, no pasa nada
+  const elSkeleton = $('#skeleton');
 
   // ---------- Texto de carrera ----------
-  const RACE_LABELS = {
-    final: 'Final',
-    prefinal: 'Prefinal',
-    repechaje: 'Repechaje',
-    semifinal: 'Semifinal',
-    serie: 'Serie'
-  };
+  const RACE_LABELS = { final: 'Final', prefinal: 'Prefinal', repechaje: 'Repechaje', semifinal: 'Semifinal', serie: 'Serie' };
   const prettyRace = (key) => {
-    // key ejemplos: "serie1", "semifinal4", "repechaje2", "prefinal", "final"
     const m = key.match(/^(serie|semifinal|repechaje)(\d+)$/i);
-    if (m) {
-      const base = m[1].toLowerCase();
-      const n = parseInt(m[2], 10);
-      return `${RACE_LABELS[base]} ${n}`;
-    }
+    if (m) return `${RACE_LABELS[m[1].toLowerCase()]} ${parseInt(m[2],10)}`;
     if (/^prefinal$/i.test(key)) return RACE_LABELS.prefinal;
     if (/^final$/i.test(key)) return RACE_LABELS.final;
     return key;
   };
 
-  // ---------- Network helpers ----------
-  const sleep = (ms) => new Promise(r => setTimeout(r, ms));
-
+  // ---------- Network ----------
   async function fetchWithTimeout(url, opts = {}) {
     const controller = new AbortController();
     const t = setTimeout(() => controller.abort('timeout'), FETCH_TIMEOUT_MS);
     try {
-      const res = await fetch(url, {
-        ...opts,
-        signal: controller.signal,
-        // cache bust + no-store para ver cambios al toque
-        cache: 'no-store',
-        headers: { 'Cache-Control': 'no-store' }
-      });
+      const res = await fetch(url, { ...opts, signal: controller.signal, cache: 'no-store', headers: { 'Cache-Control': 'no-store' } });
       if (!res.ok) throw new Error(String(res.status || 'fetch-failed'));
       return await res.json();
-    } finally {
-      clearTimeout(t);
-    }
+    } finally { clearTimeout(t); }
   }
-
   async function fetchJSON(pathRel) {
-    // RAW primero (más fresco), si falla vamos a CDN
     const ts = Date.now();
-    const rawURL = `${RAW_BASE}/${pathRel}?ts=${ts}`;
-    try {
-      return await fetchWithTimeout(rawURL);
-    } catch (e) {
-      // fallback CDN (algunas veces más permisivo ante 429 de RAW)
-      const cdnURL = `${CDN_BASE}/${pathRel}?ts=${ts}`;
-      return await fetchWithTimeout(cdnURL);
-    }
+    try { return await fetchWithTimeout(`${RAW_BASE}/${pathRel}?ts=${ts}`); }
+    catch { return await fetchWithTimeout(`${CDN_BASE}/${pathRel}?ts=${ts}`); }
   }
 
   // ---------- Estado ----------
   let currentFecha = null;
-  let inflight = null; // AbortController para carrera en curso
+  let inflight = null;
 
   function setLoading(isLoading) {
     if (elSkeleton) elSkeleton.hidden = !isLoading;
-    if (elBody) elBody.innerHTML = isLoading ? '' : elBody.innerHTML;
+    if (isLoading && elBody) elBody.innerHTML = '';
   }
 
   function setUpdated(fecha, raceKey) {
@@ -88,13 +58,14 @@
     const mm = String(now.getMinutes()).padStart(2, '0');
     const ss = String(now.getSeconds()).padStart(2, '0');
     const raceTxt = raceKey ? ` – ${fecha} · ${prettyRace(raceKey)}` : '';
+    elUpdated.hidden = false;
     elUpdated.textContent = `Actualizado: ${hh}:${mm}:${ss}${raceTxt}`;
   }
 
   // ---------- Render ----------
   function renderRaceButtons(keys) {
-    if (!elRaceList) return;
-    elRaceList.innerHTML = '';
+    if (!elRaceListUL) return;
+    elRaceListUL.innerHTML = '';
     const frag = document.createDocumentFragment();
     keys.forEach(k => {
       const li = document.createElement('li');
@@ -104,48 +75,31 @@
       li.className = 'race-item';
       li.onclick = () => loadResults(currentFecha, k);
       li.onkeydown = (ev) => {
-        if (ev.key === 'Enter' || ev.key === ' ') {
-          ev.preventDefault();
-          li.click();
-        }
+        if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); li.click(); }
       };
       frag.appendChild(li);
     });
-    elRaceList.appendChild(frag);
+    elRaceListUL.appendChild(frag);
   }
-
   function markActiveRace(raceKey) {
-    if (!elRaceList) return;
-    elRaceList.querySelectorAll('.race-item').forEach(li => {
+    if (!elRaceListUL) return;
+    elRaceListUL.querySelectorAll('.race-item').forEach(li => {
       li.classList.toggle('active', li.dataset.race === raceKey);
     });
   }
-
   function renderResults(json) {
     if (!elBody) return;
     elBody.innerHTML = '';
-    if (!json || !Array.isArray(json.results)) {
-      return;
-    }
+    if (!json || !Array.isArray(json.results)) return;
+
     const frag = document.createDocumentFragment();
     json.results.forEach(r => {
       const tr = document.createElement('tr');
-
-      // Columnas: Pos. | N° | Nombre | Total
-      const tdPos = document.createElement('td');
-      tdPos.textContent = r.position ?? '';
-      const tdNum = document.createElement('td');
-      tdNum.textContent = r.number ?? '';
-      const tdName = document.createElement('td');
-      tdName.textContent = r.name ?? '';
-      const tdTotal = document.createElement('td');
-      tdTotal.textContent = (r.t_final ?? r.total ?? '').toString();
-
-      tr.appendChild(tdPos);
-      tr.appendChild(tdNum);
-      tr.appendChild(tdName);
-      tr.appendChild(tdTotal);
-
+      const tdPos = document.createElement('td');   tdPos.textContent = r.position ?? '';
+      const tdNum = document.createElement('td');   tdNum.textContent = r.number ?? '';
+      const tdName = document.createElement('td');  tdName.textContent = r.name ?? '';
+      const tdTotal = document.createElement('td'); tdTotal.textContent = (r.t_final ?? r.total ?? '').toString();
+      tr.append(tdPos, tdNum, tdName, tdTotal);
       frag.appendChild(tr);
     });
     elBody.appendChild(frag);
@@ -155,7 +109,7 @@
   function naturalRaceSort(a, b) {
     const toKey = (x) => {
       const m = x.match(/^(serie|semifinal|repechaje)(\d+)$/i);
-      if (m) return { kind: m[1].toLowerCase(), n: parseInt(m[2], 10) };
+      if (m) return { kind: m[1].toLowerCase(), n: parseInt(m[2],10) };
       if (/^prefinal$/i.test(x)) return { kind: 'prefinal', n: 0 };
       if (/^final$/i.test(x)) return { kind: 'final', n: 0 };
       return { kind: 'zzz', n: 9999 };
@@ -167,11 +121,11 @@
   }
 
   async function loadFechas() {
-    // Solo lo que exista en resultados/fechas.json
     try {
       const data = await fetchJSON('resultados/fechas.json');
       const fechas = Array.isArray(data) ? data : [];
       if (!elFecha) return;
+
       elFecha.innerHTML = '';
       fechas.forEach(f => {
         const opt = document.createElement('option');
@@ -180,7 +134,6 @@
         elFecha.appendChild(opt);
       });
 
-      // Selección persistida o primera
       const saved = localStorage.getItem(LS_SELECTED_FECHA);
       const toSelect = fechas.includes(saved) ? saved : (fechas[0] || null);
       if (toSelect) {
@@ -188,15 +141,13 @@
         currentFecha = toSelect;
         await loadIndex(currentFecha);
       } else {
-        // Sin fechas -> limpiar UI
-        if (elRaceList) elRaceList.innerHTML = '';
+        if (elRaceListUL) elRaceListUL.innerHTML = '';
         if (elBody) elBody.innerHTML = '';
         setUpdated('', '');
       }
     } catch {
-      // Si falla, UI vacía sin romper
       if (elFecha) elFecha.innerHTML = '';
-      if (elRaceList) elRaceList.innerHTML = '';
+      if (elRaceListUL) elRaceListUL.innerHTML = '';
       if (elBody) elBody.innerHTML = '';
       setUpdated('', '');
     }
@@ -205,33 +156,22 @@
   async function loadIndex(fecha) {
     if (!fecha) return;
     setUpdated(fecha, '');
-    // index.json puede venir como {races: ["serie1", ...]} o ["serie1", ...]
     const idx = await fetchJSON(`resultados/${encodeURIComponent(fecha)}/index.json`);
     let races = [];
     if (Array.isArray(idx)) races = idx;
     else if (idx && Array.isArray(idx.races)) races = idx.races;
     races = [...new Set(races)].sort(naturalRaceSort);
     renderRaceButtons(races);
-    // Si hay alguna, cargar la primera para evitar “pantalla vieja”
-    if (races.length) {
-      loadResults(fecha, races[0]);
-    } else {
-      if (elBody) elBody.innerHTML = '';
-    }
+    if (races.length) loadResults(fecha, races[0]);
+    else if (elBody) elBody.innerHTML = '';
   }
 
   async function loadResults(fecha, raceKey) {
     if (!fecha || !raceKey) return;
 
-    // Cancelar una carga anterior si estaba en curso
-    if (inflight) {
-      try { inflight.abort(); } catch {}
-      inflight = null;
-    }
-    // AbortController por si quisiéramos abortar luego (aquí fetch ya usa timeout, igualmente protegemos)
+    if (inflight) { try { inflight.abort(); } catch {} inflight = null; }
     inflight = new AbortController();
 
-    // Reset UI antes de pedir datos (evita ver la carrera anterior)
     setLoading(true);
     markActiveRace(raceKey);
     setUpdated(fecha, raceKey);
@@ -241,7 +181,6 @@
       const data = await fetchJSON(path);
       renderResults(data);
     } catch {
-      // Si falló la carga de la carrera, vaciamos tabla para no mostrar anterior
       if (elBody) elBody.innerHTML = '';
     } finally {
       setLoading(false);
@@ -251,7 +190,6 @@
 
   // ---------- Eventos ----------
   on(document, 'DOMContentLoaded', () => {
-    // Evitamos dobles bindings si el script se incluye dos veces accidentalmente
     if (window.__tw_booted__) return;
     window.__tw_booted__ = true;
 
@@ -262,7 +200,13 @@
       await loadIndex(currentFecha);
     });
 
-    loadFechas(); // arranque
+    // Botón “Actualizar Datos” opcional
+    const updateBtn = $('#update-btn');
+    on(updateBtn, 'click', async () => {
+      if (!currentFecha) return;
+      await loadIndex(currentFecha);
+    });
+
+    loadFechas();
   });
 })();
-</script>
