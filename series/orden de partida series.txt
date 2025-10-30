@@ -54,3 +54,14 @@ SERIE 6
 4 40 ALZA Ramiro
 5 42 URSINO Victor
 6 34 FRITZ Javier Hernan
+
+SERIE 7 
+1 28 KOOP Omar
+2 54 COLTURI Fabian
+3 33 RESOLA Johnatan
+4 40 ALZA Ramiro
+5 42 URSINO Victor
+6 34 FRITZ Javier Hernan
+7 84 RASQUIN Gonzalo
+8 8 PERUGINI Rodrigo
+
