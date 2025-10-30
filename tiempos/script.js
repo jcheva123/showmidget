@@ -1,304 +1,357 @@
-/* script.js — RAW-first para detectar borrados, cache v3, carga limpia + “Actualizado” */
+/* script.js — tiempos web (mobile-first)
+   - RAW GitHub primero (refleja borrados al instante), con fallbacks
+   - Cache-bust agresivo para que aparezcan rápido las carreras nuevas
+   - Muestra solo fechas/races realmente existentes (fechas.json + index.json)
+   - Limpia la UI al cambiar de carrera para evitar confusión
+*/
+
 (() => {
-  if (window.__APP_LOADED__) return;
-  window.__APP_LOADED__ = true;
+  'use strict';
 
-  // ===== Config =====
+  /* ==============================
+     Config & utilidades
+  ===============================*/
+
+  // Bases en orden de preferencia
   const BASES = [
-    (p, q) => `https://cdn.jsdelivr.net/gh/jcheva123/tiemposweb-2025@main/${p}${q || ""}`,
-    (p, q) => `https://cdn.statically.io/gh/jcheva123/tiemposweb-2025/main/${p}${q || ""}`,
-    (p, q) => `https://raw.githubusercontent.com/jcheva123/tiemposweb-2025/main/${p}${q || ""}`,
+    'https://raw.githubusercontent.com/jcheva123/tiemposweb-2025/main',
+    'https://cdn.jsdelivr.net/gh/jcheva123/tiemposweb-2025@main',
+    'https://cdn.statically.io/gh/jcheva123/tiemposweb-2025/main'
   ];
-  const PATH_FECHAS = "resultados/fechas.json";
-  const PATH_INDEX  = (fecha) => `resultados/${encodeURIComponent(fecha)}/index.json`;
-  const PATH_JSON   = (fecha, race) => `resultados/${encodeURIComponent(fecha)}/${race}.json`;
 
-  const CACHE_MS_RESULTS = 60_000; // 60s cache suave por carrera
-  const CACHE_VER = "v3";          // ← subir versión para forzar limpieza de cache local
+  // Cache suave en memoria (por si el usuario cambia y vuelve a la misma carrera)
+  const CACHE_MS_FECHAS = 30 * 1000;   // 30s
+  const CACHE_MS_INDEX  = 45 * 1000;   // 45s por fecha
+  const CACHE_MS_RESULTS = 60 * 1000;  // 60s por carrera
 
-  // ===== Utils =====
-  const $  = (s, el=document) => el.querySelector(s);
-  const $$ = (s, el=document) => [...el.querySelectorAll(s)];
-  const sleep = (ms)=>new Promise(r=>setTimeout(r,ms));
+  // Auto-refresh del detalle de la carrera seleccionada
+  const AUTO_REFRESH_MS = 7000; // refresca la carrera activa cada 7s
 
-  function fetchWithTimeout(url, opts = {}, ms = 9000) {
-    const ctrl = new AbortController();
-    const t = setTimeout(() => ctrl.abort(), ms);
-    return fetch(url, { ...opts, signal: ctrl.signal, cache: "no-store" }).finally(() => clearTimeout(t));
-  }
+  // Labels legibles
+  const RACE_LABELS = {
+    final:       'Final',
+    prefinal:    'Prefinal',
+    repechaje1:  'Repechaje 1',
+    repechaje2:  'Repechaje 2',
+    repechaje3:  'Repechaje 3',
+    repechaje4:  'Repechaje 4',
+    repechaje5:  'Repechaje 5',
+    repechaje6:  'Repechaje 6',
+    semifinal1:  'Semifinal 1',
+    semifinal2:  'Semifinal 2',
+    semifinal3:  'Semifinal 3',
+    semifinal4:  'Semifinal 4',
+    serie1:  'Serie 1',  serie2:  'Serie 2',  serie3:  'Serie 3',
+    serie4:  'Serie 4',  serie5:  'Serie 5',  serie6:  'Serie 6',
+    serie7:  'Serie 7',  serie8:  'Serie 8',  serie9:  'Serie 9',
+    serie10: 'Serie 10', serie11: 'Serie 11', serie12: 'Serie 12',
+    serie13: 'Serie 13'
+  };
 
-  // fresh: agrega ?ts para intentar saltar caché; rawPrefer: intenta RAW primero
-  async function fetchJSONFallback(path, { fresh = false, rawPrefer = false, retries = 2 } = {}) {
-    const makeQuery = fresh ? `?ts=${Date.now()}` : "";
-    const bases = rawPrefer ? [BASES[2], BASES[0], BASES[1]] : BASES;
-    let delay = 500;
+  const qs  = (sel, scope = document) => scope.querySelector(sel);
+  const qsa = (sel, scope = document) => Array.from(scope.querySelectorAll(sel));
+
+  const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+
+  const nowStr = () => {
+    const d = new Date();
+    const pad = (n) => String(n).padStart(2, '0');
+    return `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+  };
+
+  const buildPathFechas = () => `/resultados/fechas.json`;
+  const buildPathIndex  = (fecha) => `/resultados/${fecha}/index.json`;
+  const buildPathRace   = (fecha, key) => `/resultados/${fecha}/${key}.json`;
+
+  async function fetchJSONWithFallback(path, { timeout = 8500, retries = 1 } = {}) {
+    // Cache-bust agresivo
+    const bust = Date.now();
 
     for (let attempt = 0; attempt <= retries; attempt++) {
-      for (const mk of bases) {
-        const url = mk(path, makeQuery);
+      for (const base of BASES) {
+        const url = `${base}${path}?t=${bust}`;
         try {
-          const res = await fetchWithTimeout(url);
-          if (res.ok) return await res.json();
-          if (res.status === 404) { const e = new Error("not-found"); e.code = 404; throw e; }
-        } catch (err) {
-          if (err?.code === 404) throw err;
-        }
-      }
-      await sleep(delay + Math.random() * 300);
-      delay *= 2;
-    }
-    throw new Error("fetch-failed");
-  }
-
-  function prettyRaceName(r) {
-    return r.replace(/^serie(\d+)$/,"Serie $1")
-            .replace(/^repechaje(\d+)$/,"Repechaje $1")
-            .replace(/^semifinal(\d+)$/,"Semifinal $1")
-            .replace("prefinal","Prefinal").replace("final","Final");
-  }
-
-  // ===== Estado de carga (limpia tabla y muestra skeleton inmediatamente) =====
-  function beginLoading(fecha, race) {
-    const tbody = $("table tbody");
-    if (tbody) tbody.innerHTML = "";      // no mostrar datos viejos
-    const skl = $("#skeleton");
-    if (skl) skl.hidden = false;          // skeleton visible
-    const last = $("#last-updated");
-    if (last) {
-      last.hidden = false;
-      last.textContent = race
-        ? `Cargando… • ${fecha} · ${prettyRaceName(race)}`
-        : "Cargando…";
-    }
-  }
-  function endLoading() {
-    const skl = $("#skeleton");
-    if (skl) skl.hidden = true;
-  }
-
-  function setUpdated(fecha, race, data) {
-    const el = $("#last-updated");
-    if (!el) return;
-    const stamp = data?.generated_at || null;
-    let when;
-    if (stamp) {
-      const dt = new Date(stamp);
-      when = `${dt.toLocaleDateString()} ${dt.toLocaleTimeString()}`;
-    } else {
-      const dt = new Date();
-      when = `${dt.toLocaleDateString()} ${dt.toLocaleTimeString()}`;
-    }
-    el.hidden = false;
-    el.textContent = race
-      ? `Actualizado: ${when} • ${fecha} · ${prettyRaceName(race)}`
-      : `Actualizado: ${when} • ${fecha}`;
-  }
-
-  // ===== Fechas (RAW primero para reflejar borrados al instante) =====
-  async function loadFechas() {
-    const sel = $("#fecha-select");
-    if (!sel) return;
-    sel.innerHTML = `<option value="">-- Elegir Fecha --</option>`;
-
-    let fechas = [];
-    // RAW con cache-bust
-    try {
-      const fresh = await fetchJSONFallback(PATH_FECHAS, { fresh: true, rawPrefer: true, retries: 1 });
-      fechas = Array.isArray(fresh?.fechas) ? fresh.fechas : [];
-    } catch {
-      // fallback CDN
-      try {
-        const data = await fetchJSONFallback(PATH_FECHAS, { fresh: false, rawPrefer: false });
-        fechas = Array.isArray(data?.fechas) ? data.fechas : [];
-      } catch {}
-    }
-
-    if (!fechas.length) {
-      window.showToast?.("Aún no hay Fechas publicadas.");
-      return;
-    }
-
-    fechas.sort((a,b)=>{
-      const na = parseInt((a.match(/\d+/)||[])[0]||0,10);
-      const nb = parseInt((b.match(/\d+/)||[])[0]||0,10);
-      return na - nb;
-    });
-
-    for (const f of fechas) {
-      const opt = document.createElement("option");
-      opt.value = f; opt.textContent = f;
-      sel.appendChild(opt);
-    }
-
-    const saved = localStorage.getItem("selectedFecha");
-    if (saved && fechas.includes(saved)) sel.value = saved;
-    else if (fechas.length) sel.value = fechas[fechas.length - 1];
-
-    if (sel.value) await loadRaces();
-  }
-
-  // ===== Carreras de la fecha (si RAW 404 ⇒ ocultar todo) =====
-  async function loadRaces() {
-    const fecha = $("#fecha-select")?.value || "";
-    const ul = $("#race-list ul");
-    const tbody = $("table tbody");
-    if (!fecha || !ul || !tbody) return;
-
-    ul.innerHTML = "";
-    tbody.innerHTML = "";
-    localStorage.setItem("selectedFecha", fecha);
-
-    let races = [];
-
-    // RAW con cache-bust para detectar eliminaciones al toque
-    try {
-      const fresh = await fetchJSONFallback(PATH_INDEX(fecha), { fresh: true, rawPrefer: true, retries: 1 });
-      races = Array.isArray(fresh?.races) ? fresh.races : [];
-    } catch (e) {
-      if (e?.code === 404) {
-        // Índice inexistente en RAW ⇒ fecha borrada
-        window.showToast?.(`No hay índice de carreras para ${fecha}.`);
-        return;
-      }
-      // fallback CDN si RAW falló por otra razón
-      try {
-        const data = await fetchJSONFallback(PATH_INDEX(fecha), { fresh: false, rawPrefer: false });
-        races = Array.isArray(data?.races) ? data.races : [];
-      } catch {
-        races = [];
-      }
-    }
-
-    if (!races.length) return;
-
-    for (const race of races) {
-      const li = document.createElement("li");
-      li.textContent = prettyRaceName(race);
-      li.onclick = () => loadResults(fecha, race);
-      ul.appendChild(li);
-    }
-  }
-
-  // ===== Resultados por carrera (cache local + revalidación RAW) =====
-  const inflight = new Map();
-  const keyOf = (f, r) => `${CACHE_VER}:${f}_${r}`;
-
-  async function loadResults(fecha, race) {
-    const tbody = $("table tbody");
-    if (!tbody) return;
-
-    beginLoading(fecha, race);
-
-    const cacheKey = keyOf(fecha, race);
-    const now = Date.now();
-
-    // Mostrar cache inmediato si está fresco
-    const cached = localStorage.getItem(cacheKey);
-    if (cached) {
-      try {
-        const parsed = JSON.parse(cached);
-        if (now - parsed.timestamp <= CACHE_MS_RESULTS) {
-          renderResults(parsed.data, tbody);
-          setUpdated(fecha, race, parsed.data);
-        } else {
-          localStorage.removeItem(cacheKey);
-        }
-      } catch { localStorage.removeItem(cacheKey); }
-    }
-
-    // Evitar dobles llamadas simultáneas
-    if (inflight.has(cacheKey)) {
-      await inflight.get(cacheKey);
-      endLoading();
-      highlightSelectedLI(race);
-      return;
-    }
-
-    const p = (async () => {
-      let cdnData = null;
-
-      // 1) CDN “rápido”
-      try {
-        cdnData = await fetchJSONFallback(PATH_JSON(fecha, race), { fresh: false, rawPrefer: false });
-        const prev = cached ? JSON.parse(cached).data : null;
-        if (!prev || JSON.stringify(prev) !== JSON.stringify(cdnData)) {
-          renderResults(cdnData, tbody);
-          setUpdated(fecha, race, cdnData);
-        }
-        localStorage.setItem(cacheKey, JSON.stringify({ data: cdnData, timestamp: now }));
-      } catch (err) {
-        if (!cached) window.showToast?.("No se pudieron cargar los resultados (CDN).");
-      }
-
-      // 2) Revalidación RAW con cache-bust (detecta updates al instante)
-      try {
-        const fresh = await fetchJSONFallback(PATH_JSON(fecha, race), { fresh: true, rawPrefer: true, retries: 1 });
-        if (!cdnData || JSON.stringify(fresh) !== JSON.stringify(cdnData)) {
-          renderResults(fresh, tbody);
-          setUpdated(fecha, race, fresh);
-          localStorage.setItem(cacheKey, JSON.stringify({ data: fresh, timestamp: Date.now() }));
-          window.showToast?.("Datos nuevos disponibles");
-        }
-      } catch (err) {
-        // Si RAW devuelve 404, deshabilitamos ese botón (todavía listado por CDN)
-        if (err?.code === 404) {
-          disableRaceLI(race);
-          if (!cached) {
-            tbody.innerHTML = "";
-            window.showToast?.(`${prettyRaceName(race)} aún no está publicada en ${fecha}.`);
+          const ctrl = new AbortController();
+          const to = setTimeout(() => ctrl.abort(), timeout);
+          const res = await fetch(url, { cache: 'no-store', signal: ctrl.signal });
+          clearTimeout(to);
+          if (res.ok) {
+            return await res.json();
           }
+        } catch (_) {
+          // Intentar siguiente base
         }
       }
-    })();
-
-    inflight.set(cacheKey, p);
-    await p;
-    inflight.delete(cacheKey);
-    endLoading();
-    highlightSelectedLI(race);
+      // pequeña espera antes de reintentar toda la ronda
+      if (attempt < retries) await sleep(350);
+    }
+    throw new Error('fetch-failed');
   }
 
-  function renderResults(data, tbody) {
-    tbody.innerHTML = "";
-    for (const r of (data?.results || [])) {
-      const tr = document.createElement("tr");
+  /* ==============================
+     Estado y caches
+  ===============================*/
+
+  const memCache = {
+    fechas: { data: null, ts: 0 },
+    indexByFecha: new Map(),   // fecha -> { data, ts }
+    results: new Map()         // key: `${fecha}|${race}` -> { data, ts }
+  };
+
+  let currentFecha = null;
+  let currentRaceKey = null;
+  let autoRefreshTimer = null;
+
+  /* ==============================
+     DOM refs
+  ===============================*/
+
+  const elFechaSelect   = qs('#fechaSelect');     // <select>
+  const elRacesList     = qs('#racesList');       // <ul> o <div>
+  const elResults       = qs('#results');         // contenedor del detalle
+  const elUpdated       = qs('#lastUpdated');     // span o div para “Actualizado: …”
+  const elRaceTitle     = qs('#raceTitle');       // h2/h3 para el nombre de la carrera (opcional)
+
+  // Helpers de UI
+  function clearNode(node) { if (node) node.innerHTML = ''; }
+
+  function setUpdatedMeta({ fecha, raceLabel }) {
+    if (!elUpdated) return;
+    const time = nowStr();
+    if (fecha && raceLabel) {
+      elUpdated.textContent = `Actualizado: ${time} — ${fecha} — ${raceLabel}`;
+    } else if (fecha) {
+      elUpdated.textContent = `Actualizado: ${time} — ${fecha}`;
+    } else {
+      elUpdated.textContent = `Actualizado: ${time}`;
+    }
+  }
+
+  function showLoading(message = 'Cargando…') {
+    if (!elResults) return;
+    elResults.innerHTML = `<div class="loading">${message}</div>`;
+  }
+
+  function showError(message = 'No se pudo cargar la información.') {
+    if (!elResults) return;
+    elResults.innerHTML = `<div class="error">${message}</div>`;
+  }
+
+  /* ==============================
+     Render
+  ===============================*/
+
+  function renderRacesList(keys, fecha) {
+    if (!elRacesList) return;
+    clearNode(elRacesList);
+
+    // Evitar duplicados manteniendo el orden original
+    const seen = new Set();
+    const uniqueKeys = [];
+    for (const k of keys) {
+      if (!seen.has(k)) { seen.add(k); uniqueKeys.push(k); }
+    }
+
+    uniqueKeys.forEach((key) => {
+      const label = RACE_LABELS[key] || key;
+      const li = document.createElement('li');
+      li.className = 'race-item';
+      li.textContent = label;
+      li.tabIndex = 0;
+      li.setAttribute('data-key', key);
+      li.onclick = () => {
+        // Limpiar inmediatamente para evitar confusión
+        if (elRaceTitle) elRaceTitle.textContent = label;
+        showLoading('Cargando…');
+        loadResults(fecha, key);
+      };
+      li.onkeypress = (e) => { if (e.key === 'Enter') li.onclick(); };
+      elRacesList.appendChild(li);
+    });
+  }
+
+  function renderResults(json, { fecha, raceKey }) {
+    if (!elResults) return;
+    clearNode(elResults);
+
+    const raceLabel = RACE_LABELS[raceKey] || raceKey;
+    if (elRaceTitle) elRaceTitle.textContent = raceLabel;
+
+    if (!json || !Array.isArray(json.results) || json.results.length === 0) {
+      elResults.innerHTML = `<div class="empty">Sin datos para mostrar.</div>`;
+      setUpdatedMeta({ fecha, raceLabel });
+      return;
+    }
+
+    // Construcción de tabla simple: Pos / Nº / Nombre / Total
+    const table = document.createElement('table');
+    table.className = 'tabla-resultados';
+    table.innerHTML = `
+      <thead>
+        <tr>
+          <th>Pos.</th>
+          <th>N°</th>
+          <th>Nombre</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    `;
+    const tbody = qs('tbody', table);
+
+    json.results.forEach((r) => {
+      const tr = document.createElement('tr');
+      const total = r.t_final || r.rec_str || (typeof r.rec === 'number' ? String(r.rec) : '');
       tr.innerHTML = `
-        <td>${r.position ?? ""}</td>
-        <td>${r.number ?? ""}</td>
-        <td>${r.name ?? ""}</td>
-        <td>${r.rec ?? ""}</td>
-        <td>${r.t_final || "N/A"}</td>
-        <td>${r.laps || "N/A"}</td>
-        <td class="${r.penalty ? "penalty" : ""}">${r.penalty ?? "N/A"}</td>
+        <td>${r.position ?? ''}</td>
+        <td>${r.number ?? ''}</td>
+        <td>${r.name ?? ''}</td>
+        <td>${total}</td>
       `;
       tbody.appendChild(tr);
+    });
+
+    elResults.appendChild(table);
+    setUpdatedMeta({ fecha, raceLabel });
+  }
+
+  /* ==============================
+     Cargas (fechas, index, results)
+  ===============================*/
+
+  async function loadFechas() {
+    const now = Date.now();
+    if (memCache.fechas.data && (now - memCache.fechas.ts) < CACHE_MS_FECHAS) {
+      return memCache.fechas.data;
+    }
+    const data = await fetchJSONWithFallback(buildPathFechas(), { retries: 1 });
+    // data esperado: { fechas: ["Fecha 01","Fecha 02", ...] } o ["Fecha 01", ...]
+    const fechas = Array.isArray(data) ? data : (data?.fechas || []);
+    memCache.fechas = { data: fechas, ts: now };
+    return fechas;
+  }
+
+  async function loadIndex(fecha) {
+    const now = Date.now();
+    const cache = memCache.indexByFecha.get(fecha);
+    if (cache && (now - cache.ts) < CACHE_MS_INDEX) return cache.data;
+
+    const data = await fetchJSONWithFallback(buildPathIndex(fecha), { retries: 1 });
+    // index.json esperado: { races: ["serie1","serie2",...]} o un array directo
+    const races = Array.isArray(data) ? data : (data?.races || data?.keys || []);
+    const pack = { races };
+    memCache.indexByFecha.set(fecha, { data: pack, ts: now });
+    return pack;
+  }
+
+  async function loadResults(fecha, raceKey, { force = false } = {}) {
+    currentFecha = fecha;
+    currentRaceKey = raceKey;
+
+    // limpiar UI de inmediato para que no quede el resultado anterior
+    showLoading('Cargando…');
+
+    const cacheKey = `${fecha}|${raceKey}`;
+    const now = Date.now();
+    const cache = memCache.results.get(cacheKey);
+    if (!force && cache && (now - cache.ts) < CACHE_MS_RESULTS) {
+      renderResults(cache.data, { fecha, raceKey });
+      restartAutoRefresh();
+      return;
+    }
+
+    try {
+      const json = await fetchJSONWithFallback(buildPathRace(fecha, raceKey), { retries: 2 });
+      memCache.results.set(cacheKey, { data: json, ts: Date.now() });
+      renderResults(json, { fecha, raceKey });
+    } catch (err) {
+      showError('No se pudo cargar esta carrera. Intentá nuevamente.');
+    }
+    restartAutoRefresh();
+  }
+
+  function restartAutoRefresh() {
+    if (autoRefreshTimer) clearInterval(autoRefreshTimer);
+    if (!AUTO_REFRESH_MS || AUTO_REFRESH_MS < 2000) return;
+    autoRefreshTimer = setInterval(async () => {
+      if (!currentFecha || !currentRaceKey) return;
+      try {
+        // Forzar solo cuando el cache ya venció; si no, respetar cache
+        const cacheKey = `${currentFecha}|${currentRaceKey}`;
+        const cache = memCache.results.get(cacheKey);
+        const expired = !cache || (Date.now() - cache.ts) >= CACHE_MS_RESULTS;
+        await loadResults(currentFecha, currentRaceKey, { force: expired });
+      } catch (_) { /* noop */ }
+    }, AUTO_REFRESH_MS);
+  }
+
+  /* ==============================
+     UI wiring
+  ===============================*/
+
+  async function init() {
+    try {
+      const fechas = await loadFechas();
+
+      // Poblar <select> solo con lo que realmente existe
+      if (elFechaSelect) {
+        clearNode(elFechaSelect);
+        fechas.forEach((f) => {
+          const opt = document.createElement('option');
+          opt.value = f;
+          opt.textContent = f;
+          elFechaSelect.appendChild(opt);
+        });
+
+        // Elegir última fecha (la mayor) por defecto
+        const def = fechas.length ? fechas[fechas.length - 1] : null;
+        if (def) elFechaSelect.value = def;
+
+        elFechaSelect.onchange = async () => {
+          const f = elFechaSelect.value;
+          await onFechaSelected(f);
+        };
+      }
+
+      const initialFecha = elFechaSelect ? elFechaSelect.value : (fechas[fechas.length - 1] || null);
+      if (initialFecha) await onFechaSelected(initialFecha);
+      setUpdatedMeta({ fecha: initialFecha });
+    } catch (err) {
+      showError('No se pudieron cargar las fechas. Reintentá más tarde.');
     }
   }
 
-  function highlightSelectedLI(race) {
-    $$("#race-list li").forEach(li => li.classList.remove("active"));
-    const pretty = prettyRaceName(race);
-    const li = $$("#race-list li").find(li => li.textContent.trim() === pretty);
-    if (li) li.classList.add("active");
+  async function onFechaSelected(fecha) {
+    currentFecha = fecha;
+    setUpdatedMeta({ fecha });
+
+    // Cargar index de la fecha y pintar lista de carreras existentes
+    try {
+      const pack = await loadIndex(fecha);
+      const keys = pack.races || [];
+      renderRacesList(keys, fecha);
+
+      // Si había una carrera previa y sigue existiendo, mantenerla
+      if (currentRaceKey && keys.includes(currentRaceKey)) {
+        await loadResults(fecha, currentRaceKey);
+      } else {
+        // O seleccionar la primera disponible
+        if (keys.length) {
+          await loadResults(fecha, keys[0]);
+        } else {
+          clearNode(elResults);
+          if (elRaceTitle) elRaceTitle.textContent = '';
+          elResults.innerHTML = `<div class="empty">Aún no hay carreras cargadas para ${fecha}.</div>`;
+        }
+      }
+    } catch (err) {
+      renderRacesList([], fecha);
+      showError(`No se pudo cargar el índice de ${fecha}.`);
+    }
   }
-  function disableRaceLI(race) {
-    const pretty = prettyRaceName(race);
-    const li = $$("#race-list li").find(li => li.textContent.trim() === pretty);
-    if (li) { li.style.opacity = ".5"; li.style.pointerEvents = "none"; li.title = "No disponible"; }
-  }
 
-  // ===== Inicio =====
-  document.addEventListener("DOMContentLoaded", loadFechas);
+  // Exponer para compatibilidad con otros scripts que llaman window.loadResults(...)
+  window.loadResults = (fecha, key) => loadResults(fecha, key);
 
-  // Botón "Actualizar Datos" del header (si existe): limpia cache v3 y recarga
-  document.getElementById("update-btn")?.addEventListener("click", () => {
-    Object.keys(localStorage).forEach(k => { if (k.startsWith(`${CACHE_VER}:`)) localStorage.removeItem(k); });
-    const fecha = $("#fecha-select")?.value || "";
-    if (fecha) localStorage.setItem("selectedFecha", fecha);
-    location.reload();
-  });
-
-  // Exponer para enhancements.js (si lo necesita)
-  window.loadRaces   = loadRaces;
-  window.loadResults = loadResults;
+  document.addEventListener('DOMContentLoaded', init);
 })();
