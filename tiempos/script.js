@@ -22,7 +22,7 @@ const pick = (selList) => {
   return null;
 };
 
-// UI elements (tolerante a distintas IDs usadas antes)
+// UI elements (tolerante a distintas IDs)
 const UI = {
   fechaSelect: pick('#fechaSelect, #fecha, select[name="fecha"]'),
   carrerasList: pick('#carrerasList, #listaCarreras, #racesList'),
@@ -30,7 +30,7 @@ const UI = {
   actualizado: pick('#actualizado, #updatedAt, #lastUpdated'),
 };
 
-// Etiquetas bonitas
+// Etiquetas
 function formatRaceLabel(key) {
   const mSerie = key.match(/^serie(\d{1,2})$/i);
   const mRep   = key.match(/^repechaje(\d{1,2})$/i);
@@ -40,11 +40,10 @@ function formatRaceLabel(key) {
   if (mSemi)  return `SEMIFINAL ${parseInt(mSemi[1],10)}`;
   if (/^prefinal$/i.test(key)) return 'PREFINAL';
   if (/^final$/i.test(key))    return 'FINAL';
-  // fallback
   return key.toUpperCase();
 }
 
-// Orden para mostrar carreras
+// Orden de carreras
 function raceSortKey(key) {
   const norm = key.toLowerCase();
   const num = (re) => (norm.match(re)?.[1] ? parseInt(norm.match(re)[1],10) : 0);
@@ -53,7 +52,7 @@ function raceSortKey(key) {
   if (norm.startsWith('semifinal')) return [3, num(/^semifinal(\d+)/)];
   if (norm === 'prefinal')          return [4, 0];
   if (norm === 'final')             return [5, 0];
-  return [9, 0]; // otros al final
+  return [9, 0];
 }
 
 function hhmmss(d=new Date()) {
@@ -62,7 +61,7 @@ function hhmmss(d=new Date()) {
 }
 
 // ==============================
-// FETCH sin CORS problemático
+// FETCH (sin headers raros para evitar CORS)
 // ==============================
 async function fetchWithTimeout(url) {
   const controller = new AbortController();
@@ -94,7 +93,7 @@ async function fetchJSON(pathRel) {
   throw lastErr || new Error('fetch-failed');
 }
 
-// Reintentos para JSON de carrera (429/502 intermitentes)
+// Reintentos para JSON de carrera
 async function fetchRaceJSON(fecha, raceKey, maxRetries=2) {
   let attempt = 0;
   let delay = 600;
@@ -102,9 +101,8 @@ async function fetchRaceJSON(fecha, raceKey, maxRetries=2) {
     try {
       return await fetchJSON(R_RACE(fecha, raceKey));
     } catch (e) {
-      const is429 = String(e.message).includes('429');
-      const is502 = String(e.message).includes('502');
-      if (attempt < maxRetries && (is429 || is502)) {
+      const msg = String(e.message || '');
+      if (attempt < maxRetries && (msg.includes('429') || msg.includes('502'))) {
         await new Promise(r => setTimeout(r, delay));
         attempt++;
         delay *= 1.6;
@@ -116,13 +114,44 @@ async function fetchRaceJSON(fecha, raceKey, maxRetries=2) {
 }
 
 // ==============================
+// EXTRAER CARRERAS DESDE index.json (robusto)
+// ==============================
+function extractRaceKeys(idx) {
+  if (!idx) return [];
+  // 1) Si es array plano
+  if (Array.isArray(idx)) return idx;
+
+  // 2) Claves comunes
+  if (Array.isArray(idx.carreras)) return idx.carreras;
+  if (Array.isArray(idx.races))    return idx.races;
+  if (Array.isArray(idx.list))     return idx.list;
+
+  // 3) Map tipo {serie1:true, final:true, meta:"..."}
+  const META = new Set(['fecha','updated','updated_at','last_update','ts','count','total','version']);
+  let keys = Object.keys(idx || {}).filter(k => !META.has(k.toLowerCase()));
+
+  // Si el valor es booleano/objeto con exists, filtrar falsos
+  keys = keys.filter(k => {
+    const v = idx[k];
+    if (typeof v === 'boolean') return v;
+    if (v && typeof v === 'object' && 'exists' in v) return !!v.exists;
+    return true;
+  });
+
+  // 4) Aceptar solo nombres de carreras válidos
+  const valid = /^(serie\d{1,2}|repechaje\d{1,2}|semifinal\d{1,2}|prefinal|final)$/i;
+  keys = keys.filter(k => valid.test(k));
+
+  return keys;
+}
+
+// ==============================
 // RENDER
 // ==============================
 function renderCarrerasList(fecha, keys) {
   if (!UI.carrerasList) return;
   UI.carrerasList.innerHTML = '';
 
-  // único y ordenado
   const unique = [...new Set(keys)];
   unique.sort((a,b) => {
     const A = raceSortKey(a), B = raceSortKey(b);
@@ -155,7 +184,6 @@ function renderLoading(fecha, key) {
 function renderResultados(fecha, key, data) {
   if (!UI.resultados) return;
 
-  // data.results: [{position, number, name, t_final, laps, ...}]
   const rows = (data?.results || []).map(r => `
     <tr>
       <td class="col-pos">${r.position ?? ''}</td>
@@ -195,7 +223,7 @@ async function loadFechas() {
 
   const obj = await fetchJSON(R_FECHAS);
   const fechas = Array.isArray(obj) ? obj : (obj?.fechas || []);
-  fechas.sort(); // "Fecha 01"..."Fecha 18"
+  fechas.sort();
 
   if (!UI.fechaSelect) return fechas;
 
@@ -207,7 +235,6 @@ async function loadFechas() {
     UI.fechaSelect.appendChild(opt);
   }
 
-  // Default: última fecha disponible
   if (fechas.length) {
     UI.fechaSelect.value = fechas[fechas.length - 1];
   }
@@ -215,17 +242,14 @@ async function loadFechas() {
 }
 
 async function loadCarreras(fecha) {
-  // Limpio resultados y updated al cambiar de fecha
   if (UI.resultados) UI.resultados.innerHTML = '';
   if (UI.actualizado) UI.actualizado.textContent = '';
 
   const idx = await fetchJSON(R_INDEX(fecha));
+  const keys = extractRaceKeys(idx);
 
-  // idx puede ser: { carreras: ["serie1","..."] } o array plano
-  const keys = Array.isArray(idx) ? idx : (idx?.carreras || Object.keys(idx || {}));
   renderCarrerasList(fecha, keys);
 
-  // Autocargar la primera carrera si existe
   if (keys.length) {
     await loadResults(fecha, keys[0]);
   }
@@ -251,7 +275,7 @@ async function loadResults(fecha, raceKey) {
   }
 }
 
-// Exponer para otros scripts (ej. enhancements.js)
+// Exponer para otros scripts
 window.loadResults = loadResults;
 
 // Init
@@ -267,15 +291,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (f) await loadCarreras(f);
       };
     }
-  } catch (e) {
-    // Falla al cargar fechas
+  } catch {
     if (UI.fechaSelect) {
       UI.fechaSelect.innerHTML = `<option value="">No se pudo cargar</option>`;
     }
     if (UI.resultados) {
-      UI.resultados.innerHTML = `
-        <div class="error">No se pudieron cargar las fechas. Reintentá en unos segundos.</div>
-      `;
+      UI.resultados.innerHTML = `<div class="error">No se pudieron cargar las fechas. Reintentá en unos segundos.</div>`;
     }
   }
 });
