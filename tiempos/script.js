@@ -1,302 +1,268 @@
-// ==============================
-// CONFIG & HELPERS
-// ==============================
-const FETCH_TIMEOUT_MS = 12000;
+<script>
+(() => {
+  // ---------- Config ----------
+  const OWNER_REPO_BRANCH = 'jcheva123/tiemposweb-2025@main';
+  const RAW_BASE = 'https://raw.githubusercontent.com/jcheva123/tiemposweb-2025/main';
+  const CDN_BASE = `https://cdn.jsdelivr.net/gh/${OWNER_REPO_BRANCH}`;
+  const LS_SELECTED_FECHA = 'tw_selected_fecha';
+  const FETCH_TIMEOUT_MS = 12000;
 
-// Repos (no tocar)
-const RAW_BASE = 'https://raw.githubusercontent.com/jcheva123/tiemposweb-2025/main';
-const CDN_BASE = 'https://cdn.jsdelivr.net/gh/jcheva123/tiemposweb-2025@main';
-const ALT_CDN = 'https://cdn.statically.io/gh/jcheva123/tiemposweb-2025/main';
+  // ---------- Utiles DOM ----------
+  const $ = (sel) => document.querySelector(sel);
+  const on = (el, ev, fn) => el && el.addEventListener(ev, fn);
 
-// Paths relativos dentro del repo
-const R_FECHAS = 'resultados/fechas.json';
-const R_INDEX  = (fecha) => `resultados/${fecha}/index.json`;
-const R_RACE   = (fecha, raceKey) => `resultados/${fecha}/${raceKey}.json`;
+  const elFecha = $('#fecha-select');
+  const elRaceList = $('#race-list');
+  const elBody = $('#results-body');
+  const elUpdated = $('#last-updated');
+  const elSkeleton = $('#skeleton'); // opcional: si no está, no pasa nada
 
-// Buscá el primer elemento que exista entre varios selectores
-const pick = (selList) => {
-  for (const sel of selList.split(',')) {
-    const el = document.querySelector(sel.trim());
-    if (el) return el;
-  }
-  return null;
-};
+  // ---------- Texto de carrera ----------
+  const RACE_LABELS = {
+    final: 'Final',
+    prefinal: 'Prefinal',
+    repechaje: 'Repechaje',
+    semifinal: 'Semifinal',
+    serie: 'Serie'
+  };
+  const prettyRace = (key) => {
+    // key ejemplos: "serie1", "semifinal4", "repechaje2", "prefinal", "final"
+    const m = key.match(/^(serie|semifinal|repechaje)(\d+)$/i);
+    if (m) {
+      const base = m[1].toLowerCase();
+      const n = parseInt(m[2], 10);
+      return `${RACE_LABELS[base]} ${n}`;
+    }
+    if (/^prefinal$/i.test(key)) return RACE_LABELS.prefinal;
+    if (/^final$/i.test(key)) return RACE_LABELS.final;
+    return key;
+  };
 
-// UI elements (tolerante a distintas IDs)
-const UI = {
-  fechaSelect: pick('#fechaSelect, #fecha, select[name="fecha"]'),
-  carrerasList: pick('#carrerasList, #listaCarreras, #racesList'),
-  resultados: pick('#resultados, #results, #resultsContainer'),
-  actualizado: pick('#actualizado, #updatedAt, #lastUpdated'),
-};
+  // ---------- Network helpers ----------
+  const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 
-// Etiquetas
-function formatRaceLabel(key) {
-  const mSerie = key.match(/^serie(\d{1,2})$/i);
-  const mRep   = key.match(/^repechaje(\d{1,2})$/i);
-  const mSemi  = key.match(/^semifinal(\d{1,2})$/i);
-  if (mSerie) return `SERIE ${parseInt(mSerie[1],10)}`;
-  if (mRep)   return `REPECHAJE ${parseInt(mRep[1],10)}`;
-  if (mSemi)  return `SEMIFINAL ${parseInt(mSemi[1],10)}`;
-  if (/^prefinal$/i.test(key)) return 'PREFINAL';
-  if (/^final$/i.test(key))    return 'FINAL';
-  return key.toUpperCase();
-}
-
-// Orden de carreras
-function raceSortKey(key) {
-  const norm = key.toLowerCase();
-  const num = (re) => (norm.match(re)?.[1] ? parseInt(norm.match(re)[1],10) : 0);
-  if (norm.startsWith('serie'))     return [1, num(/^serie(\d+)/)];
-  if (norm.startsWith('repechaje')) return [2, num(/^repechaje(\d+)/)];
-  if (norm.startsWith('semifinal')) return [3, num(/^semifinal(\d+)/)];
-  if (norm === 'prefinal')          return [4, 0];
-  if (norm === 'final')             return [5, 0];
-  return [9, 0];
-}
-
-function hhmmss(d=new Date()) {
-  const pad = (n)=> String(n).padStart(2,'0');
-  return `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
-}
-
-// ==============================
-// FETCH (sin headers raros para evitar CORS)
-// ==============================
-async function fetchWithTimeout(url) {
-  const controller = new AbortController();
-  const to = setTimeout(() => controller.abort('timeout'), FETCH_TIMEOUT_MS);
-  try {
-    const res = await fetch(url, { mode: 'cors', signal: controller.signal });
-    if (!res.ok) throw new Error(String(res.status || 'fetch-failed'));
-    return await res.json();
-  } finally {
-    clearTimeout(to);
-  }
-}
-
-async function fetchJSON(pathRel) {
-  const ts = Date.now();
-  const urls = [
-    `${RAW_BASE}/${pathRel}?ts=${ts}`,
-    `${CDN_BASE}/${pathRel}?ts=${ts}`,
-    `${ALT_CDN}/${pathRel}?ts=${ts}`,
-  ];
-  let lastErr;
-  for (const u of urls) {
+  async function fetchWithTimeout(url, opts = {}) {
+    const controller = new AbortController();
+    const t = setTimeout(() => controller.abort('timeout'), FETCH_TIMEOUT_MS);
     try {
-      return await fetchWithTimeout(u);
-    } catch (e) {
-      lastErr = e;
+      const res = await fetch(url, {
+        ...opts,
+        signal: controller.signal,
+        // cache bust + no-store para ver cambios al toque
+        cache: 'no-store',
+        headers: { 'Cache-Control': 'no-store' }
+      });
+      if (!res.ok) throw new Error(String(res.status || 'fetch-failed'));
+      return await res.json();
+    } finally {
+      clearTimeout(t);
     }
   }
-  throw lastErr || new Error('fetch-failed');
-}
 
-// Reintentos para JSON de carrera
-async function fetchRaceJSON(fecha, raceKey, maxRetries=2) {
-  let attempt = 0;
-  let delay = 600;
-  while (true) {
+  async function fetchJSON(pathRel) {
+    // RAW primero (más fresco), si falla vamos a CDN
+    const ts = Date.now();
+    const rawURL = `${RAW_BASE}/${pathRel}?ts=${ts}`;
     try {
-      return await fetchJSON(R_RACE(fecha, raceKey));
+      return await fetchWithTimeout(rawURL);
     } catch (e) {
-      const msg = String(e.message || '');
-      if (attempt < maxRetries && (msg.includes('429') || msg.includes('502'))) {
-        await new Promise(r => setTimeout(r, delay));
-        attempt++;
-        delay *= 1.6;
-        continue;
-      }
-      throw e;
+      // fallback CDN (algunas veces más permisivo ante 429 de RAW)
+      const cdnURL = `${CDN_BASE}/${pathRel}?ts=${ts}`;
+      return await fetchWithTimeout(cdnURL);
     }
   }
-}
 
-// ==============================
-// EXTRAER CARRERAS DESDE index.json (robusto)
-// ==============================
-function extractRaceKeys(idx) {
-  if (!idx) return [];
-  // 1) Si es array plano
-  if (Array.isArray(idx)) return idx;
+  // ---------- Estado ----------
+  let currentFecha = null;
+  let inflight = null; // AbortController para carrera en curso
 
-  // 2) Claves comunes
-  if (Array.isArray(idx.carreras)) return idx.carreras;
-  if (Array.isArray(idx.races))    return idx.races;
-  if (Array.isArray(idx.list))     return idx.list;
-
-  // 3) Map tipo {serie1:true, final:true, meta:"..."}
-  const META = new Set(['fecha','updated','updated_at','last_update','ts','count','total','version']);
-  let keys = Object.keys(idx || {}).filter(k => !META.has(k.toLowerCase()));
-
-  // Si el valor es booleano/objeto con exists, filtrar falsos
-  keys = keys.filter(k => {
-    const v = idx[k];
-    if (typeof v === 'boolean') return v;
-    if (v && typeof v === 'object' && 'exists' in v) return !!v.exists;
-    return true;
-  });
-
-  // 4) Aceptar solo nombres de carreras válidos
-  const valid = /^(serie\d{1,2}|repechaje\d{1,2}|semifinal\d{1,2}|prefinal|final)$/i;
-  keys = keys.filter(k => valid.test(k));
-
-  return keys;
-}
-
-// ==============================
-// RENDER
-// ==============================
-function renderCarrerasList(fecha, keys) {
-  if (!UI.carrerasList) return;
-  UI.carrerasList.innerHTML = '';
-
-  const unique = [...new Set(keys)];
-  unique.sort((a,b) => {
-    const A = raceSortKey(a), B = raceSortKey(b);
-    return (A[0]-B[0]) || (A[1]-B[1]);
-  });
-
-  for (const key of unique) {
-    const li = document.createElement('li');
-    li.className = 'race-item';
-    li.textContent = formatRaceLabel(key);
-    li.onclick = () => loadResults(fecha, key);
-    UI.carrerasList.appendChild(li);
-  }
-}
-
-function renderLoading(fecha, key) {
-  if (UI.resultados) {
-    UI.resultados.innerHTML = `
-      <div class="loading">
-        <div class="spinner"></div>
-        <div class="loading-text">Cargando… <span class="muted">(${fecha} · ${formatRaceLabel(key)})</span></div>
-      </div>
-    `;
-  }
-  if (UI.actualizado) {
-    UI.actualizado.textContent = `Actualizando… ${fecha} · ${formatRaceLabel(key)}`;
-  }
-}
-
-function renderResultados(fecha, key, data) {
-  if (!UI.resultados) return;
-
-  const rows = (data?.results || []).map(r => `
-    <tr>
-      <td class="col-pos">${r.position ?? ''}</td>
-      <td class="col-num">${r.number ?? ''}</td>
-      <td class="col-name">${r.name ?? ''}</td>
-      <td class="col-total">${r.t_final ?? ''}</td>
-    </tr>
-  `).join('');
-
-  UI.resultados.innerHTML = `
-    <div class="race-title">${formatRaceLabel(key)}</div>
-    <table class="tabla-resultados">
-      <thead>
-        <tr>
-          <th>Pos.</th>
-          <th>N°</th>
-          <th>Nombre</th>
-          <th>Total</th>
-        </tr>
-      </thead>
-      <tbody>${rows || `<tr><td colspan="4" class="muted">Sin datos aún</td></tr>`}</tbody>
-    </table>
-  `;
-
-  if (UI.actualizado) {
-    UI.actualizado.textContent = `Actualizado: ${hhmmss()} · ${fecha} · ${formatRaceLabel(key)}`;
-  }
-}
-
-// ==============================
-// FLOW
-// ==============================
-async function loadFechas() {
-  if (UI.fechaSelect) {
-    UI.fechaSelect.innerHTML = `<option value="">Cargando fechas…</option>`;
+  function setLoading(isLoading) {
+    if (elSkeleton) elSkeleton.hidden = !isLoading;
+    if (elBody) elBody.innerHTML = isLoading ? '' : elBody.innerHTML;
   }
 
-  const obj = await fetchJSON(R_FECHAS);
-  const fechas = Array.isArray(obj) ? obj : (obj?.fechas || []);
-  fechas.sort();
-
-  if (!UI.fechaSelect) return fechas;
-
-  UI.fechaSelect.innerHTML = '';
-  for (const f of fechas) {
-    const opt = document.createElement('option');
-    opt.value = f;
-    opt.textContent = f;
-    UI.fechaSelect.appendChild(opt);
+  function setUpdated(fecha, raceKey) {
+    if (!elUpdated) return;
+    const now = new Date();
+    const hh = String(now.getHours()).padStart(2, '0');
+    const mm = String(now.getMinutes()).padStart(2, '0');
+    const ss = String(now.getSeconds()).padStart(2, '0');
+    const raceTxt = raceKey ? ` – ${fecha} · ${prettyRace(raceKey)}` : '';
+    elUpdated.textContent = `Actualizado: ${hh}:${mm}:${ss}${raceTxt}`;
   }
 
-  if (fechas.length) {
-    UI.fechaSelect.value = fechas[fechas.length - 1];
-  }
-  return fechas;
-}
-
-async function loadCarreras(fecha) {
-  if (UI.resultados) UI.resultados.innerHTML = '';
-  if (UI.actualizado) UI.actualizado.textContent = '';
-
-  const idx = await fetchJSON(R_INDEX(fecha));
-  const keys = extractRaceKeys(idx);
-
-  renderCarrerasList(fecha, keys);
-
-  if (keys.length) {
-    await loadResults(fecha, keys[0]);
-  }
-}
-
-async function loadResults(fecha, raceKey) {
-  try {
-    renderLoading(fecha, raceKey);
-    const data = await fetchRaceJSON(fecha, raceKey, 2);
-    renderResultados(fecha, raceKey, data);
-  } catch (e) {
-    if (UI.resultados) {
-      UI.resultados.innerHTML = `
-        <div class="error">
-          No se pudo cargar <b>${formatRaceLabel(raceKey)}</b> de <b>${fecha}</b>.
-          <div class="muted">${String(e.message || e)}</div>
-        </div>
-      `;
-    }
-    if (UI.actualizado) {
-      UI.actualizado.textContent = `Error al actualizar: ${fecha} · ${formatRaceLabel(raceKey)}`;
-    }
-  }
-}
-
-// Exponer para otros scripts
-window.loadResults = loadResults;
-
-// Init
-document.addEventListener('DOMContentLoaded', async () => {
-  try {
-    const fechas = await loadFechas();
-    const currentFecha = UI.fechaSelect ? UI.fechaSelect.value : (fechas?.slice(-1)[0] || null);
-    if (currentFecha) await loadCarreras(currentFecha);
-
-    if (UI.fechaSelect) {
-      UI.fechaSelect.onchange = async (e) => {
-        const f = e.target.value;
-        if (f) await loadCarreras(f);
+  // ---------- Render ----------
+  function renderRaceButtons(keys) {
+    if (!elRaceList) return;
+    elRaceList.innerHTML = '';
+    const frag = document.createDocumentFragment();
+    keys.forEach(k => {
+      const li = document.createElement('li');
+      li.textContent = prettyRace(k);
+      li.dataset.race = k;
+      li.tabIndex = 0;
+      li.className = 'race-item';
+      li.onclick = () => loadResults(currentFecha, k);
+      li.onkeydown = (ev) => {
+        if (ev.key === 'Enter' || ev.key === ' ') {
+          ev.preventDefault();
+          li.click();
+        }
       };
+      frag.appendChild(li);
+    });
+    elRaceList.appendChild(frag);
+  }
+
+  function markActiveRace(raceKey) {
+    if (!elRaceList) return;
+    elRaceList.querySelectorAll('.race-item').forEach(li => {
+      li.classList.toggle('active', li.dataset.race === raceKey);
+    });
+  }
+
+  function renderResults(json) {
+    if (!elBody) return;
+    elBody.innerHTML = '';
+    if (!json || !Array.isArray(json.results)) {
+      return;
     }
-  } catch {
-    if (UI.fechaSelect) {
-      UI.fechaSelect.innerHTML = `<option value="">No se pudo cargar</option>`;
-    }
-    if (UI.resultados) {
-      UI.resultados.innerHTML = `<div class="error">No se pudieron cargar las fechas. Reintentá en unos segundos.</div>`;
+    const frag = document.createDocumentFragment();
+    json.results.forEach(r => {
+      const tr = document.createElement('tr');
+
+      // Columnas: Pos. | N° | Nombre | Total
+      const tdPos = document.createElement('td');
+      tdPos.textContent = r.position ?? '';
+      const tdNum = document.createElement('td');
+      tdNum.textContent = r.number ?? '';
+      const tdName = document.createElement('td');
+      tdName.textContent = r.name ?? '';
+      const tdTotal = document.createElement('td');
+      tdTotal.textContent = (r.t_final ?? r.total ?? '').toString();
+
+      tr.appendChild(tdPos);
+      tr.appendChild(tdNum);
+      tr.appendChild(tdName);
+      tr.appendChild(tdTotal);
+
+      frag.appendChild(tr);
+    });
+    elBody.appendChild(frag);
+  }
+
+  // ---------- Carga de datos ----------
+  function naturalRaceSort(a, b) {
+    const toKey = (x) => {
+      const m = x.match(/^(serie|semifinal|repechaje)(\d+)$/i);
+      if (m) return { kind: m[1].toLowerCase(), n: parseInt(m[2], 10) };
+      if (/^prefinal$/i.test(x)) return { kind: 'prefinal', n: 0 };
+      if (/^final$/i.test(x)) return { kind: 'final', n: 0 };
+      return { kind: 'zzz', n: 9999 };
+    };
+    const ka = toKey(a), kb = toKey(b);
+    const order = ['serie', 'repechaje', 'semifinal', 'prefinal', 'final', 'zzz'];
+    if (ka.kind !== kb.kind) return order.indexOf(ka.kind) - order.indexOf(kb.kind);
+    return ka.n - kb.n;
+  }
+
+  async function loadFechas() {
+    // Solo lo que exista en resultados/fechas.json
+    try {
+      const data = await fetchJSON('resultados/fechas.json');
+      const fechas = Array.isArray(data) ? data : [];
+      if (!elFecha) return;
+      elFecha.innerHTML = '';
+      fechas.forEach(f => {
+        const opt = document.createElement('option');
+        opt.value = f;
+        opt.textContent = f;
+        elFecha.appendChild(opt);
+      });
+
+      // Selección persistida o primera
+      const saved = localStorage.getItem(LS_SELECTED_FECHA);
+      const toSelect = fechas.includes(saved) ? saved : (fechas[0] || null);
+      if (toSelect) {
+        elFecha.value = toSelect;
+        currentFecha = toSelect;
+        await loadIndex(currentFecha);
+      } else {
+        // Sin fechas -> limpiar UI
+        if (elRaceList) elRaceList.innerHTML = '';
+        if (elBody) elBody.innerHTML = '';
+        setUpdated('', '');
+      }
+    } catch {
+      // Si falla, UI vacía sin romper
+      if (elFecha) elFecha.innerHTML = '';
+      if (elRaceList) elRaceList.innerHTML = '';
+      if (elBody) elBody.innerHTML = '';
+      setUpdated('', '');
     }
   }
-});
+
+  async function loadIndex(fecha) {
+    if (!fecha) return;
+    setUpdated(fecha, '');
+    // index.json puede venir como {races: ["serie1", ...]} o ["serie1", ...]
+    const idx = await fetchJSON(`resultados/${encodeURIComponent(fecha)}/index.json`);
+    let races = [];
+    if (Array.isArray(idx)) races = idx;
+    else if (idx && Array.isArray(idx.races)) races = idx.races;
+    races = [...new Set(races)].sort(naturalRaceSort);
+    renderRaceButtons(races);
+    // Si hay alguna, cargar la primera para evitar “pantalla vieja”
+    if (races.length) {
+      loadResults(fecha, races[0]);
+    } else {
+      if (elBody) elBody.innerHTML = '';
+    }
+  }
+
+  async function loadResults(fecha, raceKey) {
+    if (!fecha || !raceKey) return;
+
+    // Cancelar una carga anterior si estaba en curso
+    if (inflight) {
+      try { inflight.abort(); } catch {}
+      inflight = null;
+    }
+    // AbortController por si quisiéramos abortar luego (aquí fetch ya usa timeout, igualmente protegemos)
+    inflight = new AbortController();
+
+    // Reset UI antes de pedir datos (evita ver la carrera anterior)
+    setLoading(true);
+    markActiveRace(raceKey);
+    setUpdated(fecha, raceKey);
+
+    try {
+      const path = `resultados/${encodeURIComponent(fecha)}/${raceKey.toLowerCase()}.json`;
+      const data = await fetchJSON(path);
+      renderResults(data);
+    } catch {
+      // Si falló la carga de la carrera, vaciamos tabla para no mostrar anterior
+      if (elBody) elBody.innerHTML = '';
+    } finally {
+      setLoading(false);
+      inflight = null;
+    }
+  }
+
+  // ---------- Eventos ----------
+  on(document, 'DOMContentLoaded', () => {
+    // Evitamos dobles bindings si el script se incluye dos veces accidentalmente
+    if (window.__tw_booted__) return;
+    window.__tw_booted__ = true;
+
+    on(elFecha, 'change', async (e) => {
+      const val = e.target.value;
+      localStorage.setItem(LS_SELECTED_FECHA, val);
+      currentFecha = val;
+      await loadIndex(currentFecha);
+    });
+
+    loadFechas(); // arranque
+  });
+})();
+</script>
