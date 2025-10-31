@@ -17,6 +17,56 @@ const ORDER = [
   ...Array.from({length:4},  (_,i)=>`semifinal${i+1}`),
   'prefinal','final'
 ];
+// Aceptamos claves tipo "serie1", "repechaje2", "semifinal3", "prefinal", "final"
+const RACE_KEY_RE = /^(?:serie(?:0?[1-9]|1[0-3])|repechaje[1-6]|semifinal[1-4]|prefinal|final)$/i;
+
+function toRaceKey(x) {
+  if (x == null) return null;
+  let s = String(x).trim().toLowerCase();
+  // normalizo "serie 1" -> "serie1", idem otras
+  s = s.replace(/\s+/g, '');
+  if (RACE_KEY_RE.test(s)) return s;
+  return null;
+}
+
+// Devuelve array de claves de carreras a partir del index crudo
+function normalizeIndex(raw) {
+  if (!raw) return [];
+
+  // Caso array directo
+  if (Array.isArray(raw)) {
+    return raw.map(toRaceKey).filter(Boolean);
+  }
+
+  // Caso con contenedor "races"
+  if (raw && raw.races != null) {
+    const r = raw.races;
+    if (Array.isArray(r)) return r.map(toRaceKey).filter(Boolean);
+    if (typeof r === 'object') {
+      return Object.keys(r).map(toRaceKey).filter(Boolean);
+    }
+  }
+
+  // Caso objeto plano con flags por carrera
+  if (typeof raw === 'object') {
+    return Object.keys(raw)
+      .map(toRaceKey)
+      .filter(Boolean)
+      .filter(k => {
+        const v = raw[k];
+        // si hay boolean true o un objeto con datos, lo tomo como presente
+        return v === true || (v && typeof v === 'object');
+      });
+  }
+
+  // Último intento si viniera como string JSON
+  try {
+    const parsed = JSON.parse(raw);
+    return normalizeIndex(parsed);
+  } catch {
+    return [];
+  }
+}
 
 // ================== HELPERS ==================
 const qs  = (sel, root=document) => root.querySelector(sel);
@@ -178,57 +228,64 @@ async function loadFechas() {
 
 
 async function loadRaces(fecha) {
-  const fSel = qs('#fecha-select');
-  const f = fecha || (fSel ? fSel.value : '');
+  const f = fecha || document.querySelector('#fecha-select')?.value;
   if (!f) return;
 
-  const list = qs('#race-list ul');
-  list.innerHTML = '<li class="loading">Cargando carreras…</li>';
+  // UI
+  const list = document.querySelector('#race-list ul') || document.querySelector('#carrerasList');
+  if (list) list.innerHTML = '<li class="loading">Cargando carreras…</li>';
+  setStatus?.(`Cargando — ${f}`);
 
   try {
-    const idx = await fetchJSON(`${encodeURIComponent(f)}/index.json`);
-    const keys = Object.keys(idx).filter(k => idx[k]);
-    renderRaceList(f, keys);
+    const idxRaw = await fetchJSON(`${encodeURIComponent(f)}/index.json`);
+    let keys = normalizeIndex(idxRaw);
 
-    CURRENT.fecha = f;
-    // Cargar la primera automáticamente
-    if (keys.length) {
-      await window.loadResults(f, keys[0]);
-    } else {
-      const tbody = qs('#results tbody');
-      if (tbody) tbody.innerHTML = '';
-      updateMeta(f, '(sin carreras)');
+    // orden final usando tu ORDER
+    const orderPos = k => ORDER.indexOf(k) === -1 ? 999 : ORDER.indexOf(k);
+    keys = Array.from(new Set(keys)).sort((a,b)=> orderPos(a)-orderPos(b));
+
+    // Render lista
+    if (list) {
+      list.innerHTML = '';
+      if (!keys.length) {
+        list.innerHTML = '<li class="empty">Sin carreras cargadas aún.</li>';
+      } else {
+        for (const k of keys) {
+          const li = document.createElement('li');
+          li.className = 'race-item';
+          li.textContent = RACE_LABELS[k] || k.toUpperCase();
+          li.onclick = () => window.loadResults(f, k);
+          list.appendChild(li);
+        }
+      }
     }
-  } catch (e) {
-    console.error(`No se pudo cargar INDEX de ${f}`, e);
-    showToast(`No se pudo cargar las carreras de ${f}.`);
-    list.innerHTML = '<li class="error">Error al cargar</li>';
+
+    // Cargar la primera disponible
+    const first = keys[0];
+    const resultsBox = document.querySelector('#results tbody') || document.querySelector('#resultados');
+    if (!first) {
+      if (resultsBox) resultsBox.innerHTML = '<tr><td colspan="7" class="empty">Sin carreras cargadas aún.</td></tr>';
+      setStatus?.(`Actualizado: ${nowHHMMSS?.()} — ${f} — (sin carreras)`);
+      return;
+    }
+
+    // skeleton
+    if (resultsBox) {
+      const container = document.querySelector('#results .table-container') || document.querySelector('#resultados');
+      if (container) container.classList.add('loading');
+    }
+
+    await window.loadResults(f, first);
+  } catch (err) {
+    console.error(`No se pudo cargar INDEX de ${f}`, err);
+    showToast?.(`No se pudo cargar INDEX de ${f}.`);
+    if (list) list.innerHTML = '<li class="error">Error al cargar carreras</li>';
+    const resultsBox = document.querySelector('#results tbody') || document.querySelector('#resultados');
+    if (resultsBox) resultsBox.innerHTML = '';
+    setStatus?.('Error al cargar');
   }
 }
 
-async function loadResults(fecha, raceKey) {
-  if (!fecha || !raceKey) return;
-  CURRENT.fecha = fecha;
-  CURRENT.race  = raceKey;
-
-  // limpiar vista y mostrar skeleton
-  const tbody = qs('#results tbody');
-  if (tbody) tbody.innerHTML = '';
-  showResultsSkeleton();
-
-  try {
-    const data = await fetchJSON(`${encodeURIComponent(fecha)}/${raceKey}.json`);
-    clearResultsSkeleton();
-    renderResultsTable(data);
-    updateMeta(fecha, raceKey);
-  } catch (e) {
-    clearResultsSkeleton();
-    console.error('Error cargando resultados:', e);
-    showToast('No se pudo cargar resultados.');
-    const tb = qs('#results tbody');
-    if (tb) tb.innerHTML = '<tr><td colspan="7">Error al cargar esta carrera.</td></tr>';
-  }
-}
 
 // ================== EVENTS ==================
 document.addEventListener('DOMContentLoaded', () => {
@@ -265,4 +322,5 @@ document.addEventListener('DOMContentLoaded', () => {
 // Exponer para el HTML inline (onchange del select)
 window.loadRaces   = loadRaces;
 window.loadResults = loadResults;
+
 
