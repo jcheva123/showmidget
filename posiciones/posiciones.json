@@ -1,6 +1,6 @@
 {
   "meta": {
-    "source_pdf": "FECHA1.pdf",
+    "source_pdf": "FECHA10.pdf",
     "extracted_at_utc": "2025-10-20T17:15:50+00:00",
     "fechas_cumplidas": 10,
     "fechas_detectadas": [
@@ -11,7 +11,7 @@
     {
       "pos": 1,
       "nro": 1,
-      "nombre": "LUCIANO",
+      "nombre": "VALLEJOS LUCIANO",
       "anterior": 161.85,
       "serie": 3.0,
       "semif": 8.0,
@@ -24,7 +24,7 @@
     {
       "pos": 2,
       "nro": 2,
-      "nombre": "LUCIANO",
+      "nombre": "FRANCHI LUCIANO",
       "anterior": 104.6,
       "serie": 0.0,
       "semif": 3.0,
@@ -37,7 +37,7 @@
     {
       "pos": 3,
       "nro": 3,
-      "nombre": "AGUSTIN",
+      "nombre": "PEREZ MELER AGUSTÍN",
       "anterior": 85.15,
       "serie": 2.75,
       "semif": 3.0,
@@ -50,7 +50,7 @@
     {
       "pos": 4,
       "nro": 4,
-      "nombre": "CLAUDIO",
+      "nombre": "ROTH CLAUDIO",
       "anterior": 127.0,
       "serie": 0.0,
       "semif": 0.0,
@@ -63,7 +63,7 @@
     {
       "pos": 5,
       "nro": 5,
-      "nombre": "ROY",
+      "nombre": "ALTAMIRANO ROY",
       "anterior": 70.05,
       "serie": 3.0,
       "semif": 4.5,
@@ -76,7 +76,7 @@
     {
       "pos": 6,
       "nro": 6,
-      "nombre": "SEBASTIAN",
+      "nombre": "BURGOS SEBASTIÁN",
       "anterior": 202.0,
       "serie": 3.0,
       "semif": 8.0,
@@ -89,7 +89,7 @@
     {
       "pos": 7,
       "nro": 7,
-      "nombre": "EZEQUIEL",
+      "nombre": "ROTH EZEQUIEL",
       "anterior": 79.9,
       "serie": 2.75,
       "semif": 0.0,
@@ -102,7 +102,7 @@
     {
       "pos": 8,
       "nro": 8,
-      "nombre": "KEVIN",
+      "nombre": "ALTAMIRANO KEVIN",
       "anterior": 91.7,
       "serie": 1.5,
       "semif": 0.0,
@@ -115,7 +115,7 @@
     {
       "pos": 9,
       "nro": 9,
-      "nombre": "MATIAS",
+      "nombre": "OYOLA MATÍAS",
       "anterior": 134.25,
       "serie": 3.0,
       "semif": 2.5,
@@ -128,7 +128,7 @@
     {
       "pos": 10,
       "nro": 11,
-      "nombre": "ESTEBAN",
+      "nombre": "MANCINI ESTEBAN",
       "anterior": 71.6,
       "serie": 2.0,
       "semif": 0.0,
@@ -141,7 +141,7 @@
     {
       "pos": 11,
       "nro": 12,
-      "nombre": "JAVIER",
+      "nombre": "REY JAVIER",
       "anterior": 50.5,
       "serie": 0.0,
       "semif": 1.5,
@@ -154,7 +154,7 @@
     {
       "pos": 12,
       "nro": 13,
-      "nombre": "JAVIER",
+      "nombre": "ROUAIX JAVIER",
       "anterior": 84.8,
       "serie": 2.75,
       "semif": 0.0,
@@ -167,7 +167,7 @@
     {
       "pos": 13,
       "nro": 14,
-      "nombre": "FERNANDO",
+      "nombre": "SALDAMANDO FERNANDO",
       "anterior": 95.9,
       "serie": 2.75,
       "semif": 3.5,
@@ -180,7 +180,7 @@
     {
       "pos": 14,
       "nro": 15,
-      "nombre": "FEDERICO",
+      "nombre": "HIDALGO FEDERICO",
       "anterior": 86.3,
       "serie": 3.0,
       "semif": 3.5,
@@ -193,7 +193,7 @@
     {
       "pos": 15,
       "nro": 16,
-      "nombre": "JUAN CRUZ",
+      "nombre": "RODRIGUEZ JUAN CRUZ",
       "anterior": 28.4,
       "serie": 2.0,
       "semif": 6.0,
@@ -206,20 +206,20 @@
     {
       "pos": 16,
       "nro": 18,
-      "nombre": "GABRIEL",
-      "anterior": NaN,
-      "serie": NaN,
-      "semif": NaN,
-      "prefinal": NaN,
-      "final": NaN,
-      "total": NaN,
+      "nombre": "SCHIEBELBEIN GABRIEL",
+      "anterior": 86.3,
+      "serie": 3.0,
+      "semif": 3.5,
+      "prefinal": 0.0,
+      "final": 0.0,
+      "total": 92.8,
       "fin": NaN,
-      "extras_raw": null
+      "extras_raw": "4 (01)"
     },
     {
       "pos": 17,
       "nro": 19,
-      "nombre": "JUAN",
+      "nombre": "TODINO JUAN",
       "anterior": 41.75,
       "serie": 2.25,
       "semif": 0.75,
@@ -232,7 +232,7 @@
     {
       "pos": 18,
       "nro": 20,
-      "nombre": "SEBASTIAN",
+      "nombre": "PEREZ SEBASTIÁN",
       "anterior": 52.25,
       "serie": 2.75,
       "semif": 3.0,
@@ -245,7 +245,7 @@
     {
       "pos": 19,
       "nro": 21,
-      "nombre": "NAHUEL",
+      "nombre": "SCHMIT NAHUEL",
       "anterior": 67.45,
       "serie": 3.0,
       "semif": 6.0,
@@ -258,7 +258,7 @@
     {
       "pos": 20,
       "nro": 22,
-      "nombre": "FERNANDO",
+      "nombre": "BONIVARDO FERNANDO",
       "anterior": 19.75,
       "serie": 0.0,
       "semif": 0.0,
@@ -271,7 +271,7 @@
     {
       "pos": 21,
       "nro": 23,
-      "nombre": "JULIO",
+      "nombre": "PINEIRO JULIO",
       "anterior": 88.4,
       "serie": 3.0,
       "semif": 0.0,
@@ -284,7 +284,7 @@
     {
       "pos": 22,
       "nro": 24,
-      "nombre": "MARCELO",
+      "nombre": "AUSILI MARCELO",
       "anterior": 43.3,
       "serie": 2.5,
       "semif": 2.0,
@@ -297,7 +297,7 @@
     {
       "pos": 23,
       "nro": 25,
-      "nombre": "NICOLAS",
+      "nombre": "PALMA NICOLÁS",
       "anterior": NaN,
       "serie": NaN,
       "semif": NaN,
@@ -310,7 +310,7 @@
     {
       "pos": 24,
       "nro": 26,
-      "nombre": "GONZALO",
+      "nombre": "BREZINA GONZALO",
       "anterior": NaN,
       "serie": 48.1,
       "semif": 1.0,
@@ -323,7 +323,7 @@
     {
       "pos": 25,
       "nro": 27,
-      "nombre": "AGUSTIN",
+      "nombre": "AUSILI AGUSTÍN",
       "anterior": NaN,
       "serie": NaN,
       "semif": NaN,
@@ -336,7 +336,7 @@
     {
       "pos": 26,
       "nro": 28,
-      "nombre": "NICOLAS",
+      "nombre": "ANASTASIO NICOLÁS",
       "anterior": 49.2,
       "serie": 2.5,
       "semif": 0.75,
@@ -349,7 +349,7 @@
     {
       "pos": 27,
       "nro": 29,
-      "nombre": "JOAQUIN",
+      "nombre": "GARCIA LOPEZ JOAQUÍN",
       "anterior": 36.6,
       "serie": 2.5,
       "semif": 2.0,
@@ -362,7 +362,7 @@
     {
       "pos": 28,
       "nro": 30,
-      "nombre": "JONATHAN",
+      "nombre": "RESOLA JONATHAN",
       "anterior": 41.8,
       "serie": 2.75,
       "semif": 0.0,
@@ -375,7 +375,7 @@
     {
       "pos": 29,
       "nro": 31,
-      "nombre": "CARLOS",
+      "nombre": "PUCCINELLI CARLOS",
       "anterior": 44.0,
       "serie": 2.5,
       "semif": 0.0,
@@ -388,20 +388,20 @@
     {
       "pos": 30,
       "nro": 32,
-      "nombre": "JULIAN",
-      "anterior": NaN,
-      "serie": NaN,
-      "semif": NaN,
-      "prefinal": NaN,
-      "final": NaN,
-      "total": NaN,
-      "fin": NaN,
+      "nombre": "MELGER JULIAN",
+      "anterior": 32.05,
+      "serie": 0.0,
+      "semif": 0.0,
+      "prefinal": 0.0,
+      "final": 0.0,
+      "total": 32.05,
+      "fin": 5.0,
       "extras_raw": null
     },
     {
       "pos": 31,
       "nro": 33,
-      "nombre": "NICOLAS",
+      "nombre": "CAPUTO NICOLÁS",
       "anterior": NaN,
       "serie": 31.6,
       "semif": 0.0,
@@ -414,7 +414,7 @@
     {
       "pos": 32,
       "nro": 34,
-      "nombre": "NEHUEN",
+      "nombre": "DAILOFF NEHUEN",
       "anterior": 34.55,
       "serie": 2.25,
       "semif": 3.5,
@@ -427,7 +427,7 @@
     {
       "pos": 33,
       "nro": 35,
-      "nombre": "MAXIMILIANO",
+      "nombre": "MORENO MAXIMILIANO",
       "anterior": NaN,
       "serie": 42.5,
       "semif": 2.75,
@@ -440,7 +440,7 @@
     {
       "pos": 34,
       "nro": 36,
-      "nombre": "NICOLAS",
+      "nombre": "MACAZAGA NICOLAS",
       "anterior": 78.05,
       "serie": 3.0,
       "semif": 6.0,
@@ -453,7 +453,7 @@
     {
       "pos": 35,
       "nro": 38,
-      "nombre": "BRAIAN",
+      "nombre": "MADRIL BRAIAN",
       "anterior": NaN,
       "serie": NaN,
       "semif": NaN,
@@ -466,20 +466,20 @@
     {
       "pos": 36,
       "nro": 39,
-      "nombre": "EROS",
-      "anterior": NaN,
-      "serie": NaN,
-      "semif": NaN,
-      "prefinal": NaN,
-      "final": NaN,
-      "total": NaN,
+      "nombre": "PAGLIALUNGA EROS",
+      "anterior": 45.8,
+      "serie": 2.25,
+      "semif": 0.25,
+      "prefinal": 0.0,
+      "final": 0.0,
+      "total": 48.3,
       "fin": NaN,
-      "extras_raw": null
+      "extras_raw": "6 (01)"
     },
     {
       "pos": 37,
       "nro": 40,
-      "nombre": "VALENTIN",
+      "nombre": "BALDUCHI VALENTIN",
       "anterior": 60.25,
       "serie": 2.75,
       "semif": 6.0,
@@ -492,7 +492,7 @@
     {
       "pos": 38,
       "nro": 41,
-      "nombre": "SANTINO",
+      "nombre": "CUTINI SANTINO",
       "anterior": 1.85,
       "serie": 0.0,
       "semif": 0.0,
@@ -505,20 +505,20 @@
     {
       "pos": 39,
       "nro": 43,
-      "nombre": "FABIAN",
-      "anterior": NaN,
-      "serie": NaN,
-      "semif": NaN,
-      "prefinal": NaN,
-      "final": NaN,
-      "total": NaN,
-      "fin": NaN,
+      "nombre": "COLTURI FABIAN",
+      "anterior": 39.8,
+      "serie": 2.0,
+      "semif": 0.0,
+      "prefinal": 0.0,
+      "final": 0.0,
+      "total": 41.8,
+      "fin": 80.0,
       "extras_raw": null
     },
     {
       "pos": 40,
       "nro": 44,
-      "nombre": "NEHUEN",
+      "nombre": "MARCOS NEHUEN",
       "anterior": 57.7,
       "serie": 2.5,
       "semif": 1.0,
@@ -531,7 +531,7 @@
     {
       "pos": 41,
       "nro": 45,
-      "nombre": "GASTON",
+      "nombre": "PETRACCI GASTON",
       "anterior": NaN,
       "serie": 38.0,
       "semif": 2.25,
@@ -544,20 +544,20 @@
     {
       "pos": 42,
       "nro": 46,
-      "nombre": "BRAIAN",
-      "anterior": NaN,
-      "serie": NaN,
-      "semif": NaN,
-      "prefinal": NaN,
-      "final": NaN,
-      "total": NaN,
+      "nombre": "DUPONT BRAIAN",
+      "anterior": 24.75,
+      "serie": 2.0,
+      "semif": 0.0,
+      "prefinal": 0.0,
+      "final": 0.0,
+      "total": 26.75,
       "fin": NaN,
-      "extras_raw": null
+      "extras_raw": "7 (01)"
     },
     {
       "pos": 43,
       "nro": 47,
-      "nombre": "GUSTAVO",
+      "nombre": "CUTINI GUSTAVO",
       "anterior": NaN,
       "serie": 40.95,
       "semif": 2.25,
@@ -570,7 +570,7 @@
     {
       "pos": 44,
       "nro": 48,
-      "nombre": "GUILLERMO",
+      "nombre": "YUROVSKY GUILLERMO",
       "anterior": NaN,
       "serie": NaN,
       "semif": NaN,
@@ -583,7 +583,7 @@
     {
       "pos": 45,
       "nro": 49,
-      "nombre": "FLAVIO",
+      "nombre": "PERUGINI FLAVIO",
       "anterior": NaN,
       "serie": NaN,
       "semif": NaN,
@@ -596,7 +596,7 @@
     {
       "pos": 46,
       "nro": 50,
-      "nombre": "JOAQUIN",
+      "nombre": "ANDRADE JOAQUIN",
       "anterior": 26.15,
       "serie": 0.0,
       "semif": 0.0,
@@ -609,7 +609,7 @@
     {
       "pos": 47,
       "nro": 51,
-      "nombre": "NICOLAS",
+      "nombre": "ONORATO NICOLAS",
       "anterior": 21.95,
       "serie": 2.0,
       "semif": 0.0,
@@ -622,7 +622,7 @@
     {
       "pos": 48,
       "nro": 53,
-      "nombre": "EMANUEL",
+      "nombre": "PASCUAL EMANUEL",
       "anterior": 19.5,
       "serie": 1.5,
       "semif": 0.0,
@@ -635,7 +635,7 @@
     {
       "pos": 49,
       "nro": 54,
-      "nombre": "JOAQUIN",
+      "nombre": "TOLEDO JOAQUIN",
       "anterior": 39.8,
       "serie": 2.0,
       "semif": 0.0,
@@ -648,20 +648,20 @@
     {
       "pos": 50,
       "nro": 55,
-      "nombre": "AXEL",
-      "anterior": NaN,
-      "serie": NaN,
-      "semif": NaN,
-      "prefinal": NaN,
-      "final": NaN,
-      "total": NaN,
-      "fin": NaN,
+      "nombre": "ANTINORI AXEL",
+      "anterior": 17.1,
+      "serie": 2.5,
+      "semif": 0.0,
+      "prefinal": 0.0,
+      "final": 0.0,
+      "total": 19.6,
+      "fin": 60.0,
       "extras_raw": null
     },
     {
       "pos": 51,
       "nro": 56,
-      "nombre": "NICOLAS",
+      "nombre": "CHIAPPARO NICOLAS",
       "anterior": 24.75,
       "serie": 2.0,
       "semif": 0.0,
@@ -674,7 +674,7 @@
     {
       "pos": 52,
       "nro": 57,
-      "nombre": "GONZALO",
+      "nombre": "RAZQUIN GONZALO",
       "anterior": 33.6,
       "serie": 0.0,
       "semif": 0.0,
@@ -687,7 +687,7 @@
     {
       "pos": 53,
       "nro": 58,
-      "nombre": "MARCELO",
+      "nombre": "PEREZ MARCELO",
       "anterior": 35.1,
       "serie": 2.5,
       "semif": 1.5,
@@ -700,7 +700,7 @@
     {
       "pos": 54,
       "nro": 60,
-      "nombre": "ANTONIO",
+      "nombre": "MOYANO ANTONIO",
       "anterior": NaN,
       "serie": NaN,
       "semif": NaN,
@@ -713,7 +713,7 @@
     {
       "pos": 55,
       "nro": 63,
-      "nombre": "AARON",
+      "nombre": "JACA AARON",
       "anterior": 19.35,
       "serie": 0.0,
       "semif": 0.0,
@@ -726,7 +726,7 @@
     {
       "pos": 56,
       "nro": 64,
-      "nombre": "LUCAS",
+      "nombre": "BLANC LUCAS",
       "anterior": 18.05,
       "serie": 0.0,
       "semif": 0.0,
@@ -739,7 +739,7 @@
     {
       "pos": 57,
       "nro": 65,
-      "nombre": "PABLO",
+      "nombre": "ALZA PABLO",
       "anterior": 22.75,
       "serie": 0.0,
       "semif": 0.0,
@@ -752,7 +752,7 @@
     {
       "pos": 58,
       "nro": 66,
-      "nombre": "VALENTIN",
+      "nombre": "YUNGBLUT VALENTIN",
       "anterior": 24.5,
       "serie": 3.0,
       "semif": 0.5,
@@ -765,7 +765,7 @@
     {
       "pos": 59,
       "nro": 68,
-      "nombre": "GASTON",
+      "nombre": "HOCK GASTON",
       "anterior": 32.05,
       "serie": 2.25,
       "semif": 2.5,
@@ -778,7 +778,7 @@
     {
       "pos": 60,
       "nro": 69,
-      "nombre": "FACUNDO",
+      "nombre": "OVEJERO FACUNDO",
       "anterior": NaN,
       "serie": NaN,
       "semif": NaN,
@@ -791,7 +791,7 @@
     {
       "pos": 61,
       "nro": 72,
-      "nombre": "RUBEN",
+      "nombre": "JACOB RUBEN",
       "anterior": 11.55,
       "serie": 2.5,
       "semif": 2.0,
@@ -804,7 +804,7 @@
     {
       "pos": 62,
       "nro": 74,
-      "nombre": "GUSTAVO",
+      "nombre": "MANZOTTI GUSTAVO",
       "anterior": 16.0,
       "serie": 1.0,
       "semif": 0.0,
@@ -817,7 +817,7 @@
     {
       "pos": 63,
       "nro": 75,
-      "nombre": "GASTON",
+      "nombre": "BENITEZ GASTON",
       "anterior": 13.9,
       "serie": 0.0,
       "semif": 0.0,
@@ -830,7 +830,7 @@
     {
       "pos": 64,
       "nro": 76,
-      "nombre": "BRIAN",
+      "nombre": "LOPEZ BRIAN",
       "anterior": 51.05,
       "serie": 1.5,
       "semif": 0.0,
@@ -843,7 +843,7 @@
     {
       "pos": 65,
       "nro": 78,
-      "nombre": "JUAN",
+      "nombre": "GONZALEZ JUAN",
       "anterior": 12.6,
       "serie": 0.5,
       "semif": 0.0,
@@ -856,7 +856,7 @@
     {
       "pos": 66,
       "nro": 79,
-      "nombre": "SEBASTIAN",
+      "nombre": "LUCERO SEBASTIAN",
       "anterior": 17.1,
       "serie": 2.25,
       "semif": 1.0,
@@ -869,7 +869,7 @@
     {
       "pos": 67,
       "nro": 81,
-      "nombre": "JOSE MARIA",
+      "nombre": "CALVO JOSE MARIA",
       "anterior": 6.05,
       "serie": 0.0,
       "semif": 0.0,
@@ -882,7 +882,7 @@
     {
       "pos": 68,
       "nro": 86,
-      "nombre": "ALFREDO",
+      "nombre": "SALAZAR ALFREDO",
       "anterior": 26.4,
       "serie": 1.0,
       "semif": 0.0,
@@ -895,7 +895,7 @@
     {
       "pos": 69,
       "nro": 88,
-      "nombre": "JUAN MARIA",
+      "nombre": "SOTO JUAN MARIA",
       "anterior": 5.75,
       "serie": 0.0,
       "semif": 0.0,
@@ -908,7 +908,7 @@
     {
       "pos": 70,
       "nro": 93,
-      "nombre": "RAUL",
+      "nombre": "BATISTELI RAUL",
       "anterior": 0.45,
       "serie": 0.0,
       "semif": 0.0,
@@ -921,7 +921,7 @@
     {
       "pos": 71,
       "nro": 94,
-      "nombre": "ALEJANDRO",
+      "nombre": "CHIESA ALEJANDRO",
       "anterior": 16.1,
       "serie": 1.5,
       "semif": 0.0,
@@ -934,7 +934,7 @@
     {
       "pos": 72,
       "nro": 95,
-      "nombre": "IVAN",
+      "nombre": "PALLOTTI IVAN",
       "anterior": 18.05,
       "serie": 2.0,
       "semif": 0.0,
@@ -947,7 +947,7 @@
     {
       "pos": 73,
       "nro": 96,
-      "nombre": "MARTIN",
+      "nombre": "BECCHIO MARTIN",
       "anterior": 29.8,
       "serie": 0.0,
       "semif": 0.0,
@@ -960,7 +960,7 @@
     {
       "pos": 74,
       "nro": 97,
-      "nombre": "GASTON",
+      "nombre": "SOTO GASTON",
       "anterior": 5.05,
       "serie": 0.0,
       "semif": 0.0,
@@ -973,7 +973,7 @@
     {
       "pos": 75,
       "nro": 98,
-      "nombre": "JORGE",
+      "nombre": "FRITZ JORGE",
       "anterior": 16.25,
       "serie": 1.0,
       "semif": 0.0,
@@ -986,7 +986,7 @@
     {
       "pos": 76,
       "nro": 101,
-      "nombre": "CARLOS",
+      "nombre": "DOMINGUEZ CARLOS",
       "anterior": 12.5,
       "serie": 2.0,
       "semif": 2.5,
@@ -999,7 +999,7 @@
     {
       "pos": 77,
       "nro": 102,
-      "nombre": "LUCIANO",
+      "nombre": "TORRES LUCIANO",
       "anterior": 52.0,
       "serie": 3.0,
       "semif": 8.0,
@@ -1012,7 +1012,7 @@
     {
       "pos": 78,
       "nro": 104,
-      "nombre": "MAXIMILIANO",
+      "nombre": "HARDOY MAXIMILIANO",
       "anterior": 19.5,
       "serie": 0.0,
       "semif": 0.0,
@@ -1025,7 +1025,7 @@
     {
       "pos": 79,
       "nro": 105,
-      "nombre": "MARTIN",
+      "nombre": "ZABALEGUI MARTIN",
       "anterior": 18.1,
       "serie": 2.75,
       "semif": 0.0,
@@ -1038,7 +1038,7 @@
     {
       "pos": 80,
       "nro": 107,
-      "nombre": "JUAN",
+      "nombre": "HASPERT JUAN",
       "anterior": 5.0,
       "serie": 1.5,
       "semif": 0.0,
@@ -1051,20 +1051,20 @@
     {
       "pos": 81,
       "nro": 108,
-      "nombre": "CARLOS",
-      "anterior": NaN,
-      "serie": NaN,
-      "semif": NaN,
-      "prefinal": NaN,
-      "final": NaN,
-      "total": NaN,
+      "nombre": "FORNERON CARLOS",
+      "anterior": 32.05,
+      "serie": 2.25,
+      "semif": 2.5,
+      "prefinal": 0.0,
+      "final": 0.0,
+      "total": 36.8,
       "fin": NaN,
-      "extras_raw": null
+      "extras_raw": "6 (01)"
     },
     {
       "pos": 82,
       "nro": 109,
-      "nombre": "DIEGO",
+      "nombre": "ANASTASIO DIEGO",
       "anterior": 16.4,
       "serie": 0.0,
       "semif": 0.0,
@@ -1077,7 +1077,7 @@
     {
       "pos": 83,
       "nro": 110,
-      "nombre": "LAUTARO",
+      "nombre": "FORD LAUTARO",
       "anterior": 19.25,
       "serie": 2.5,
       "semif": 0.0,
@@ -1090,7 +1090,7 @@
     {
       "pos": 84,
       "nro": 111,
-      "nombre": "JUAN PABLO",
+      "nombre": "BRAY JUAN PABLO",
       "anterior": NaN,
       "serie": 30.8,
       "semif": 2.25,
@@ -1103,7 +1103,7 @@
     {
       "pos": 85,
       "nro": 112,
-      "nombre": "AGUSTIN",
+      "nombre": "GOMEZ AGUSTIN",
       "anterior": 9.0,
       "serie": 1.5,
       "semif": 0.0,
@@ -1116,7 +1116,7 @@
     {
       "pos": 86,
       "nro": 113,
-      "nombre": "GABRIEL",
+      "nombre": "MARCO GABRIEL",
       "anterior": 11.75,
       "serie": 1.0,
       "semif": 0.0,
@@ -1129,7 +1129,7 @@
     {
       "pos": 87,
       "nro": 114,
-      "nombre": "JUAN",
+      "nombre": "CALVO JUAN",
       "anterior": 21.2,
       "serie": 1.0,
       "semif": 0.0,
@@ -1142,7 +1142,7 @@
     {
       "pos": 88,
       "nro": 115,
-      "nombre": "AGUSTIN",
+      "nombre": "LOPEZ AGUSTIN",
       "anterior": 12.5,
       "serie": 2.0,
       "semif": 3.0,
@@ -1155,7 +1155,7 @@
     {
       "pos": 89,
       "nro": 116,
-      "nombre": "RODRIGO",
+      "nombre": "ZUBELDIA RODRIGO",
       "anterior": 45.8,
       "serie": 2.25,
       "semif": 0.25,
@@ -1168,7 +1168,7 @@
     {
       "pos": 90,
       "nro": 123,
-      "nombre": "AGUSTIN",
+      "nombre": "COLANERI AGUSTIN",
       "anterior": NaN,
       "serie": NaN,
       "semif": NaN,
@@ -1181,7 +1181,7 @@
     {
       "pos": 91,
       "nro": 127,
-      "nombre": "LUCAS",
+      "nombre": "GRILL LUCAS",
       "anterior": 14.25,
       "serie": 2.25,
       "semif": 0.0,
@@ -1194,7 +1194,7 @@
     {
       "pos": 92,
       "nro": 134,
-      "nombre": "NICOLAS",
+      "nombre": "MONTANARI NICOLAS",
       "anterior": NaN,
       "serie": NaN,
       "semif": NaN,
@@ -1207,7 +1207,7 @@
     {
       "pos": 93,
       "nro": 142,
-      "nombre": "RODRIGO",
+      "nombre": "OLIVERA RODRIGO",
       "anterior": NaN,
       "serie": NaN,
       "semif": NaN,
@@ -1220,7 +1220,7 @@
     {
       "pos": 94,
       "nro": 156,
-      "nombre": "SEBASTIAN",
+      "nombre": "TODINO SEBASTIAN",
       "anterior": NaN,
       "serie": NaN,
       "semif": NaN,
@@ -1233,7 +1233,7 @@
     {
       "pos": 95,
       "nro": 162,
-      "nombre": "JUAN",
+      "nombre": "PERUGINI JUAN",
       "anterior": NaN,
       "serie": NaN,
       "semif": NaN,
