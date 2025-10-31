@@ -171,33 +171,27 @@ function formatRecargo(r) {
 }
 
 
-  
-  function renderResultsTable(data){
-    // tbody principal
-    let tbody = document.querySelector('#results tbody');
-    if(!tbody){
-      // fallback por compatibilidad con páginas viejas
-      tbody = document.querySelector('#resultados tbody');
-    }
-    if(!tbody) return;
+function renderResultsTable(data){
+  const tbody = document.querySelector('#results tbody');
+  tbody.innerHTML = '';
+  const rows = data?.results || [];
 
-    tbody.innerHTML='';
-    const rows = data?.results || [];
-    rows.forEach((r,i)=>{
-      const tr=document.createElement('tr');
-      if(i%2) tr.classList.add('row-alt');
-      tr.innerHTML = `
-        <td>${r.position ?? ''}</td>
-        <td>${r.number ?? ''}</td>
-        <td>${r.name ?? ''}</td>
-        <td>${formatRecargo(r)}</td>
-        <td>${r.t_final ?? ''}</td>
-        <td>${r.laps ?? ''}</td>
-        <td>${r.penalty_note ?? ''}</td>
-      `;
-      tbody.appendChild(tr);
-    });
-  }
+  rows.forEach((r, i) => {
+    const tr = document.createElement('tr');
+    if (i % 2) tr.classList.add('row-alt');
+    tr.innerHTML = `
+      <td>${r.position ?? ''}</td>
+      <td>${r.number ?? ''}</td>
+      <td>${r.name ?? ''}</td>
+      <td>${formatRecargo(r)}</td>   <!-- AQUÍ va la llamada -->
+      <td>${r.t_final ?? ''}</td>
+      <td>${r.laps ?? ''}</td>
+      <td>${r.penalty_note ?? ''}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
   function updateMeta(fecha, raceKey){
     const pill=document.querySelector('#selected-pill');
     const upd =document.querySelector('#last-updated');
@@ -340,6 +334,7 @@ function formatRecargo(r) {
   window.loadRaces   = loadRaces;
   window.loadResults = loadResults;
 })();
+
 
 
 
