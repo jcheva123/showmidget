@@ -68,6 +68,40 @@ function normalizeIndex(raw) {
   }
 }
 
+/* ====== SHIMS / FALLBACKS ====== */
+(function () {
+  // Toast básico si no existe
+  if (typeof window.showToast !== 'function') {
+    window.showToast = function (msg) {
+      let t = document.querySelector('#toast');
+      if (!t) {
+        t = document.createElement('div');
+        t.id = 'toast';
+        t.style.cssText = 'position:fixed;left:50%;bottom:16px;transform:translateX(-50%);padding:8px 12px;background:#222;color:#fff;border-radius:8px;font:600 14px system-ui;z-index:9999;opacity:0;transition:opacity .2s';
+        document.body.appendChild(t);
+      }
+      t.textContent = msg || '';
+      t.style.opacity = '1';
+      setTimeout(() => { t.style.opacity = '0'; }, 1600);
+    };
+  }
+
+  // setStatus básico si no existe
+  if (typeof window.setStatus !== 'function') {
+    window.setStatus = function (text) {
+      const el = document.querySelector('#last-updated') || document.querySelector('#status-badge');
+      if (!el) return;
+      if (text && String(text).trim()) {
+        el.hidden = false;
+        el.textContent = text;
+      } else {
+        el.hidden = true;
+        el.textContent = '';
+      }
+    };
+  }
+})();
+
 // ================== HELPERS ==================
 const qs  = (sel, root=document) => root.querySelector(sel);
 const qsa = (sel, root=document) => Array.from(root.querySelectorAll(sel));
@@ -322,5 +356,6 @@ document.addEventListener('DOMContentLoaded', () => {
 // Exponer para el HTML inline (onchange del select)
 window.loadRaces   = loadRaces;
 window.loadResults = loadResults;
+
 
 
