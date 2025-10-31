@@ -226,7 +226,6 @@
     }
     if(upd){
       const when = lastModifiedStr ? fmtDateTime(new Date(lastModifiedStr)) : fmtDateTime(new Date());
-      const label = lastModifiedStr ? 'Cargado' : 'Actualizado';
       upd.textContent = `${label}`;
       upd.hidden=false;
     }
@@ -291,7 +290,6 @@
       if(!keys.length){
         const tbody=document.querySelector('#results tbody');
         if(tbody) tbody.innerHTML='<tr><td colspan="7" class="empty">Sin carreras cargadas aún.</td></tr>';
-        setStatus(`Actualizado — ${f} (sin carreras)`);
         return;
       }
 
@@ -328,7 +326,6 @@
       updateMeta(f, k, meta.lastModified || null);
       setStatus(meta.lastModified
         ? `Cargado: ${fmtDateTime(new Date(meta.lastModified))} — ${f} — ${RACE_LABELS[k]||k.toUpperCase()}`
-        : `Actualizado: ${fmtDateTime(new Date())} — ${f} — ${RACE_LABELS[k]||k.toUpperCase()}`
       );
     }catch(err){
       console.error('Error cargando resultados:', err);
@@ -382,5 +379,6 @@
   window.loadRaces   = loadRaces;
   window.loadResults = loadResults;
 })();
+
 
 
