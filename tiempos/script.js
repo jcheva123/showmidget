@@ -130,28 +130,55 @@ function formatSec(n) {
   return Math.abs(n - Math.round(n)) < 1e-6 ? `${Math.round(n)}s` : `${n.toFixed(3)}s`;
 }
 
+function parseTimeStr(s){
+  if (!s || typeof s !== 'string') return NaN;
+  const m = s.trim().match(/^(\d+):([0-5]?\d)(?:[.,](\d{1,3}))?$/);
+  if (!m) return NaN;
+  const min = parseInt(m[1], 10);
+  const sec = parseInt(m[2], 10);
+  const ms  = parseInt((m[3] || '0').padEnd(3, '0'), 10);
+  return min * 60 + sec + ms / 1000;
+}
+
 function formatRecargo(r) {
-  // Detecta segundos de varios campos posibles y evita tiempos tipo "m:ss.xxx"
-  function extractSeconds(val) {
-    if (val == null) return null;
-
-    if (typeof val === 'number') {
-      if (val > 0 && val < 30) return val;      // penalizaciones típicas
-      return null;
-    }
-
-    const s = String(val).trim().toLowerCase();
-    if (!s || s === '.' || s === '-') return null;
-    if (s.includes(':')) return null;           // evita tiempos completos "1:21.416"
-
-    // Busca número (acepta coma o punto decimal)
-    const m = s.match(/(\d+(?:[.,]\d+)?)/);
-    if (!m) return null;
-
-    const n = parseFloat(m[1].replace(',', '.'));
-    if (!isNaN(n) && n > 0 && n < 30) return n;
-    return null;
+  // 0) Si viene numérico explícito (mejor de backend)
+  if (typeof r.rec === 'number' && isFinite(r.rec) && r.rec > 0 && r.rec < 30) {
+    return formatSec(r.rec);
   }
+  if (typeof r.rec === 'string' && r.rec && !r.rec.includes(':')) {
+    const n = parseFloat(r.rec.replace(',', '.'));
+    if (!isNaN(n) && n > 0 && n < 30) return formatSec(n);
+  }
+
+  // 1) Derivar de tiempos (preferido hoy): t_final - rec_str
+  const base  = parseTimeStr(r.rec_str || r.tiempo || r.time);
+  const final = parseTimeStr(r.t_final || r.final);
+  if (isFinite(base) && isFinite(final)) {
+    const diff = final - base;
+    if (diff > 0.2 && diff < 30) return formatSec(diff);
+  }
+
+  // 2) Fallback a 'penalty' numérico si existiera
+  if (typeof r.penalty === 'number' && r.penalty > 0 && r.penalty < 30) {
+    return formatSec(r.penalty);
+  }
+
+  // 3) Fallback desde penalty_note: “2 s”, “1,5 seg”, etc.
+  if (typeof r.penalty_note === 'string') {
+    const s = r.penalty_note.toLowerCase();
+    const m = s.match(/(\d+(?:[.,]\d+)?)\s*(?:s|seg|segundos)/);
+    if (m) {
+      const n = parseFloat(m[1].replace(',', '.'));
+      if (!isNaN(n) && n > 0 && n < 30) return formatSec(n);
+    }
+    // Si solo dice "cono(s)" sin número, asumimos 1s
+    if (s.includes('cono')) return formatSec(1);
+  }
+
+  // Nada confiable → vacío
+  return '';
+}
+
 
   // Candidatos típicos que pueden traer el recargo
   const candidates = [
@@ -334,6 +361,7 @@ function renderResultsTable(data){
   window.loadRaces   = loadRaces;
   window.loadResults = loadResults;
 })();
+
 
 
 
