@@ -50,12 +50,11 @@
       try{
         const r = await fetch(url, {cache:'no-store'});
         if(r.ok) return await r.json();
-      }catch{ /* probar siguiente base */ }
+      }catch{}
     }
     throw new Error(`fetch-failed: ${path}`);
   }
 
-  // Igual que fetchJSON pero devolviendo meta (Last-Modified y URL origen)
   async function fetchJSONWithMeta(path){
     const ts = Date.now();
     for(const base of BASES){
@@ -64,9 +63,9 @@
         const r = await fetch(url, {cache:'no-store'});
         if(!r.ok) continue;
         const data = await r.json();
-        const lm = r.headers.get('Last-Modified'); // simple response header => accesible CORS
+        const lm = r.headers.get('Last-Modified');
         return { data, lastModified: lm, url };
-      }catch{ /* probar siguiente base */ }
+      }catch{}
     }
     throw new Error(`fetch-failed: ${path}`);
   }
@@ -107,7 +106,6 @@
     try{ return normalizeIndex(JSON.parse(raw)); }catch{ return []; }
   }
 
-  // Escoge la carrera con mayor Last-Modified (descarga liviana de cada JSON)
   async function pickLatestRaceByLM(fecha, keys){
     const tasks = keys.map(async k => {
       try{
@@ -119,10 +117,9 @@
       }
     });
     const results = await Promise.all(tasks);
-    results.sort((a,b)=> b.t - a.t); // más reciente primero
+    results.sort((a,b)=> b.t - a.t);
     const best = results[0];
     if(best && best.t>0) return { key: best.k, meta: best.meta };
-    // Fallback si no se pudo leer LM: tomamos el último en el orden predefinido
     const orderPos = k => ORDER.indexOf(k)===-1 ? 999 : ORDER.indexOf(k);
     const sorted = [...keys].sort((a,b)=> orderPos(a)-orderPos(b));
     return { key: sorted[sorted.length-1], meta: null };
@@ -250,7 +247,7 @@
         sel.appendChild(opt);
       }
 
-      // 1) Si hay ?fecha= en la URL, respetar
+      // 1) ?fecha=… tiene prioridad
       const url=new URL(location.href);
       const fURL=url.searchParams.get('fecha');
       if(fURL && fechas.includes(fURL)){
@@ -259,7 +256,7 @@
         return;
       }
 
-      // 2) Si no hay param, cargar la última fecha disponible automáticamente
+      // 2) Sin parámetro → última fecha
       const lastFecha = fechas[fechas.length-1];
       sel.value = lastFecha;
       await loadRaces(lastFecha, { autoPickLatest:true });
@@ -295,10 +292,9 @@
         return;
       }
 
-      // Elegir qué mostrar:
       if (autoPickLatest) {
         const { key: latestKey, meta } = await pickLatestRaceByLM(f, keys);
-        await loadResults(f, latestKey, { prefetched: meta }); // usa meta si ya lo tenemos
+        await loadResults(f, latestKey, { prefetched: meta });
       } else {
         await loadResults(f, keys[0]);
       }
@@ -318,7 +314,6 @@
     STATE.fecha=f; STATE.race=k; highlightSelected();
 
     try{
-      // Si viene prefetched (desde pickLatest) lo reutilizo; si no, lo busco ahora
       let meta = opts.prefetched;
       if(!meta){
         meta = await fetchJSONWithMeta(`${encodeURIComponent(f)}/${k}.json`);
@@ -341,7 +336,6 @@
 
   // ---------- EVENTS ----------
   document.addEventListener('DOMContentLoaded', () => {
-    // Delegación de clicks
     const ul = document.querySelector('#race-list ul');
     if(ul){
       ul.addEventListener('click', (ev)=>{
@@ -374,11 +368,11 @@
       });
     }
 
-    // Carga inicial: ya auto-selecciona última fecha + última carrera
+    // Carga inicial: última fecha + última carrera
     loadFechas();
   });
 
-  // ---------- API pública para el HTML inline ----------
+  // ---------- API pública ----------
   window.loadRaces   = loadRaces;
   window.loadResults = loadResults;
 })();
