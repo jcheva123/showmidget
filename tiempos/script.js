@@ -1,4 +1,3 @@
-<!-- Guarda este contenido como /tiempos/script.js -->
 <script>
 // ================== CONFIG ==================
 const BASES = [
@@ -219,3 +218,4 @@ window.loadResults = loadResults;
 // Ready
 document.addEventListener('DOMContentLoaded', loadFechas);
 </script>
+
