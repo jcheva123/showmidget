@@ -117,6 +117,48 @@
       li.classList.toggle('active', li.dataset.race===STATE.race);
     });
   }
+
+function formatSec(n) {
+  // Si es entero (1, 2) muestro "1s", "2s"; si no, 3 decimales.
+  if (Math.abs(n - Math.round(n)) < 1e-6) return `${Math.round(n)}s`;
+  return `${Number(n).toFixed(3)}s`;
+}
+
+function formatRecargo(r) {
+  // 1) Preferir r.rec si es número chico (penalizaciones típicas)
+  if (typeof r.rec === 'number' && isFinite(r.rec)) {
+    if (r.rec > 0 && r.rec < 30) return formatSec(r.rec);
+    if (r.rec <= 0) return '';
+  }
+
+  // 2) Si viene como string y NO parece tiempo "m:ss.xxx"
+  if (typeof r.rec === 'string') {
+    const s = r.rec.trim();
+    if (s && !s.includes(':')) {
+      const n = parseFloat(s.replace(',', '.'));
+      if (!isNaN(n) && n > 0 && n < 30) return formatSec(n);
+    }
+  }
+
+  // 3) Fallback a penalty numérico si existe
+  if (typeof r.penalty === 'number' && r.penalty > 0 && r.penalty < 30) {
+    return formatSec(r.penalty);
+  }
+
+  // 4) Fallback: extraer número de penalty_note (ej. "Recargo 2s", "1.5 seg")
+  if (typeof r.penalty_note === 'string') {
+    const m = r.penalty_note.match(/(\d+(?:[.,]\d+)?)/);
+    if (m) {
+      const n = parseFloat(m[1].replace(',', '.'));
+      if (!isNaN(n) && n > 0 && n < 30) return formatSec(n);
+    }
+  }
+
+  // Si nada es confiable, no mostrar recargo
+  return '';
+}
+
+  
   function renderResultsTable(data){
     // tbody principal
     let tbody = document.querySelector('#results tbody');
@@ -135,7 +177,7 @@
         <td>${r.position ?? ''}</td>
         <td>${r.number ?? ''}</td>
         <td>${r.name ?? ''}</td>
-        <td>${r.rec_str ?? (r.rec ?? '')}</td>
+        <td>${formatRecargo(r)}</td>
         <td>${r.t_final ?? ''}</td>
         <td>${r.laps ?? ''}</td>
         <td>${r.penalty_note ?? ''}</td>
@@ -285,5 +327,6 @@
   window.loadRaces   = loadRaces;
   window.loadResults = loadResults;
 })();
+
 
 
