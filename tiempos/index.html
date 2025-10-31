@@ -89,6 +89,17 @@
   <!-- Scripts (defer + cache busting) -->
   <script defer src="./enhancements.js?v=20251031"></script>
   <script defer src="./script.js?v=20251031"></script>
+  <script>
+  // 1) Apagar cualquier intento de escribir “Actualizado…”
+  window.setStatus = () => {};
+
+  // 2) Sacar del DOM el span si existiera
+  document.addEventListener('DOMContentLoaded', () => {
+    const e = document.getElementById('last-updated');
+    if (e) e.remove();
+  });
+</script>
+
 
   <!-- Botón Volver abajo, centrado (usa clase .footer-actions del CSS) -->
   <footer class="footer-actions">
@@ -102,3 +113,4 @@
   </div>
 </body>
 </html>
+
