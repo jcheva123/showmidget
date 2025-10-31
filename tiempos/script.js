@@ -1,302 +1,302 @@
-// ==============================
-// CONFIG & HELPERS
-// ==============================
-const FETCH_TIMEOUT_MS = 12000;
+<script>
+/* ========= Config ========= */
+const CDNS = [
+  'https://raw.githubusercontent.com/jcheva123/tiemposweb-2025/main',
+  'https://cdn.jsdelivr.net/gh/jcheva123/tiemposweb-2025@main',
+  'https://cdn.statically.io/gh/jcheva123/tiemposweb-2025/main'
+];
+const BASE = 'resultados'; // carpeta raíz de JSONs
+const FECHAS_URL = `${BASE}/fechas.json`;
 
-// Repos (no tocar)
-const RAW_BASE = 'https://raw.githubusercontent.com/jcheva123/tiemposweb-2025/main';
-const CDN_BASE = 'https://cdn.jsdelivr.net/gh/jcheva123/tiemposweb-2025@main';
-const ALT_CDN = 'https://cdn.statically.io/gh/jcheva123/tiemposweb-2025/main';
-
-// Paths relativos dentro del repo
-const R_FECHAS = 'resultados/fechas.json';
-const R_INDEX  = (fecha) => `resultados/${fecha}/index.json`;
-const R_RACE   = (fecha, raceKey) => `resultados/${fecha}/${raceKey}.json`;
-
-// Buscá el primer elemento que exista entre varios selectores
-const pick = (selList) => {
-  for (const sel of selList.split(',')) {
-    const el = document.querySelector(sel.trim());
-    if (el) return el;
-  }
-  return null;
+const RACE_LABELS = {
+  serie: n => `SERIE ${n}`,
+  repechaje: n => `REPECHAJE ${n}`,
+  semifinal: n => `SEMIFINAL ${n}`,
+  prefinal: () => 'PREFINAL',
+  final: () => 'FINAL'
 };
 
-// UI elements (tolerante a distintas IDs)
+/* ========= Helpers DOM ========= */
+const $ = sel => document.querySelector(sel);
+const $$ = sel => Array.from(document.querySelectorAll(sel));
 const UI = {
-  fechaSelect: pick('#fechaSelect, #fecha, select[name="fecha"]'),
-  carrerasList: pick('#carrerasList, #listaCarreras, #racesList'),
-  resultados: pick('#resultados, #results, #resultsContainer'),
-  actualizado: pick('#actualizado, #updatedAt, #lastUpdated'),
+  fechaSelect: () => $('#fechaSelect') || $('#fecha') || document.getElementById('fechaSelect'),
+  carrerasList: () => $('#carrerasList') || $('#listadoCarreras') || $('#carreras'),
+  tableBody: () => $('#resultadosBody') || $('#tablaResultados tbody') || $('#resultBody'),
+  actualizado: () => $('#actualizado') || $('#lastUpdated') || $('#actualizacion'),
+  toast: () => $('#toast') // opcional si tu enhancements.js lo usa
 };
 
-// Etiquetas
-function formatRaceLabel(key) {
-  const mSerie = key.match(/^serie(\d{1,2})$/i);
-  const mRep   = key.match(/^repechaje(\d{1,2})$/i);
-  const mSemi  = key.match(/^semifinal(\d{1,2})$/i);
-  if (mSerie) return `SERIE ${parseInt(mSerie[1],10)}`;
-  if (mRep)   return `REPECHAJE ${parseInt(mRep[1],10)}`;
-  if (mSemi)  return `SEMIFINAL ${parseInt(mSemi[1],10)}`;
-  if (/^prefinal$/i.test(key)) return 'PREFINAL';
-  if (/^final$/i.test(key))    return 'FINAL';
-  return key.toUpperCase();
-}
+/* ========= Fetch con fallbacks ========= */
+const sleep = ms => new Promise(r => setTimeout(r, ms));
 
-// Orden de carreras
-function raceSortKey(key) {
-  const norm = key.toLowerCase();
-  const num = (re) => (norm.match(re)?.[1] ? parseInt(norm.match(re)[1],10) : 0);
-  if (norm.startsWith('serie'))     return [1, num(/^serie(\d+)/)];
-  if (norm.startsWith('repechaje')) return [2, num(/^repechaje(\d+)/)];
-  if (norm.startsWith('semifinal')) return [3, num(/^semifinal(\d+)/)];
-  if (norm === 'prefinal')          return [4, 0];
-  if (norm === 'final')             return [5, 0];
-  return [9, 0];
-}
-
-function hhmmss(d=new Date()) {
-  const pad = (n)=> String(n).padStart(2,'0');
-  return `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
-}
-
-// ==============================
-// FETCH (sin headers raros para evitar CORS)
-// ==============================
-async function fetchWithTimeout(url) {
-  const controller = new AbortController();
-  const to = setTimeout(() => controller.abort('timeout'), FETCH_TIMEOUT_MS);
+async function fetchWithTimeout(url, { timeout = 8000 } = {}) {
+  const ctrl = new AbortController();
+  const t = setTimeout(() => ctrl.abort(), timeout);
   try {
-    const res = await fetch(url, { mode: 'cors', signal: controller.signal });
-    if (!res.ok) throw new Error(String(res.status || 'fetch-failed'));
+    const res = await fetch(url, { signal: ctrl.signal, cache: 'no-store' });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
     return await res.json();
   } finally {
-    clearTimeout(to);
+    clearTimeout(t);
   }
 }
 
-async function fetchJSON(pathRel) {
-  const ts = Date.now();
-  const urls = [
-    `${RAW_BASE}/${pathRel}?ts=${ts}`,
-    `${CDN_BASE}/${pathRel}?ts=${ts}`,
-    `${ALT_CDN}/${pathRel}?ts=${ts}`,
-  ];
-  let lastErr;
-  for (const u of urls) {
+async function fetchJSON(pathRel, { timeout = 8000, ts = Date.now() } = {}) {
+  const path = pathRel.startsWith('/') ? pathRel.slice(1) : pathRel;
+  const urls = CDNS.map(base => `${base}/${path}?ts=${ts}`);
+  let lastErr = null;
+  for (let i = 0; i < urls.length; i++) {
     try {
-      return await fetchWithTimeout(u);
+      return await fetchWithTimeout(urls[i], { timeout });
     } catch (e) {
       lastErr = e;
+      // backoff suave entre CDNs para evitar 429
+      await sleep(300 + i * 300);
     }
   }
-  throw lastErr || new Error('fetch-failed');
+  const err = new Error('fetch-failed');
+  err.cause = lastErr;
+  throw err;
 }
 
-// Reintentos para JSON de carrera
-async function fetchRaceJSON(fecha, raceKey, maxRetries=2) {
-  let attempt = 0;
-  let delay = 600;
-  while (true) {
-    try {
-      return await fetchJSON(R_RACE(fecha, raceKey));
-    } catch (e) {
-      const msg = String(e.message || '');
-      if (attempt < maxRetries && (msg.includes('429') || msg.includes('502'))) {
-        await new Promise(r => setTimeout(r, delay));
-        attempt++;
-        delay *= 1.6;
-        continue;
-      }
-      throw e;
-    }
-  }
+/* ========= Estado ========= */
+let currentFecha = null;
+let currentRace = null;
+
+/* ========= Render ========= */
+function clearResultados() {
+  const tb = UI.tableBody();
+  if (tb) tb.innerHTML = '';
 }
 
-// ==============================
-// EXTRAER CARRERAS DESDE index.json (robusto)
-// ==============================
-function extractRaceKeys(idx) {
-  if (!idx) return [];
-  // 1) Si es array plano
-  if (Array.isArray(idx)) return idx;
-
-  // 2) Claves comunes
-  if (Array.isArray(idx.carreras)) return idx.carreras;
-  if (Array.isArray(idx.races))    return idx.races;
-  if (Array.isArray(idx.list))     return idx.list;
-
-  // 3) Map tipo {serie1:true, final:true, meta:"..."}
-  const META = new Set(['fecha','updated','updated_at','last_update','ts','count','total','version']);
-  let keys = Object.keys(idx || {}).filter(k => !META.has(k.toLowerCase()));
-
-  // Si el valor es booleano/objeto con exists, filtrar falsos
-  keys = keys.filter(k => {
-    const v = idx[k];
-    if (typeof v === 'boolean') return v;
-    if (v && typeof v === 'object' && 'exists' in v) return !!v.exists;
-    return true;
-  });
-
-  // 4) Aceptar solo nombres de carreras válidos
-  const valid = /^(serie\d{1,2}|repechaje\d{1,2}|semifinal\d{1,2}|prefinal|final)$/i;
-  keys = keys.filter(k => valid.test(k));
-
-  return keys;
+function setActualizado({ fecha, carrera, fromJsonTime }) {
+  const el = UI.actualizado();
+  if (!el) return;
+  const now = new Date();
+  const hh = String(now.getHours()).padStart(2, '0');
+  const mm = String(now.getMinutes()).padStart(2, '0');
+  const ss = String(now.getSeconds()).padStart(2, '0');
+  const when = `${hh}:${mm}:${ss}`;
+  const extra = fromJsonTime ? ` • ${fromJsonTime}` : '';
+  el.textContent = `Actualizado: ${when} — ${fecha}${carrera ? ` — ${carrera}` : ''}${extra}`;
 }
 
-// ==============================
-// RENDER
-// ==============================
-function renderCarrerasList(fecha, keys) {
-  if (!UI.carrerasList) return;
-  UI.carrerasList.innerHTML = '';
+function renderCarrerasList(keys) {
+  const ul = UI.carrerasList();
+  if (!ul) return;
 
-  const unique = [...new Set(keys)];
-  unique.sort((a,b) => {
-    const A = raceSortKey(a), B = raceSortKey(b);
-    return (A[0]-B[0]) || (A[1]-B[1]);
-  });
-
-  for (const key of unique) {
+  ul.innerHTML = '';
+  keys.forEach(key => {
     const li = document.createElement('li');
     li.className = 'race-item';
-    li.textContent = formatRaceLabel(key);
-    li.onclick = () => loadResults(fecha, key);
-    UI.carrerasList.appendChild(li);
+    li.textContent = toHumanRace(key);
+    li.dataset.key = key;
+    li.onclick = () => loadResults(currentFecha, key);
+    ul.appendChild(li);
+  });
+}
+
+function toHumanRace(basename) {
+  // mapea nombres de archivo → etiqueta legible
+  // ejemplos: serie1, repechaje3, semifinal2, prefinal, final
+  const mSerie = basename.match(/^serie(\d+)$/i);
+  if (mSerie) return RACE_LABELS.serie(Number(mSerie[1]));
+  const mRep = basename.match(/^repechaje(\d+)$/i);
+  if (mRep) return RACE_LABELS.repechaje(Number(mRep[1]));
+  const mSemi = basename.match(/^semifinal(\d+)$/i);
+  if (mSemi) return RACE_LABELS.semifinal(Number(mSemi[1]));
+  if (/^prefinal$/i.test(basename)) return RACE_LABELS.prefinal();
+  if (/^final$/i.test(basename)) return RACE_LABELS.final();
+  return basename.toUpperCase();
+}
+
+/* ========= Carga de datos ========= */
+async function checkFechaTieneIndex(fecha, ts) {
+  try {
+    const idx = await fetchJSON(`${BASE}/${fecha}/index.json`, { ts });
+    const keys = Array.isArray(idx) ? idx : Array.isArray(idx?.races) ? idx.races : Object.keys(idx || {});
+    return keys && keys.length > 0;
+  } catch {
+    return false;
   }
 }
 
-function renderLoading(fecha, key) {
-  if (UI.resultados) {
-    UI.resultados.innerHTML = `
-      <div class="loading">
-        <div class="spinner"></div>
-        <div class="loading-text">Cargando… <span class="muted">(${fecha} · ${formatRaceLabel(key)})</span></div>
-      </div>
-    `;
-  }
-  if (UI.actualizado) {
-    UI.actualizado.textContent = `Actualizando… ${fecha} · ${formatRaceLabel(key)}`;
-  }
-}
-
-function renderResultados(fecha, key, data) {
-  if (!UI.resultados) return;
-
-  const rows = (data?.results || []).map(r => `
-    <tr>
-      <td class="col-pos">${r.position ?? ''}</td>
-      <td class="col-num">${r.number ?? ''}</td>
-      <td class="col-name">${r.name ?? ''}</td>
-      <td class="col-total">${r.t_final ?? ''}</td>
-    </tr>
-  `).join('');
-
-  UI.resultados.innerHTML = `
-    <div class="race-title">${formatRaceLabel(key)}</div>
-    <table class="tabla-resultados">
-      <thead>
-        <tr>
-          <th>Pos.</th>
-          <th>N°</th>
-          <th>Nombre</th>
-          <th>Total</th>
-        </tr>
-      </thead>
-      <tbody>${rows || `<tr><td colspan="4" class="muted">Sin datos aún</td></tr>`}</tbody>
-    </table>
-  `;
-
-  if (UI.actualizado) {
-    UI.actualizado.textContent = `Actualizado: ${hhmmss()} · ${fecha} · ${formatRaceLabel(key)}`;
-  }
-}
-
-// ==============================
-// FLOW
-// ==============================
 async function loadFechas() {
-  if (UI.fechaSelect) {
-    UI.fechaSelect.innerHTML = `<option value="">Cargando fechas…</option>`;
+  const sel = UI.fechaSelect();
+  if (!sel) return;
+
+  sel.disabled = true;
+  sel.innerHTML = `<option>Cargando fechas...</option>`;
+
+  let fechas = [];
+  try {
+    const raw = await fetchJSON(FECHAS_URL);
+    fechas = Array.isArray(raw) ? raw : (raw?.fechas || []);
+  } catch {
+    // fallback: nada
+    fechas = [];
   }
 
-  const obj = await fetchJSON(R_FECHAS);
-  const fechas = Array.isArray(obj) ? obj : (obj?.fechas || []);
-  fechas.sort();
-
-  if (!UI.fechaSelect) return fechas;
-
-  UI.fechaSelect.innerHTML = '';
+  // Filtrar solo las fechas que tengan index.json válido (secuencial para evitar 429)
+  const ts = Date.now();
+  const filtradas = [];
   for (const f of fechas) {
-    const opt = document.createElement('option');
-    opt.value = f;
-    opt.textContent = f;
-    UI.fechaSelect.appendChild(opt);
+    // Ritmo lento para no gatillar límites
+    /* eslint-disable no-await-in-loop */
+    const ok = await checkFechaTieneIndex(f, ts);
+    if (ok) filtradas.push(f);
+    await sleep(150);
+    /* eslint-enable no-await-in-loop */
   }
 
-  if (fechas.length) {
-    UI.fechaSelect.value = fechas[fechas.length - 1];
+  if (filtradas.length === 0) {
+    sel.innerHTML = `<option value="">Sin datos</option>`;
+    sel.disabled = true;
+    return;
   }
-  return fechas;
+
+  sel.innerHTML = filtradas.map(f => `<option value="${f}">${f}</option>`).join('');
+  sel.disabled = false;
+
+  // Selección inicial: si había currentFecha y sigue existiendo, respetar; si no, la más reciente (última)
+  const initial = currentFecha && filtradas.includes(currentFecha)
+    ? currentFecha
+    : filtradas[filtradas.length - 1];
+
+  sel.value = initial;
+  await loadCarreras(initial);
 }
+
+// Compatibilidad con tu HTML: onchange="loadRaces(this.value)"
+window.loadRaces = async function(fecha) {
+  await loadCarreras(fecha);
+};
 
 async function loadCarreras(fecha) {
-  if (UI.resultados) UI.resultados.innerHTML = '';
-  if (UI.actualizado) UI.actualizado.textContent = '';
+  currentFecha = fecha;
 
-  const idx = await fetchJSON(R_INDEX(fecha));
-  const keys = extractRaceKeys(idx);
+  // Limpio resultados de la carrera anterior para que no quede información vieja
+  clearResultados();
+  setActualizado({ fecha, carrera: null });
 
-  renderCarrerasList(fecha, keys);
+  const ul = UI.carrerasList();
+  if (ul) ul.innerHTML = '<li class="race-item loading">Cargando carreras...</li>';
 
-  if (keys.length) {
-    await loadResults(fecha, keys[0]);
+  let keys = [];
+  try {
+    const idx = await fetchJSON(`${BASE}/${fecha}/index.json`);
+    // Soportar tres formatos:
+    // 1) array simple: ["serie1","serie2",...]
+    // 2) objeto { races: [...] }
+    // 3) objeto con claves { serie1: "...", final: "..." } → usar nombres de clave
+    if (Array.isArray(idx)) {
+      keys = idx;
+    } else if (Array.isArray(idx?.races)) {
+      keys = idx.races;
+    } else {
+      keys = Object.keys(idx || {});
+    }
+  } catch (e) {
+    if (ul) ul.innerHTML = '<li class="race-item error">No se pudo cargar carreras</li>';
+    return;
   }
+
+  // Orden amigable: series asc, repechajes asc, semifinales asc, prefinal, final
+  const orderKey = (k) => {
+    const pad = n => String(n).padStart(2, '0');
+    const s = k.toLowerCase();
+    let m;
+    if ((m = s.match(/^serie(\d+)$/))) return `1-${pad(+m[1])}`;
+    if ((m = s.match(/^repechaje(\d+)$/))) return `2-${pad(+m[1])}`;
+    if ((m = s.match(/^semifinal(\d+)$/))) return `3-${pad(+m[1])}`;
+    if (s === 'prefinal') return `4-00`;
+    if (s === 'final') return `5-00`;
+    return `9-${s}`;
+    };
+  keys.sort((a, b) => orderKey(a).localeCompare(orderKey(b)));
+
+  renderCarrerasList(keys);
+
+  // No autoabrir nada si querés obligar a elegir; si preferís autoabrir la primera, descomenta:
+  // if (keys.length) loadResults(fecha, keys[0]);
 }
+
+// Compatibilidad con enhancements.js que llama window.loadResults
+window.loadResults = async function(fecha, raceKey) {
+  await loadResults(fecha, raceKey);
+};
 
 async function loadResults(fecha, raceKey) {
+  currentFecha = fecha;
+  currentRace = raceKey;
+
+  // Borro inmediatamente lo viejo para evitar confusión
+  clearResultados();
+  setActualizado({ fecha, carrera: toHumanRace(raceKey) });
+
+  // Marcar selección en la lista
+  const ul = UI.carrerasList();
+  if (ul) {
+    $$('.race-item', ul).forEach(li => li.classList.remove('active'));
+    const li = Array.from(ul.children).find(el => el.dataset?.key === raceKey);
+    if (li) li.classList.add('active');
+  }
+
+  // Muestro "cargando" en la tabla si existe
+  const tb = UI.tableBody();
+  if (tb) {
+    const tr = document.createElement('tr');
+    const td = document.createElement('td');
+    td.colSpan = 4;
+    td.textContent = 'Cargando...';
+    tr.appendChild(td);
+    tb.appendChild(tr);
+  }
+
+  // Cargar JSON de la carrera
+  let data;
   try {
-    renderLoading(fecha, raceKey);
-    const data = await fetchRaceJSON(fecha, raceKey, 2);
-    renderResultados(fecha, raceKey, data);
+    data = await fetchJSON(`${BASE}/${fecha}/${raceKey}.json`);
   } catch (e) {
-    if (UI.resultados) {
-      UI.resultados.innerHTML = `
-        <div class="error">
-          No se pudo cargar <b>${formatRaceLabel(raceKey)}</b> de <b>${fecha}</b>.
-          <div class="muted">${String(e.message || e)}</div>
-        </div>
-      `;
-    }
-    if (UI.actualizado) {
-      UI.actualizado.textContent = `Error al actualizar: ${fecha} · ${formatRaceLabel(raceKey)}`;
+    if (tb) tb.innerHTML = `<tr><td colspan="4">No se pudo cargar ${toHumanRace(raceKey)}</td></tr>`;
+    return;
+  }
+
+  // Render resultados (adaptado a tu formato clásico)
+  // Esperado: { time?: "21:04", results: [{position, number, name, t_final, ...}, ...] }
+  const rows = Array.isArray(data?.results) ? data.results : [];
+  if (tb) {
+    tb.innerHTML = '';
+    for (const r of rows) {
+      const tr = document.createElement('tr');
+      const cPos = document.createElement('td');
+      const cNum = document.createElement('td');
+      const cNom = document.createElement('td');
+      const cTot = document.createElement('td');
+
+      cPos.textContent = r.position ?? '';
+      cNum.textContent = r.number ?? '';
+      cNom.textContent = r.name ?? '';
+      cTot.textContent = r.t_final ?? '';
+
+      tr.append(cPos, cNum, cNom, cTot);
+      tb.appendChild(tr);
     }
   }
+
+  // “Actualizado” con hora del JSON si existe
+  const jsonTime = (data?.time && typeof data.time === 'string') ? `(${data.time})` : '';
+  setActualizado({ fecha, carrera: toHumanRace(raceKey), fromJsonTime: jsonTime });
 }
 
-// Exponer para otros scripts
-window.loadResults = loadResults;
+/* ========= Inicio ========= */
+document.addEventListener('DOMContentLoaded', () => {
+  // Enlazo también el onchange por si NO usás inline en el HTML (ambos conviven)
+  const sel = UI.fechaSelect();
+  if (sel) sel.onchange = (e) => loadCarreras(e.target.value);
 
-// Init
-document.addEventListener('DOMContentLoaded', async () => {
-  try {
-    const fechas = await loadFechas();
-    const currentFecha = UI.fechaSelect ? UI.fechaSelect.value : (fechas?.slice(-1)[0] || null);
-    if (currentFecha) await loadCarreras(currentFecha);
-
-    if (UI.fechaSelect) {
-      UI.fechaSelect.onchange = async (e) => {
-        const f = e.target.value;
-        if (f) await loadCarreras(f);
-      };
-    }
-  } catch {
-    if (UI.fechaSelect) {
-      UI.fechaSelect.innerHTML = `<option value="">No se pudo cargar</option>`;
-    }
-    if (UI.resultados) {
-      UI.resultados.innerHTML = `<div class="error">No se pudieron cargar las fechas. Reintentá en unos segundos.</div>`;
-    }
-  }
+  // Carga inicial
+  loadFechas();
 });
+</script>
