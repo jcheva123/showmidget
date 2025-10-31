@@ -227,7 +227,7 @@
     if(upd){
       const when = lastModifiedStr ? fmtDateTime(new Date(lastModifiedStr)) : fmtDateTime(new Date());
       const label = lastModifiedStr ? 'Cargado' : 'Actualizado';
-      upd.textContent = `${label}: ${when} • ${fecha} · ${RACE_LABELS[raceKey]||raceKey.toUpperCase()}`;
+      upd.textContent = `${label}: ${when} • ${fecha}`;
       upd.hidden=false;
     }
   }
@@ -382,3 +382,4 @@
   window.loadRaces   = loadRaces;
   window.loadResults = loadResults;
 })();
+
