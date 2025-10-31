@@ -180,6 +180,7 @@ function formatRecargo(r) {
 }
 
 
+
   // Candidatos típicos que pueden traer el recargo
   const candidates = [
     r.rec, r.recargo,              // columnas “rec” o “recargo”
@@ -361,6 +362,7 @@ function renderResultsTable(data){
   window.loadRaces   = loadRaces;
   window.loadResults = loadResults;
 })();
+
 
 
 
