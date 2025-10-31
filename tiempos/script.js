@@ -32,12 +32,7 @@
     t.style.opacity = '1';
     setTimeout(()=>t.style.opacity='0',1600);
   }
-  function setStatus(text){
-    const el = document.querySelector('#last-updated') || document.querySelector('#status-badge');
-    if(!el) return;
-    if(text && String(text).trim()){ el.hidden=false; el.textContent=text; }
-    else { el.hidden=true; el.textContent=''; }
-  }
+function setStatus(_) { /* no-op, oculto cualquier rastro */ }
 
   const pad2 = n => String(n).padStart(2,'0');
   const fmtDateTime = d => `${pad2(d.getDate())}/${pad2(d.getMonth()+1)}/${d.getFullYear()} ${pad2(d.getHours())}:${pad2(d.getMinutes())}:${pad2(d.getSeconds())}`;
@@ -376,3 +371,4 @@
   window.loadRaces   = loadRaces;
   window.loadResults = loadResults;
 })();
+
