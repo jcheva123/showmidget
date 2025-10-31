@@ -38,10 +38,9 @@
     if(text && String(text).trim()){ el.hidden=false; el.textContent=text; }
     else { el.hidden=true; el.textContent=''; }
   }
-  const nowLabel = () => {
-    const d=new Date(), p=n=>String(n).padStart(2,'0');
-    return `${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`;
-  };
+
+  const pad2 = n => String(n).padStart(2,'0');
+  const fmtDateTime = d => `${pad2(d.getDate())}/${pad2(d.getMonth()+1)}/${d.getFullYear()} ${pad2(d.getHours())}:${pad2(d.getMinutes())}:${pad2(d.getSeconds())}`;
 
   // ---------- HELPERS ----------
   async function fetchJSON(path){
@@ -56,12 +55,27 @@
     throw new Error(`fetch-failed: ${path}`);
   }
 
+  // Igual que fetchJSON pero devolviendo meta (Last-Modified y URL origen)
+  async function fetchJSONWithMeta(path){
+    const ts = Date.now();
+    for(const base of BASES){
+      const url = `${base}/${path}?ts=${ts}`;
+      try{
+        const r = await fetch(url, {cache:'no-store'});
+        if(!r.ok) continue;
+        const data = await r.json();
+        const lm = r.headers.get('Last-Modified'); // simple response header => accesible CORS
+        return { data, lastModified: lm, url };
+      }catch{ /* probar siguiente base */ }
+    }
+    throw new Error(`fetch-failed: ${path}`);
+  }
+
   const fechaSort = (a,b)=>{
     const na=parseInt(String(a).replace(/\D+/g,''),10)||0;
     const nb=parseInt(String(b).replace(/\D+/g,''),10)||0;
     return na-nb;
   };
-
   function normalizeFechas(raw){
     if(!raw) return [];
     if(Array.isArray(raw)) return raw;
@@ -76,7 +90,6 @@
     s=String(s).trim().toLowerCase().replace(/\s+/g,'');
     return RACE_KEY_RE.test(s) ? s : null;
   };
-
   function normalizeIndex(raw){
     if(!raw) return [];
     if(Array.isArray(raw)) return raw.map(toRaceKey).filter(Boolean);
@@ -94,57 +107,25 @@
     try{ return normalizeIndex(JSON.parse(raw)); }catch{ return []; }
   }
 
-  function formatSec(n) {
-    if (typeof n !== 'number' || !isFinite(n)) return '';
-    return Math.abs(n - Math.round(n)) < 1e-6 ? `${Math.round(n)}s` : `${n.toFixed(3)}s`;
-  }
-
-  function parseTimeStr(s){
-    if (!s || typeof s !== 'string') return NaN;
-    const m = s.trim().match(/^(\d+):([0-5]?\d)(?:[.,](\d{1,3}))?$/);
-    if (!m) return NaN;
-    const min = parseInt(m[1], 10);
-    const sec = parseInt(m[2], 10);
-    const ms  = parseInt((m[3] || '0').padEnd(3, '0'), 10);
-    return min * 60 + sec + ms / 1000;
-  }
-
-  function formatRecargo(r) {
-    // 0) Valor explícito del backend
-    if (typeof r.rec === 'number' && isFinite(r.rec) && r.rec > 0 && r.rec < 30) {
-      return formatSec(r.rec);
-    }
-    if (typeof r.rec === 'string' && r.rec && !r.rec.includes(':')) {
-      const n = parseFloat(r.rec.replace(',', '.'));
-      if (!isNaN(n) && n > 0 && n < 30) return formatSec(n);
-    }
-
-    // 1) Derivar de tiempos: t_final - rec_str (tiempo "limpio")
-    const base  = parseTimeStr(r.rec_str || r.tiempo || r.time);
-    const final = parseTimeStr(r.t_final || r.final);
-    if (isFinite(base) && isFinite(final)) {
-      const diff = final - base;
-      if (diff > 0.2 && diff < 30) return formatSec(diff);
-    }
-
-    // 2) Fallback a 'penalty' numérico
-    if (typeof r.penalty === 'number' && r.penalty > 0 && r.penalty < 30) {
-      return formatSec(r.penalty);
-    }
-
-    // 3) Fallback desde penalty_note (ej. "2 s", "1,5 seg") o "Cono(s)" → 1s
-    if (typeof r.penalty_note === 'string') {
-      const s = r.penalty_note.toLowerCase();
-      const m = s.match(/(\d+(?:[.,]\d+)?)\s*(?:s|seg|segundos)/);
-      if (m) {
-        const n = parseFloat(m[1].replace(',', '.'));
-        if (!isNaN(n) && n > 0 && n < 30) return formatSec(n);
+  // Escoge la carrera con mayor Last-Modified (descarga liviana de cada JSON)
+  async function pickLatestRaceByLM(fecha, keys){
+    const tasks = keys.map(async k => {
+      try{
+        const meta = await fetchJSONWithMeta(`${encodeURIComponent(fecha)}/${k}.json`);
+        const t = meta.lastModified ? Date.parse(meta.lastModified) : 0;
+        return { k, t, meta };
+      }catch{
+        return { k, t:0, meta:null };
       }
-      if (s.includes('cono')) return formatSec(1);
-    }
-
-    // Nada confiable
-    return '';
+    });
+    const results = await Promise.all(tasks);
+    results.sort((a,b)=> b.t - a.t); // más reciente primero
+    const best = results[0];
+    if(best && best.t>0) return { key: best.k, meta: best.meta };
+    // Fallback si no se pudo leer LM: tomamos el último en el orden predefinido
+    const orderPos = k => ORDER.indexOf(k)===-1 ? 999 : ORDER.indexOf(k);
+    const sorted = [...keys].sort((a,b)=> orderPos(a)-orderPos(b));
+    return { key: sorted[sorted.length-1], meta: null };
   }
 
   // ---------- STATE ----------
@@ -166,7 +147,6 @@
     }
     highlightSelected();
   }
-
   function highlightSelected(){
     const items=[...document.querySelectorAll('#race-list ul .race-item')];
     items.forEach(li=>{
@@ -174,15 +154,56 @@
     });
   }
 
-  function renderResultsTable(data){
-    const tbody = document.querySelector('#results tbody');
-    if (!tbody) return;
-    tbody.innerHTML = '';
+  function formatSec(n) {
+    if (typeof n !== 'number' || !isFinite(n)) return '';
+    return Math.abs(n - Math.round(n)) < 1e-6 ? `${Math.round(n)}s` : `${n.toFixed(3)}s`;
+  }
+  function parseTimeStr(s){
+    if (!s || typeof s !== 'string') return NaN;
+    const m = s.trim().match(/^(\d+):([0-5]?\d)(?:[.,](\d{1,3}))?$/);
+    if (!m) return NaN;
+    const min = parseInt(m[1], 10);
+    const sec = parseInt(m[2], 10);
+    const ms  = parseInt((m[3] || '0').padEnd(3, '0'), 10);
+    return min * 60 + sec + ms / 1000;
+  }
+  function formatRecargo(r) {
+    if (typeof r.rec === 'number' && isFinite(r.rec) && r.rec > 0 && r.rec < 30) {
+      return formatSec(r.rec);
+    }
+    if (typeof r.rec === 'string' && r.rec && !r.rec.includes(':')) {
+      const n = parseFloat(r.rec.replace(',', '.'));
+      if (!isNaN(n) && n > 0 && n < 30) return formatSec(n);
+    }
+    const base  = parseTimeStr(r.rec_str || r.tiempo || r.time);
+    const final = parseTimeStr(r.t_final || r.final);
+    if (isFinite(base) && isFinite(final)) {
+      const diff = final - base;
+      if (diff > 0.2 && diff < 30) return formatSec(diff);
+    }
+    if (typeof r.penalty === 'number' && r.penalty > 0 && r.penalty < 30) {
+      return formatSec(r.penalty);
+    }
+    if (typeof r.penalty_note === 'string') {
+      const s = r.penalty_note.toLowerCase();
+      const m = s.match(/(\d+(?:[.,]\d+)?)\s*(?:s|seg|segundos)/);
+      if (m) {
+        const n = parseFloat(m[1].replace(',', '.'));
+        if (!isNaN(n) && n > 0 && n < 30) return formatSec(n);
+      }
+      if (s.includes('cono')) return formatSec(1);
+    }
+    return '';
+  }
 
+  function renderResultsTable(data){
+    let tbody = document.querySelector('#results tbody') || document.querySelector('#resultados tbody');
+    if(!tbody) return;
+    tbody.innerHTML = '';
     const rows = data?.results || [];
-    rows.forEach((r, i) => {
-      const tr = document.createElement('tr');
-      if (i % 2) tr.classList.add('row-alt');
+    rows.forEach((r,i)=>{
+      const tr=document.createElement('tr');
+      if(i%2) tr.classList.add('row-alt');
       tr.innerHTML = `
         <td>${r.position ?? ''}</td>
         <td>${r.number ?? ''}</td>
@@ -196,7 +217,7 @@
     });
   }
 
-  function updateMeta(fecha, raceKey){
+  function updateMeta(fecha, raceKey, lastModifiedStr){
     const pill=document.querySelector('#selected-pill');
     const upd =document.querySelector('#last-updated');
     if(pill){
@@ -204,7 +225,9 @@
       pill.hidden=false;
     }
     if(upd){
-      upd.textContent=`Actualizado: ${nowLabel()} — ${fecha} — ${RACE_LABELS[raceKey]||raceKey.toUpperCase()}`;
+      const when = lastModifiedStr ? fmtDateTime(new Date(lastModifiedStr)) : fmtDateTime(new Date());
+      const label = lastModifiedStr ? 'Cargado' : 'Actualizado';
+      upd.textContent = `${label}: ${when} • ${fecha} · ${RACE_LABELS[raceKey]||raceKey.toUpperCase()}`;
       upd.hidden=false;
     }
   }
@@ -226,12 +249,20 @@
         opt.value=f; opt.textContent=f;
         sel.appendChild(opt);
       }
+
+      // 1) Si hay ?fecha= en la URL, respetar
       const url=new URL(location.href);
       const fURL=url.searchParams.get('fecha');
       if(fURL && fechas.includes(fURL)){
         sel.value=fURL;
-        await loadRaces(fURL);
+        await loadRaces(fURL, { autoPickLatest:true });
+        return;
       }
+
+      // 2) Si no hay param, cargar la última fecha disponible automáticamente
+      const lastFecha = fechas[fechas.length-1];
+      sel.value = lastFecha;
+      await loadRaces(lastFecha, { autoPickLatest:true });
     }catch(e){
       console.error('No se pudo cargar FECHAS', e);
       toast('No se pudieron cargar FECHAS.');
@@ -239,7 +270,8 @@
     }
   }
 
-  async function loadRaces(fecha){
+  async function loadRaces(fecha, opts={}){
+    const { autoPickLatest=false } = opts;
     const f = fecha || document.querySelector('#fecha-select')?.value;
     if(!f) return;
     STATE.fecha=f; STATE.race=null;
@@ -256,14 +288,20 @@
 
       renderRaceList(f, keys);
 
-      const first = keys[0];
-      if(!first){
+      if(!keys.length){
         const tbody=document.querySelector('#results tbody');
         if(tbody) tbody.innerHTML='<tr><td colspan="7" class="empty">Sin carreras cargadas aún.</td></tr>';
-        setStatus(`Actualizado: ${nowLabel()} — ${f} — (sin carreras)`);
+        setStatus(`Actualizado — ${f} (sin carreras)`);
         return;
       }
-      await loadResults(f, first);
+
+      // Elegir qué mostrar:
+      if (autoPickLatest) {
+        const { key: latestKey, meta } = await pickLatestRaceByLM(f, keys);
+        await loadResults(f, latestKey, { prefetched: meta }); // usa meta si ya lo tenemos
+      } else {
+        await loadResults(f, keys[0]);
+      }
     }catch(err){
       console.error(`No se pudo cargar INDEX de ${f}`, err);
       toast(`No se pudo cargar INDEX de ${f}.`);
@@ -272,7 +310,7 @@
     }
   }
 
-  async function loadResults(fecha, raceKey){
+  async function loadResults(fecha, raceKey, opts={}){
     const f = fecha || STATE.fecha;
     const k = raceKey;
     if(!f || !k) return;
@@ -280,10 +318,18 @@
     STATE.fecha=f; STATE.race=k; highlightSelected();
 
     try{
-      const data = await fetchJSON(`${encodeURIComponent(f)}/${k}.json`);
+      // Si viene prefetched (desde pickLatest) lo reutilizo; si no, lo busco ahora
+      let meta = opts.prefetched;
+      if(!meta){
+        meta = await fetchJSONWithMeta(`${encodeURIComponent(f)}/${k}.json`);
+      }
+      const data = meta.data;
       renderResultsTable(data);
-      updateMeta(f, k);
-      setStatus(`Actualizado: ${nowLabel()} — ${f} — ${RACE_LABELS[k]||k.toUpperCase()}`);
+      updateMeta(f, k, meta.lastModified || null);
+      setStatus(meta.lastModified
+        ? `Cargado: ${fmtDateTime(new Date(meta.lastModified))} — ${f} — ${RACE_LABELS[k]||k.toUpperCase()}`
+        : `Actualizado: ${fmtDateTime(new Date())} — ${f} — ${RACE_LABELS[k]||k.toUpperCase()}`
+      );
     }catch(err){
       console.error('Error cargando resultados:', err);
       toast('No se pudo cargar resultados.');
@@ -295,6 +341,7 @@
 
   // ---------- EVENTS ----------
   document.addEventListener('DOMContentLoaded', () => {
+    // Delegación de clicks
     const ul = document.querySelector('#race-list ul');
     if(ul){
       ul.addEventListener('click', (ev)=>{
@@ -309,8 +356,7 @@
     if(btn){
       btn.addEventListener('click', async ()=>{
         if(STATE.fecha){
-          await loadRaces(STATE.fecha);
-          if(STATE.race) await loadResults(STATE.fecha, STATE.race);
+          await loadRaces(STATE.fecha, { autoPickLatest:true });
         }else{
           await loadFechas();
         }
@@ -328,6 +374,7 @@
       });
     }
 
+    // Carga inicial: ya auto-selecciona última fecha + última carrera
     loadFechas();
   });
 
