@@ -28,20 +28,17 @@
   <header>
     <h1>🏁 Resultados - Estival 2025-2026</h1>
   </header>
-
   <main>
     <section id="date-selector">
-      <label for="fecha-select">Seleccionar Fecha:</label>
       <!-- Llenado dinámico por script.js a partir de fechas.json -->
       <select id="fecha-select" onchange="window.loadRaces && loadRaces()">
         <option value="">Cargando fechas…</option>
       </select>
     </section>
-
     <section id="race-list">
       <div style="display:flex; align-items:center; justify-content:space-between; gap:8px;">
         <h2 style="margin:0;">Carreras Disponibles</h2>
-        <div style="display:flex; gap:8px;">
+        <div style="display:flex; gap:2px;">
           <button id="update-btn" class="button" type="button" title="Refrescar datos">↻ Actualizar Datos</button>
           <!-- Botón de compartir oculto (compatibilidad con enhancements.js) -->
           <button id="share-btn" class="button" type="button" hidden aria-hidden="true" style="display:none">Compartir</button>
@@ -113,4 +110,5 @@
   </div>
 </body>
 </html>
+
 
