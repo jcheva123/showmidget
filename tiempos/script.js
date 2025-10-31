@@ -308,6 +308,38 @@ async function loadRaces(fecha) {
       const container = document.querySelector('#results .table-container') || document.querySelector('#resultados');
       if (container) container.classList.add('loading');
     }
+async function loadResults(fecha, raceKey) {
+  if (!fecha || !raceKey) return;
+
+  try {
+    // Estado actual
+    CURRENT.fecha = fecha;
+    CURRENT.race  = raceKey;
+
+    // UI: mostrando carga
+    setStatus?.(`Cargando — ${fecha} — ${RACE_LABELS[raceKey] || raceKey.toUpperCase()}`);
+    const sk = document.getElementById('skeleton');
+    if (sk) sk.hidden = false;
+
+    // Traer JSON de la carrera
+    const data = await fetchJSON(`${encodeURIComponent(fecha)}/${raceKey}.json`);
+
+    // Pintar tabla y meta
+    renderResultsTable(data);
+    updateMeta(fecha, raceKey);
+
+    setStatus?.(`Actualizado: ${nowLabel()} — ${fecha} — ${RACE_LABELS[raceKey] || raceKey.toUpperCase()}`);
+  } catch (err) {
+    console.error('Error cargando resultados:', err);
+    showToast?.('No se pudo cargar esta carrera.');
+    const tbody = document.querySelector('#results tbody');
+    if (tbody) tbody.innerHTML = '<tr><td colspan="7" class="error">No se pudo cargar esta carrera.</td></tr>';
+    setStatus?.('Error al cargar');
+  } finally {
+    const sk = document.getElementById('skeleton');
+    if (sk) sk.hidden = true;
+  }
+}
 
     await window.loadResults(f, first);
   } catch (err) {
@@ -356,6 +388,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // Exponer para el HTML inline (onchange del select)
 window.loadRaces   = loadRaces;
 window.loadResults = loadResults;
+
 
 
 
