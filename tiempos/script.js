@@ -1,4 +1,3 @@
-
 // == TIEMPOS APP (aislado) ==
 (() => {
   // ---------- CONFIG ----------
@@ -56,11 +55,13 @@
     }
     throw new Error(`fetch-failed: ${path}`);
   }
+
   const fechaSort = (a,b)=>{
     const na=parseInt(String(a).replace(/\D+/g,''),10)||0;
     const nb=parseInt(String(b).replace(/\D+/g,''),10)||0;
     return na-nb;
   };
+
   function normalizeFechas(raw){
     if(!raw) return [];
     if(Array.isArray(raw)) return raw;
@@ -68,12 +69,14 @@
     if(typeof raw==='object') return Object.keys(raw).filter(k=>/^fecha\s*\d+/i.test(k));
     try{ return normalizeFechas(JSON.parse(raw)); }catch{ return []; }
   }
+
   const RACE_KEY_RE=/^(?:serie(?:0?[1-9]|1[0-3])|repechaje[1-6]|semifinal[1-4]|prefinal|final)$/i;
   const toRaceKey = s=>{
     if(s==null) return null;
     s=String(s).trim().toLowerCase().replace(/\s+/g,'');
     return RACE_KEY_RE.test(s) ? s : null;
   };
+
   function normalizeIndex(raw){
     if(!raw) return [];
     if(Array.isArray(raw)) return raw.map(toRaceKey).filter(Boolean);
@@ -89,6 +92,59 @@
       });
     }
     try{ return normalizeIndex(JSON.parse(raw)); }catch{ return []; }
+  }
+
+  function formatSec(n) {
+    if (typeof n !== 'number' || !isFinite(n)) return '';
+    return Math.abs(n - Math.round(n)) < 1e-6 ? `${Math.round(n)}s` : `${n.toFixed(3)}s`;
+  }
+
+  function parseTimeStr(s){
+    if (!s || typeof s !== 'string') return NaN;
+    const m = s.trim().match(/^(\d+):([0-5]?\d)(?:[.,](\d{1,3}))?$/);
+    if (!m) return NaN;
+    const min = parseInt(m[1], 10);
+    const sec = parseInt(m[2], 10);
+    const ms  = parseInt((m[3] || '0').padEnd(3, '0'), 10);
+    return min * 60 + sec + ms / 1000;
+  }
+
+  function formatRecargo(r) {
+    // 0) Valor explícito del backend
+    if (typeof r.rec === 'number' && isFinite(r.rec) && r.rec > 0 && r.rec < 30) {
+      return formatSec(r.rec);
+    }
+    if (typeof r.rec === 'string' && r.rec && !r.rec.includes(':')) {
+      const n = parseFloat(r.rec.replace(',', '.'));
+      if (!isNaN(n) && n > 0 && n < 30) return formatSec(n);
+    }
+
+    // 1) Derivar de tiempos: t_final - rec_str (tiempo "limpio")
+    const base  = parseTimeStr(r.rec_str || r.tiempo || r.time);
+    const final = parseTimeStr(r.t_final || r.final);
+    if (isFinite(base) && isFinite(final)) {
+      const diff = final - base;
+      if (diff > 0.2 && diff < 30) return formatSec(diff);
+    }
+
+    // 2) Fallback a 'penalty' numérico
+    if (typeof r.penalty === 'number' && r.penalty > 0 && r.penalty < 30) {
+      return formatSec(r.penalty);
+    }
+
+    // 3) Fallback desde penalty_note (ej. "2 s", "1,5 seg") o "Cono(s)" → 1s
+    if (typeof r.penalty_note === 'string') {
+      const s = r.penalty_note.toLowerCase();
+      const m = s.match(/(\d+(?:[.,]\d+)?)\s*(?:s|seg|segundos)/);
+      if (m) {
+        const n = parseFloat(m[1].replace(',', '.'));
+        if (!isNaN(n) && n > 0 && n < 30) return formatSec(n);
+      }
+      if (s.includes('cono')) return formatSec(1);
+    }
+
+    // Nada confiable
+    return '';
   }
 
   // ---------- STATE ----------
@@ -108,9 +164,9 @@
       li.textContent=RACE_LABELS[k]||k.toUpperCase();
       ul.appendChild(li);
     }
-    // destacar si ya había seleccionada
     highlightSelected();
   }
+
   function highlightSelected(){
     const items=[...document.querySelectorAll('#race-list ul .race-item')];
     items.forEach(li=>{
@@ -118,107 +174,27 @@
     });
   }
 
-function formatSec(n) {
-  // Si es entero (1, 2) muestro "1s", "2s"; si no, 3 decimales.
-  if (Math.abs(n - Math.round(n)) < 1e-6) return `${Math.round(n)}s`;
-  return `${Number(n).toFixed(3)}s`;
-}
+  function renderResultsTable(data){
+    const tbody = document.querySelector('#results tbody');
+    if (!tbody) return;
+    tbody.innerHTML = '';
 
-function formatSec(n) {
-  if (typeof n !== 'number' || !isFinite(n)) return '';
-  // si es entero → "2s", si no → "1.250s"
-  return Math.abs(n - Math.round(n)) < 1e-6 ? `${Math.round(n)}s` : `${n.toFixed(3)}s`;
-}
-
-function parseTimeStr(s){
-  if (!s || typeof s !== 'string') return NaN;
-  const m = s.trim().match(/^(\d+):([0-5]?\d)(?:[.,](\d{1,3}))?$/);
-  if (!m) return NaN;
-  const min = parseInt(m[1], 10);
-  const sec = parseInt(m[2], 10);
-  const ms  = parseInt((m[3] || '0').padEnd(3, '0'), 10);
-  return min * 60 + sec + ms / 1000;
-}
-
-function formatRecargo(r) {
-  // 0) Si viene numérico explícito (mejor de backend)
-  if (typeof r.rec === 'number' && isFinite(r.rec) && r.rec > 0 && r.rec < 30) {
-    return formatSec(r.rec);
+    const rows = data?.results || [];
+    rows.forEach((r, i) => {
+      const tr = document.createElement('tr');
+      if (i % 2) tr.classList.add('row-alt');
+      tr.innerHTML = `
+        <td>${r.position ?? ''}</td>
+        <td>${r.number ?? ''}</td>
+        <td>${r.name ?? ''}</td>
+        <td>${formatRecargo(r)}</td>
+        <td>${r.t_final ?? ''}</td>
+        <td>${r.laps ?? ''}</td>
+        <td>${r.penalty_note ?? ''}</td>
+      `;
+      tbody.appendChild(tr);
+    });
   }
-  if (typeof r.rec === 'string' && r.rec && !r.rec.includes(':')) {
-    const n = parseFloat(r.rec.replace(',', '.'));
-    if (!isNaN(n) && n > 0 && n < 30) return formatSec(n);
-  }
-
-  // 1) Derivar de tiempos (preferido hoy): t_final - rec_str
-  const base  = parseTimeStr(r.rec_str || r.tiempo || r.time);
-  const final = parseTimeStr(r.t_final || r.final);
-  if (isFinite(base) && isFinite(final)) {
-    const diff = final - base;
-    if (diff > 0.2 && diff < 30) return formatSec(diff);
-  }
-
-  // 2) Fallback a 'penalty' numérico si existiera
-  if (typeof r.penalty === 'number' && r.penalty > 0 && r.penalty < 30) {
-    return formatSec(r.penalty);
-  }
-
-  // 3) Fallback desde penalty_note: “2 s”, “1,5 seg”, etc.
-  if (typeof r.penalty_note === 'string') {
-    const s = r.penalty_note.toLowerCase();
-    const m = s.match(/(\d+(?:[.,]\d+)?)\s*(?:s|seg|segundos)/);
-    if (m) {
-      const n = parseFloat(m[1].replace(',', '.'));
-      if (!isNaN(n) && n > 0 && n < 30) return formatSec(n);
-    }
-    // Si solo dice "cono(s)" sin número, asumimos 1s
-    if (s.includes('cono')) return formatSec(1);
-  }
-
-  // Nada confiable → vacío
-  return '';
-}
-
-
-
-  // Candidatos típicos que pueden traer el recargo
-  const candidates = [
-    r.rec, r.recargo,              // columnas “rec” o “recargo”
-    r.penalty, r.penalty_seconds,  // numérico directo
-    r.rec_str, r.recargo_str,      // a veces viene en string
-    r.penalty_note                 // “Recargo 2s”, “+1.5 seg”, etc.
-  ];
-
-  for (const c of candidates) {
-    const secs = extractSeconds(c);
-    if (secs != null) return formatSec(secs);
-  }
-
-  // Sin recargo detectable → mostrar como antes un punto
-  return '.';
-}
-
-
-function renderResultsTable(data){
-  const tbody = document.querySelector('#results tbody');
-  tbody.innerHTML = '';
-  const rows = data?.results || [];
-
-  rows.forEach((r, i) => {
-    const tr = document.createElement('tr');
-    if (i % 2) tr.classList.add('row-alt');
-    tr.innerHTML = `
-      <td>${r.position ?? ''}</td>
-      <td>${r.number ?? ''}</td>
-      <td>${r.name ?? ''}</td>
-      <td>${formatRecargo(r)}</td>   <!-- AQUÍ va la llamada -->
-      <td>${r.t_final ?? ''}</td>
-      <td>${r.laps ?? ''}</td>
-      <td>${r.penalty_note ?? ''}</td>
-    `;
-    tbody.appendChild(tr);
-  });
-}
 
   function updateMeta(fecha, raceKey){
     const pill=document.querySelector('#selected-pill');
@@ -282,13 +258,12 @@ function renderResultsTable(data){
 
       const first = keys[0];
       if(!first){
-        // limpia tabla
         const tbody=document.querySelector('#results tbody');
         if(tbody) tbody.innerHTML='<tr><td colspan="7" class="empty">Sin carreras cargadas aún.</td></tr>';
         setStatus(`Actualizado: ${nowLabel()} — ${f} — (sin carreras)`);
         return;
       }
-      await loadResults(f, first);  // auto-cargar primera
+      await loadResults(f, first);
     }catch(err){
       console.error(`No se pudo cargar INDEX de ${f}`, err);
       toast(`No se pudo cargar INDEX de ${f}.`);
@@ -302,7 +277,6 @@ function renderResultsTable(data){
     const k = raceKey;
     if(!f || !k) return;
 
-    // marca selección
     STATE.fecha=f; STATE.race=k; highlightSelected();
 
     try{
@@ -321,7 +295,6 @@ function renderResultsTable(data){
 
   // ---------- EVENTS ----------
   document.addEventListener('DOMContentLoaded', () => {
-    // Delegación de clicks para no perder handlers
     const ul = document.querySelector('#race-list ul');
     if(ul){
       ul.addEventListener('click', (ev)=>{
@@ -362,10 +335,3 @@ function renderResultsTable(data){
   window.loadRaces   = loadRaces;
   window.loadResults = loadResults;
 })();
-
-
-
-
-
-
-
