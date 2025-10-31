@@ -1,4 +1,4 @@
-<script>
+
 // == TIEMPOS APP (aislado) ==
 (() => {
   // ---------- CONFIG ----------
@@ -285,4 +285,5 @@
   window.loadRaces   = loadRaces;
   window.loadResults = loadResults;
 })();
-</script>
+
+
