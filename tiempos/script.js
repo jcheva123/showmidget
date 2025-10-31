@@ -298,10 +298,12 @@ async function loadRaces(fecha) {
     const first = keys[0];
     const resultsBox = document.querySelector('#results tbody') || document.querySelector('#resultados');
     if (!first) {
-      if (resultsBox) resultsBox.innerHTML = '<tr><td colspan="7" class="empty">Sin carreras cargadas aún.</td></tr>';
-      setStatus?.(`Actualizado: ${nowHHMMSS?.()} — ${f} — (sin carreras)`);
-      return;
-    }
+  if (resultsBox) resultsBox.innerHTML = '<tr><td colspan="7" class="empty">Sin carreras cargadas aún.</td></tr>';
+  // ✅ Usar nowLabel(), que ya existe arriba en tu script
+  setStatus?.(`Actualizado: ${nowLabel()} — ${f} — (sin carreras)`);
+  return;
+}
+
 
     // skeleton
     if (resultsBox) {
@@ -388,6 +390,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // Exponer para el HTML inline (onchange del select)
 window.loadRaces   = loadRaces;
 window.loadResults = loadResults;
+
 
 
 
