@@ -114,21 +114,55 @@ function updateMeta(fecha, raceKey) {
 let CURRENT = { fecha: null, race: null };
 
 // ================== LOADERS ==================
+// Helpers nuevos
+function fechaSort(a, b) {
+  const na = parseInt(String(a).replace(/\D+/g, ''), 10) || 0;
+  const nb = parseInt(String(b).replace(/\D+/g, ''), 10) || 0;
+  return na - nb;
+}
+function normalizeFechas(raw) {
+  if (!raw) return [];
+  if (Array.isArray(raw)) return raw;
+  if (raw && Array.isArray(raw.fechas)) return raw.fechas;
+  if (typeof raw === 'object') {
+    // Ej: { "Fecha 01": true|{}, "Fecha 02": {...} }
+    return Object.keys(raw).filter(k => /^fecha\s*\d+/i.test(k));
+  }
+  // Último intento si viniera como string JSON
+  try {
+    const parsed = JSON.parse(raw);
+    return normalizeFechas(parsed);
+  } catch (_) {
+    return [];
+  }
+}
+
+// Reemplazo de loadFechas()
 async function loadFechas() {
-  const sel = qs('#fecha-select');
+  const sel = document.querySelector('#fecha-select');
   if (!sel) return;
   sel.innerHTML = '<option value="">Cargando fechas…</option>';
 
   try {
-    const fechas = await fetchJSON('fechas.json'); // p.ej. ["Fecha 01","Fecha 02",...]
+    const raw = await fetchJSON('fechas.json');
+    // console.debug('fechas.json recibido:', raw);
+    let fechas = normalizeFechas(raw);
+
+    // si por alguna razón llegaron con/ sin cero a la izquierda,
+    // no pasa nada: mostramos lo que venga; solo ordenamos por número
+    fechas = Array.from(new Set(fechas)).sort(fechaSort);
+
+    if (!fechas.length) throw new Error('fechas-vacias');
+
     sel.innerHTML = '<option value="">-- Elegir Fecha --</option>';
-    fechas.forEach(f => {
+    for (const f of fechas) {
       const opt = document.createElement('option');
       opt.value = f;
       opt.textContent = f;
       sel.appendChild(opt);
-    });
+    }
 
+    // respetar ?fecha= en la URL si existe
     const url = new URL(location.href);
     const fURL = url.searchParams.get('fecha');
     if (fURL && fechas.includes(fURL)) {
@@ -137,10 +171,11 @@ async function loadFechas() {
     }
   } catch (e) {
     console.error('No se pudo cargar FECHAS', e);
-    showToast('No se pudo cargar FECHAS.');
+    showToast('No se pudieron cargar FECHAS.');
     sel.innerHTML = '<option value="">(sin datos)</option>';
   }
 }
+
 
 async function loadRaces(fecha) {
   const fSel = qs('#fecha-select');
@@ -230,3 +265,4 @@ document.addEventListener('DOMContentLoaded', () => {
 // Exponer para el HTML inline (onchange del select)
 window.loadRaces   = loadRaces;
 window.loadResults = loadResults;
+
