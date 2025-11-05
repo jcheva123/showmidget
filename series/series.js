@@ -282,7 +282,7 @@
       const txt = await fetchTXT();
       const bySerie = parseSeriesTXT(txt);
       if (!bySerie.size) {
-        window.showToast?.("El TXT no tiene bloques de series válidos");
+        window.showToast?.("No hay datos");
         endLoading();
         return;
       }
@@ -305,3 +305,4 @@
 
   document.addEventListener("DOMContentLoaded", init);
 })();
+
