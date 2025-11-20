@@ -59,7 +59,7 @@ html, body {
   padding-left: 28px; /* space for trophy */
 }
 #tbl tbody tr.leader td:first-child::before{
-  content: "🏆";
+  content: "";
   position: absolute;
   left: 8px;
   transform: translateY(-1px);
