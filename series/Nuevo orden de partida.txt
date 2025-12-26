@@ -1,129 +1,129 @@
 SERIE 1
-53- Lucas Pascual (E. Pascual)
-41- Emiliano Capdevila (S. Cutini)
-2- Gonzalo Prozorovich (L. Franchi)
-97- Alejo Duelle (G. Soto)
+97- Alejo Duelle (Gastón Soto)
+2- Gonzalo Prozorovich (Luciano Franchi)
+41- Emiliano Capdevila (Santino Cutini)
+53- Lucas Pascual (Emanuel Pascual)
 
 SERIE 2
-28- Emiliano Urretabizcaya (N. Anastasio)
-127- Sebastian Carbone (L. Grill)
-47- Leandro Campos (G. Cutini)
-4- Alberto Gaspari (C.Roth)
+4- Alberto Gaspari (Claudio Roth)
+47- Leandro Campos (Gustavo Cutini)
+127- Sebastian Carbone (Lucas Grill)
+28- Emiliano Urretabizcaya (Nicolás Anastasio)
 
 SERIE 3
-22- Mariano Pérez (F.Bonivardo)
-40- Diego Balduchi (V. Balduchi)
-18- Julio Melendi (G.Schiebelbein)
-44- Tobías Larregui (N. Marcos)
+44- Tobías Larregui (Nehuen Marcos)
+18- Julio Melendi (Gabriel Schiebelbein)
+40- Diego Balduchi (Valentín Balduchi)
+22- Mariano Pérez (Fernando Bonivardo)
 
 SERIE 4
-3- Matías Lastra Meler (A. Pérez Meler)
-39- Roberto Calahorra (E. Paglialunga)
-74- Silvio Manzotti (G. Manzotti)
-1- Luis Vallejos (L. Vallejos)
+1- Luis Vallejos (Luciano Vallejos)
+74- Silvio Manzotti (Gustavo Manzotti)
+39- Roberto Calahorra (Eros Paglialunga)
+3- Matías Lastra Meler (Agustín Pérez Meler)
 
 SERIE 5
-105- Gonzalo Palacios (M. Zabalegui)
-60- Antonio Moyano (. Moyano)
-5- Julio César Monteros (R. Altamirano)
-75- Matías Benitez (G. Benitez)
+75- Matías Benitez (Gastón Benitez)
+5- Julio César Monteros (Roy Altamirano)
+60- Antonio Moyano (Antonio Moyano)
+105- Gonzalo Palacios (Martín Zabalegui)
 
 SERIE 6
-16- Gonzalo Fabi (J. Rodriguez)
-63- Alan Jaca Cortejarena (A. Jaca Cortejarena)
-38- Gastón Pérez (B. Madril)
-33- Leonel Ramos (N. Caputo)
+33- Leonel Ramos (Nicolás Caputo)
+38- Gastón Pérez (Braian Madril)
+63- Alan Jaca Cortejarena (Aaron Jaca Cortejarena)
+16- Gonzalo Fabi (Juan Cruz Rodriguez)
 
 SERIE 7
-19- Germán Todino (J. Todino)
-15- Pablo Limbozzi (F. Hidalgo)
-30- Braian Quevedo (J.n Resola)
-69- Emanuel Gómez (. Ovejero)
+69- Emanuel Gómez (Thomas Ovejero)
+30- Braian Quevedo (Jonatan Resola)
+15- Pablo Limbozzi (Federico Hidalgo)
+19- Germán Todino (Juan Ignacio Todino)
 
 SERIE 8
-23- David Ruhl (J. Piñeiro)
-51- Emiliano Nuesch (N. Onorato)
-12- Matías Salaberry (J. Rey)
-24- Luciano Benedetti (M. Ausili)
+24- Luciano Benedetti (Marcelo Ausili)
+12- Matías Salaberry (Javier Rey)
+51- Emiliano Nuesch (Nicolás Onorato)
+23- David Ruhl (Julio César Piñeiro)
 
 SERIE 9
-95- Fabio Pallotti (I. Pallotti)
-34- Fernando Caputo (N. Dailoff)
-123- Marcelo Weimann (A. Colaneri)
-88- Federico Domini (J. Soto)
+88- Federico Domini (Juan María Soto)
+123- Marcelo Weimann (Agustín Colaneri)
+34- Fernando Caputo (Nehuen Dailoff)
+95- Fabio Pallotti (Iván Pallotti)
 
 SERIE 10
-43- Néstor Fabio Rossini (F. Colturi)
-11- Néstor Mancini (E. Mancini)
-78- Lucas Blanc (J. González)
-114- Mauricio Gómez (J. Calvo)
+114- Mauricio Gómez (Juan Ignacio Calvo)
+78- Lucas Blanc (Juan Ignacio González)
+11- Néstor Mancini (Esteban Mancini)
+43- Néstor Fabio Rossini (Fabián Colturi)
 
 SERIE 11
-45- Juan Pablo Vasicek (G. Petracci)
-142- Jonathan Rondán (R. Olivera)
-96- Daniel Costa Sanchez (M. Becchio)
-98- Javier Fritz (J. Fritz)
+98- Javier Fritz (Jorge Fritz)
+96- Daniel Costa Sanchez (Martín Becchio)
+142- Jonathan Rondán (Rodrigo Olivera)
+45- Juan Pablo Vasicek (Gastón Petracci)
 
 SERIE 12
-104- Juan Cossu (M. Hardoy)
-156- Maximiliano Romero (S. Todino)
-26- Federico Brezina (G. Brezina)
-21- Guillermo Schmit (N. Schmit)
+21- Guillermo Schmit (Nahuel Schmit)
+26- Federico Brezina (Gonzalo Brezina)
+156- Maximiliano Romero (Sebastián Todino)
+104- Juan Cossu (Maximiliano Hardoy)
 
 SERIE 13
-58- Sebastián Rosas (M. Pérez)
-27- Mauro Caballero (A. Ausili)
-7- Fabián Papasidero (E. Roth)
-36- Hugo Giménez (N. Macazaga)
+36- Hugo Giménez (Nicolás Macazaga)
+7- Fabián Papasidero (Ezequiel Roth)
+27- Mauro Caballero (Agustín Ausili)
+58- Sebastián Rosas (Marcelo Pérez)
 
 SERIE 14
-48- Leandro Campos (G. Yurovsky)
-50- Diego Andrade (J. Andrade)
-102- Lucas Laguzzi (L. Torres)
-113- Lucas De Acharán (G. Marco)
+113- Juan Lucas De Acharán (Gabriel Marco)
+102- Lucas Laguzzi (Luciano Torres)
+50- Diego Andrade (Joaquín Andrade)
+48- Leandro Campos (Guillermo Yurovsky)
 
 SERIE 15
-9- Hernán Molini (M. Oyola)
-8- Leiza Grill (K. Altamirano)
-65- Rodrigo Perugini (P. Alza)
-32- Emiliano Antonelli (J. Melger)
+32- Emiliano Antonelli (Julián Melger)
+65- Rodrigo Perugini (Pablo Alza)
+8- Leiza Grill (Kevin Altamirano)
+9- Hernán Molini (Matías Oyola)
 
 SERIE 16
-55- Alexia Eberling (A. Antinori)
-20- Guido Botelli (S. Pérez)
-67- Leonardo Vega (G. Hock)
-86- Gastón Salazar (A. Salazar)
+86- Gastón Salazar (Alfredo Salazar)
+67- Leonardo Vega (Gastón Hock)
+20- Guido Botelli (Sebastián Pérez)
+55- Alexia Eberling (Axel Antinori)
 
 SERIE 17
-54- Francisco Ortiz Medina (J. Toledo)
-76- Oscar Antonio Marichalar (B. López)
-112- Rodrigo Troncoso (A. Gómez)
-111- Federico Maletto (J. Bray)
+111- Federico Maletto (Juan Pablo Bray)
+112- Rodrigo Troncoso (Agustín Gómez)
+76- Oscar Antonio Marichalar (Brian López)
+54- Francisco Ortiz Medina (Joaquín Toledo)
 
 SERIE 18
-66- Marcos Bertolini (V. Yungblut)
-109- Carlos Cardoso (D. Anastasio)
-115- Ivano Bozzetti (A. López)
-14- Martín Saldamando (F. Saldamando)
+14- Martín Saldamando (Fernando Saldamando)
+115- Ivano Bozzetti (Agustín López)
+109- Carlos Cardoso (Diego Anastasio)
+66- Marcos Bertolini (Valentín Yungblut)
 
 SERIE 19
-110- Hugo Salaberry (L. Ford)
-94- Ramiro Fernández (A. Chiesa)
-29- Juan Andrada (J. García López)
-57- José María Pascual (G. Razquin)
+57- José María Pascual (Gonzalo Razquin)
+29- Juan Andrada (Joaquín García López)
+94- Ramiro Fernández (Alejandro Chiesa)
+110- Hugo Salaberry (Lautaro Ford)
 
 SERIE 20
-79- Emmanuel Buzzo (S. Lucero)
-6- Axel Garaban (S. Burgos)
-31- Gustavo Conca (C. Puccinelli)
-49- Manuel Sanchez Migliore (F. Perugini)
+49- Manuel Sanchez Migliore (Flavio Perugini)
+31- Gustavo Conca (Carlos Puccinelli)
+6- Axel Garaban (Sebastian Burgos)
+79- Emmanuel Buzzo (Sebastian Lucero)
 
 SERIE 21
-134- Facundo Osvaldo (N. Montanari)
-72- Kevin Jacob (R. Jacob)
-137- Cristian Valencia (R. Dailoff)
+137- Cristian Valencia (Ramiro Dailoff)
+72- Kevin Jacob (Rubén Jacob)
+134- Facundo Osvaldo (Nicolás Montanari)
 
 SERIE 22
-46- Bruno Dupont (B. Dupont)
-56- Miguel Chiapparo (N. Chiapparo)
-116- Adrián Seijas (R. Zubeldía)
+116- Adrián Seijas (Rodrigo Zubeldía)
+56- Miguel Chiapparo (Nicolás Chiapparo)
+46- Bruno Dupont (Braian Dupont)
