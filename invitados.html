@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0f1014" />
+  <title>Fecha 9 • Carrera de Invitados</title>
+
+  <style>
+    :root{
+      --bg0:#0f1014;
+      --bg1:#141522;
+      --panel: rgba(255,255,255,.045);
+      --panel2: rgba(0,0,0,.22);
+      --line: rgba(255,255,255,.10);
+      --line2: rgba(255,255,255,.07);
+      --text:#f2f2f2;
+      --muted:#b9b9c6;
+      --red:#e10600;
+      --red2:#ff2a2a;
+      --radius: 16px;
+    }
+    *{ box-sizing:border-box; }
+
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(900px 420px at 25% -10%, rgba(225,6,0,.18), transparent 60%),
+        radial-gradient(800px 500px at 95% 10%, rgba(255,255,255,.06), transparent 60%),
+        linear-gradient(180deg, var(--bg1), var(--bg0));
+      overflow-x:hidden;
+    }
+
+    /* Entramado (bandera a cuadros) sutil + viñeta */
+    body::before{
+      content:"";
+      position:fixed;
+      inset:-60px;
+      pointer-events:none;
+      opacity:.08;
+      background:
+        linear-gradient(45deg, rgba(255,255,255,.45) 25%, transparent 25%) 0 0/28px 28px,
+        linear-gradient(-45deg, rgba(255,255,255,.45) 25%, transparent 25%) 0 0/28px 28px,
+        linear-gradient(45deg, transparent 75%, rgba(255,255,255,.45) 75%) 0 0/28px 28px,
+        linear-gradient(-45deg, transparent 75%, rgba(255,255,255,.45) 75%) 0 0/28px 28px;
+      filter: blur(.2px);
+    }
+    body::after{
+      content:"";
+      position:fixed;
+      inset:-1px;
+      pointer-events:none;
+      background:
+        radial-gradient(1200px 800px at 50% 20%, transparent 55%, rgba(0,0,0,.55) 100%);
+      opacity:.9;
+    }
+
+    .wrap{
+      position:relative;
+      z-index:1;
+      max-width: 560px;
+      margin: 0 auto;
+      padding: 12px 10px 22px;
+    }
+
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding: 4px 2px 0;
+    }
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(225,6,0,.12);
+      border: 1px solid rgba(225,6,0,.28);
+      color: var(--text);
+      font-weight: 900;
+      letter-spacing:.2px;
+      text-transform: uppercase;
+      font-size: 12px;
+      white-space: nowrap;
+      box-shadow: 0 10px 26px rgba(0,0,0,.35);
+    }
+    .dot{
+      width:8px;height:8px;border-radius:50%;
+      background: linear-gradient(180deg, var(--red2), var(--red));
+      box-shadow: 0 0 0 3px rgba(225,6,0,.18);
+    }
+    a.back{
+      color: var(--text);
+      text-decoration:none;
+      font-weight: 800;
+      font-size: 12px;
+      opacity:.92;
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      white-space: nowrap;
+    }
+
+    .rule{
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: var(--radius);
+      background:
+        linear-gradient(135deg, rgba(225,6,0,.12), transparent 60%),
+        rgba(255,255,255,.04);
+      border: 1px solid rgba(225,6,0,.22);
+      font-size: 12.8px;
+      line-height: 1.25;
+      box-shadow: 0 10px 28px rgba(0,0,0,.35);
+    }
+    .rule b{ color:#fff; }
+    .rule .muted{ color: rgba(255,255,255,.78); }
+
+    .panel{
+      margin-top: 10px;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background: var(--panel);
+      overflow: hidden;
+      box-shadow: 0 14px 40px rgba(0,0,0,.40);
+    }
+
+    /* Buscador sticky (queda bien para listas largas) */
+    .panelHead{
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      padding: 10px;
+      background: rgba(15,16,20,.90);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .searchRow{
+      display:flex;
+      gap:10px;
+      align-items:center;
+    }
+    .searchRow input{
+      width:100%;
+      padding: 11px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.22);
+      color: var(--text);
+      outline: none;
+      font-size: 14px;
+    }
+    .searchRow input::placeholder{ color: rgba(242,242,242,.55); }
+    .metaRow{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 12px;
+      gap:10px;
+    }
+    .miniBtn{
+      appearance:none;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      color: rgba(255,255,255,.85);
+      font-weight: 850;
+      font-size: 12px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      cursor:pointer;
+    }
+    .miniBtn:active{ transform: scale(.99); }
+
+    /* TABLA MINIMA + MEJOR LECTURA */
+    table{
+      width:100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      font-size: 12.7px;
+    }
+
+    col.num { width: 54px; }
+    col.tit { width: 46%; }
+    col.inv { width: 46%; }
+
+    thead th{
+      background: rgba(0,0,0,.34);
+      border-bottom: 1px solid rgba(255,255,255,.12);
+      padding: 9px 8px;
+      text-transform: uppercase;
+      letter-spacing: .25px;
+      font-weight: 950;
+      color: rgba(255,255,255,.88);
+    }
+
+    tbody td{
+      border-bottom: 1px solid var(--line2);
+      padding: 9px 8px;           /* un toque más cómodo */
+      vertical-align: top;
+      background: rgba(0,0,0,.10);
+    }
+
+    /* Zebra striping suave */
+    tbody tr:nth-child(even) td{
+      background:
+        linear-gradient(90deg, rgba(225,6,0,.06), transparent 18%),
+        rgba(0,0,0,.16);
+    }
+
+    /* Número: placa con rojo */
+    .numCell{
+      font-weight: 950;
+      text-align:center;
+      border-right: 1px solid rgba(255,255,255,.08);
+      background:
+        linear-gradient(180deg, rgba(225,6,0,.22), rgba(0,0,0,.12));
+      color: rgba(255,255,255,.95);
+    }
+
+    .name{
+      font-weight: 850;
+      line-height: 1.15;
+      word-break: break-word;
+      color: rgba(255,255,255,.92);
+    }
+
+    /* Touch feedback */
+    tbody tr:active td{
+      background: rgba(255,255,255,.06);
+    }
+
+    details.specs{
+      margin-top: 12px;
+      border-radius: var(--radius);
+      background: var(--panel);
+      border: 1px solid var(--line);
+      overflow:hidden;
+      box-shadow: 0 12px 32px rgba(0,0,0,.38);
+    }
+    details.specs summary{
+      cursor: pointer;
+      list-style:none;
+      padding: 11px 12px;
+      font-weight: 950;
+      text-transform: uppercase;
+      letter-spacing:.25px;
+      background: rgba(0,0,0,.18);
+      border-bottom: 1px solid rgba(255,255,255,.10);
+    }
+    details.specs summary::-webkit-details-marker{ display:none; }
+    .specBody{
+      padding: 12px 12px 10px;
+      color: rgba(242,242,242,.92);
+      font-size: 13px;
+      line-height: 1.35;
+    }
+    .specBody ul{ margin:0; padding-left: 18px; }
+    .specBody li{ margin: 7px 0; }
+
+    .footer{
+      margin-top: 12px;
+      text-align:center;
+      color: rgba(255,255,255,.55);
+      font-size: 11px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="badge"><span class="dot"></span> Fecha 9 • Invitados</div>
+      <a class="back" href="index.html">Volver</a>
+    </div>
+
+    <div class="rule">
+      <b>INVITADO:</b> corre <b>series / repechajes / semifinales / Final de Invitados</b>.
+      <span class="muted"> • </span>
+      <b>TITULAR:</b> corre <b>solo la 2ª final</b> (Final de Titulares).
+    </div>
+
+    <div class="panel">
+      <div class="panelHead">
+        <div class="searchRow">
+          <input id="q" type="text" inputmode="search" placeholder="Buscar (Nº o nombre)..." />
+        </div>
+        <div class="metaRow">
+          <div id="count">—</div>
+          <button class="miniBtn" id="clearBtn" type="button">Limpiar</button>
+        </div>
+      </div>
+
+      <table>
+        <colgroup>
+          <col class="num">
+          <col class="tit">
+          <col class="inv">
+        </colgroup>
+        <thead>
+          <tr>
+            <th>N°</th>
+            <th>Titular</th>
+            <th>Invitado</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+
+    <details class="specs">
+      <summary>Artículo 7 • Modalidad (breve)</summary>
+      <div class="specBody">
+        <ul>
+          <li><b>Series:</b> 4 autos, fila única. Orden por sorteo (streaming).</li>
+          <li><b>Repechajes:</b> máx 8 autos, 5 vtas. Entran excedentes de mejores 40 tiempos. Sin reordenamiento; “atípico” si el puntero cumplió 3 vtas.</li>
+          <li><b>Semis:</b> 4 semifinales, 6 vtas, máx 12 autos (4 por fila). Orden: mejores 40 + 8 mejores repechajes. Hasta 3 suplentes por semi. Reordenamiento si detención y puntero cumplió 2 vtas.</li>
+          <li><b>No hay Pre-Final.</b></li>
+          <li><b>Final Invitados:</b> 3 primeros de cada semi (puesto/tiempo). Suplentes: 4tos/5tos + 2 mejores 6tos (máx 10).</li>
+          <li><b>Final Titulares:</b> grilla según llegada de Final Invitados. Suplentes: los mismos.</li>
+          <li><b>Puntaje:</b> Serie (1.50/1.00/0.75/0.50) • Semi (3.00/2.00/1.00) • Final (3.50/2.50/1.50) • +10 pts por finalizar serie. Ideal: 18.</li>
+          <li><b>Titular suma:</b> 10 pts presentación + (serie y semi del invitado). En finales cuenta el mayor puntaje del binomio. Sin descarte.</li>
+        </ul>
+      </div>
+    </details>
+
+    <div class="footer">Carrera de Invitados</div>
+  </div>
+
+  <script>
+    const parejas = [
+      { num: "1",   titular: "Luciano Vallejos",          invitado: "Luis Vallejos" },
+      { num: "2",   titular: "Luciano Franchi",           invitado: "Gonzalo Prozorovich" },
+      { num: "3",   titular: "Agustín Pérez Meler",       invitado: "Matías Lastra Meler" },
+      { num: "4",   titular: "Claudio Roth",              invitado: "Alberto Gaspari" },
+      { num: "5",   titular: "Roy Altamirano",            invitado: "Julio César Monteros" },
+      { num: "6",   titular: "Sebastian Burgos",          invitado: "Axel Garaban" },
+      { num: "7",   titular: "Ezequiel Roth",             invitado: "Fabián Papasidero" },
+      { num: "8",   titular: "Kevin Altamirano",          invitado: "Leiza Grill" },
+      { num: "9",   titular: "Matías Oyola",              invitado: "Hernán Molini" },
+      { num: "11",  titular: "Esteban Mancini",           invitado: "Néstor Mancini" },
+      { num: "12",  titular: "Javier Rey",                invitado: "Matías Salaberry" },
+      { num: "14",  titular: "Fernando Saldamando",       invitado: "Martín Saldamando" },
+      { num: "15",  titular: "Federico Hidalgo",          invitado: "Pablo Limbozzi" },
+      { num: "16",  titular: "Juan Cruz Rodriguez",       invitado: "Gonzalo Fabi" },
+      { num: "18",  titular: "Gabriel Schiebelbein",      invitado: "Julio Melendi" },
+      { num: "19",  titular: "Juan Ignacio Todino",       invitado: "Germán Todino" },
+      { num: "20",  titular: "Sebastián Pérez",           invitado: "Guido Botelli" },
+      { num: "21",  titular: "Nahuel Schmit",             invitado: "Guillermo Schmit" },
+      { num: "22",  titular: "Fernando Bonivardo",        invitado: "Mariano Pérez" },
+      { num: "23",  titular: "Julio César Piñeiro",       invitado: "David Ruhl" },
+      { num: "24",  titular: "Marcelo Ausili",            invitado: "Luciano Benedetti" },
+      { num: "26",  titular: "Gonzalo Brezina",           invitado: "Federico Brezina" },
+      { num: "27",  titular: "Agustín Ausili",            invitado: "Mauro Caballero" },
+      { num: "28",  titular: "Nicolás Anastasio",         invitado: "Emiliano Urretabizcaya" },
+      { num: "29",  titular: "Joaquín García López",      invitado: "Juan Andrada" },
+      { num: "30",  titular: "Jonatan Resola",            invitado: "Braian Quevedo" },
+      { num: "31",  titular: "Carlos Puccinelli",         invitado: "Gustavo Conca" },
+      { num: "32",  titular: "Julián Melger",             invitado: "Emiliano Antonelli" },
+      { num: "33",  titular: "Nicolás Caputo",            invitado: "Leonel Ramos" },
+      { num: "34",  titular: "Nehuen Dailoff",            invitado: "Fernando Caputo" },
+      { num: "36",  titular: "Nicolás Macazaga",          invitado: "Hugo Giménez" },
+      { num: "38",  titular: "Braian Madril",             invitado: "Gastón Pérez" },
+      { num: "39",  titular: "Eros Paglialunga",          invitado: "Roberto Calahorra" },
+      { num: "40",  titular: "Valentín Balduchi",         invitado: "Diego Balduchi" },
+      { num: "41",  titular: "Santino Cutini",            invitado: "Emiliano Capdevila" },
+      { num: "43",  titular: "Fabián Colturi",            invitado: "Néstor Fabio Rossini" },
+      { num: "44",  titular: "Nehuen Marcos",             invitado: "Tobías Larregui" },
+      { num: "45",  titular: "Gastón Petracci",           invitado: "Juan Pablo Vasicek" },
+      { num: "46",  titular: "Braian Dupont",             invitado: "Bruno Dupont" },
+      { num: "47",  titular: "Gustavo Cutini",            invitado: "Leandro Campos" },
+      { num: "48",  titular: "Guillermo Yurovsky",        invitado: "Leandro Campos" },
+      { num: "49",  titular: "Flavio Perugini",           invitado: "Manuel Sanchez Migliore" },
+      { num: "50",  titular: "Joaquín Andrade",           invitado: "Diego Andrade" },
+      { num: "51",  titular: "Nicolás Onorato",           invitado: "Emiliano Nuesch" },
+      { num: "53",  titular: "Emanuel Pascual",           invitado: "Lucas Pascual" },
+      { num: "54",  titular: "Joaquín Toledo",            invitado: "Francisco Ortiz Medina" },
+      { num: "55",  titular: "Axel Antinori",             invitado: "Alexia Eberling" },
+      { num: "56",  titular: "Nicolás Chiapparo",         invitado: "Miguel Chiapparo" },
+      { num: "57",  titular: "Gonzalo Razquin",           invitado: "José María Pascual" },
+      { num: "58",  titular: "Marcelo Pérez",             invitado: "Sebastián Rosas" },
+      { num: "60",  titular: "Antonio Moyano",            invitado: "Antonio Moyano" },
+      { num: "63",  titular: "Aaron Jaca Cortejarena",    invitado: "Alan Jaca Cortejarena" },
+      { num: "65",  titular: "Pablo Alza",                invitado: "Rodrigo Perugini" },
+      { num: "66",  titular: "Valentín Yungblut",         invitado: "Marcos Bertolini" },
+      { num: "67",  titular: "Gastón Hock",               invitado: "Leonardo Vega" },
+      { num: "69",  titular: "Thomas Ovejero",            invitado: "Emanuel Gómez" },
+      { num: "72",  titular: "Rubén Jacob",               invitado: "Kevin Jacob" },
+      { num: "74",  titular: "Gustavo Manzotti",          invitado: "Silvio Manzotti" },
+      { num: "75",  titular: "Gastón Benitez",            invitado: "Matías Benitez" },
+      { num: "76",  titular: "Brian López",               invitado: "Oscar Antonio Marichalar" },
+      { num: "78",  titular: "Juan Ignacio González",     invitado: "Lucas Blanc" },
+      { num: "79",  titular: "Sebastian Lucero",          invitado: "Emmanuel Buzzo" },
+      { num: "86",  titular: "Alfredo Salazar",           invitado: "Gastón Salazar" },
+      { num: "88",  titular: "Juan María Soto",           invitado: "Federico Domini" },
+      { num: "94",  titular: "Alejandro Chiesa",          invitado: "Ramiro Fernández" },
+      { num: "95",  titular: "Iván Pallotti",             invitado: "Fabio Pallotti" },
+      { num: "96",  titular: "Martín Becchio",            invitado: "Daniel Costa Sanchez" },
+      { num: "97",  titular: "Gastón Soto",               invitado: "Alejo Duelle" },
+      { num: "98",  titular: "Jorge Fritz",               invitado: "Javier Fritz" },
+      { num: "102", titular: "Luciano Torres",            invitado: "Lucas Laguzzi" },
+      { num: "104", titular: "Maximiliano Hardoy",        invitado: "Juan Cossu" },
+      { num: "105", titular: "Martín Zabalegui",          invitado: "Gonzalo Palacios" },
+      { num: "109", titular: "Diego Anastasio",           invitado: "Carlos Cardoso" },
+      { num: "110", titular: "Lautaro Ford",              invitado: "Hugo Salaberry" },
+      { num: "111", titular: "Juan Pablo Bray",           invitado: "Federico Maletto" },
+      { num: "112", titular: "Agustín Gómez",             invitado: "Rodrigo Troncoso" },
+      { num: "113", titular: "Gabriel Marco",             invitado: "Juan Lucas De Acharán" },
+      { num: "114", titular: "Juan Ignacio Calvo",        invitado: "Mauricio Gómez" },
+      { num: "115", titular: "Agustín López",             invitado: "Ivano Bozzetti" },
+      { num: "116", titular: "Rodrigo Zubeldía",          invitado: "Adrián Seijas" },
+      { num: "123", titular: "Agustín Colaneri",          invitado: "Marcelo Weimann" },
+      { num: "127", titular: "Lucas Grill",               invitado: "Sebastian Carbone" },
+      { num: "134", titular: "Nicolás Montanari",         invitado: "Facundo Osvaldo" },
+      { num: "137", titular: "Ramiro Dailoff",            invitado: "Cristian Valencia" },
+      { num: "142", titular: "Rodrigo Olivera",           invitado: "Jonathan Rondán" },
+      { num: "156", titular: "Sebastián Todino",          invitado: "Maximiliano Romero" }
+    ].sort((a,b) => Number(a.num) - Number(b.num));
+
+    const $tbody = document.getElementById("tbody");
+    const $q = document.getElementById("q");
+    const $count = document.getElementById("count");
+    const $clearBtn = document.getElementById("clearBtn");
+
+    function normalize(s){
+      return (s || "")
+        .toString()
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .trim();
+    }
+    function escapeHtml(str){
+      return String(str ?? "").replace(/[&<>"']/g, (m) => ({
+        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+      }[m]));
+    }
+
+    function render(items){
+      $tbody.innerHTML = "";
+      $count.textContent = `${items.length} binomio${items.length === 1 ? "" : "s"}`;
+
+      const frag = document.createDocumentFragment();
+      for(const it of items){
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td class="numCell">${escapeHtml(it.num)}</td>
+          <td><div class="name">${escapeHtml(it.titular)}</div></td>
+          <td><div class="name">${escapeHtml(it.invitado)}</div></td>
+        `;
+        frag.appendChild(tr);
+      }
+      $tbody.appendChild(frag);
+    }
+
+    function applyFilter(){
+      const term = normalize($q.value);
+      if(!term){ render(parejas); return; }
+      const filtered = parejas.filter(p => normalize(`${p.num} ${p.titular} ${p.invitado}`).includes(term));
+      render(filtered);
+    }
+
+    render(parejas);
+    $q.addEventListener("input", applyFilter);
+
+    $clearBtn.addEventListener("click", () => {
+      $q.value = "";
+      $q.focus();
+      render(parejas);
+    });
+  </script>
+</body>
+</html>
