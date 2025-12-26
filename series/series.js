@@ -22,7 +22,7 @@
     p => `https://cdn.statically.io/gh/jcheva123/tiemposweb-2025/main/${p}?ts=${Date.now()}`,
     p => `https://raw.githubusercontent.com/jcheva123/tiemposweb-2025/main/${p}?ts=${Date.now()}`
   ];
-  const SERIES_MAX = 13;
+  const SERIES_MAX = 22;
   const CACHE_VER  = "series.v3";
   // cuando empiece el playoff, metés los N° acá para resaltarlos
   const PLAYOFF_NUMBERS = new Set([]);
@@ -305,4 +305,5 @@
 
   document.addEventListener("DOMContentLoaded", init);
 })();
+
 
