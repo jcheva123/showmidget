@@ -11,7 +11,7 @@
     {
       "pos": 1,
       "nro": 2,
-      "nombre": "FRANCHI Luciano 🏆🏆🏆🏆🏆",
+      "nombre": "FRANCHI Luciano 🏆🏆🏆🏆",
       "anterior": 158.5,
       "serie": 11.5,
       "semif": 1.0,
@@ -24,7 +24,7 @@
     {
       "pos": 2,
       "nro": 1,
-      "nombre": "VALLEJOS Luciano 🏆🏆",
+      "nombre": "VALLEJOS Luciano 🏆🏆🏆",
       "anterior": 140.5,
       "serie": 10.75,
       "semif": 2.0,
@@ -1206,3 +1206,4 @@
     }
   ]
 }
+
