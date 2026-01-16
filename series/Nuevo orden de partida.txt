@@ -1,129 +1,102 @@
 SERIE 1
-97- Alejo Duelle (Gastón Soto)
-2- Gonzalo Prozorovich (Luciano Franchi)
-41- Emiliano Capdevila (Santino Cutini)
-53- Lucas Pascual (Emanuel Pascual)
+29 - GARCIA LOPEZ
+35 - MORENO
+11 - MANCINI
+30 - RESOLA
+137 - DAILOFF R.
+75 - BENITEZ
+95 - PALLOTTI
+78 - GONZALEZ
 
 SERIE 2
-4- Alberto Gaspari (Claudio Roth)
-47- Leandro Campos (Gustavo Cutini)
-127- Sebastian Carbone (Lucas Grill)
-28- Emiliano Urretabizcaya (Nicolás Anastasio)
+14 - SALDAMANDO
+16 - RODRIGUEZ
+43 - COLTURI
+60 - MOYANO
+23 - PINEIRO
+55 - ANTINORI
+98 - FRITZ
+53 - PASCUAL
 
 SERIE 3
-44- Tobías Larregui (Nehuen Marcos)
-18- Julio Melendi (Gabriel Schiebelbein)
-40- Diego Balduchi (Valentín Balduchi)
-22- Mariano Pérez (Fernando Bonivardo)
+127 - GRILL LUCAS
+6 - BURGOS
+66 - YUNGBLUT
+34 - DAILOFF
+94 - CHIESA
+110 - FORD
+67 - HOCK
+45 - PETRACCI
 
 SERIE 4
-1- Luis Vallejos (Luciano Vallejos)
-74- Silvio Manzotti (Gustavo Manzotti)
-39- Roberto Calahorra (Eros Paglialunga)
-3- Matías Lastra Meler (Agustín Pérez Meler)
+4 - ROTH C.
+32 - MELGER
+76 - LOPEZ
+46 - DUPONT
+72 - JACOB
+49 - PERUGINI
+116 - ZUBELDIA
+69 - OVEJERO
 
 SERIE 5
-75- Matías Benitez (Gastón Benitez)
-5- Julio César Monteros (Roy Altamirano)
-60- Antonio Moyano (Antonio Moyano)
-105- Gonzalo Palacios (Martín Zabalegui)
+26 - BREZINA
+15 - HIDALGO
+134 - MONTANARI
+88 - SOTO
+40 - BALDUCHI
+96 - BECCHIO
+79 - LUCERO
 
 SERIE 6
-33- Leonel Ramos (Nicolás Caputo)
-38- Gastón Pérez (Braian Madril)
-63- Alan Jaca Cortejarena (Aaron Jaca Cortejarena)
-16- Gonzalo Fabi (Juan Cruz Rodriguez)
+50 - ANDRADE
+1 - VALLEJOS
+31 - PUCCINELLI
+58 - PEREZ
+57 - RAZQUIN
+74 - MANZOTTI
+113 - MARCO
 
 SERIE 7
-69- Emanuel Gómez (Thomas Ovejero)
-30- Braian Quevedo (Jonatan Resola)
-15- Pablo Limbozzi (Federico Hidalgo)
-19- Germán Todino (Juan Ignacio Todino)
+18 - SCHIEBELBEIN
+20 - PEREZ
+24 - AUSILI
+9 - OYOLA
+19 - TODINO
+65 - ALZA PABLO
+48 - YUROVSKY
 
 SERIE 8
-24- Luciano Benedetti (Marcelo Ausili)
-12- Matías Salaberry (Javier Rey)
-51- Emiliano Nuesch (Nicolás Onorato)
-23- David Ruhl (Julio César Piñeiro)
+3 - PEREZ MELER
+2 - FRANCHI
+21 - SCHMIT
+41 - CUTINI
+28 - ANASTASIO
+123 - COLANERI
+25 - PALMA
 
 SERIE 9
-88- Federico Domini (Juan María Soto)
-123- Marcelo Weimann (Agustín Colaneri)
-34- Fernando Caputo (Nehuen Dailoff)
-95- Fabio Pallotti (Iván Pallotti)
+44 - MARCOS
+22 - BONIVARDO
+156 - TODINO
+27 - AUSILI
+54 - TOLEDO
+105 - ZABALEGUI
+119 -
 
 SERIE 10
-114- Mauricio Gómez (Juan Ignacio Calvo)
-78- Lucas Blanc (Juan Ignacio González)
-11- Néstor Mancini (Esteban Mancini)
-43- Néstor Fabio Rossini (Fabián Colturi)
+39 - PAGLIALUNGA
+111 - BRAY
+102 - TORRES
+51 - ONORATO
+104 - HARDOY
+115 - LOPEZ
+7 - ROTH E.
 
 SERIE 11
-98- Javier Fritz (Jorge Fritz)
-96- Daniel Costa Sanchez (Martín Becchio)
-142- Jonathan Rondán (Rodrigo Olivera)
-45- Juan Pablo Vasicek (Gastón Petracci)
-
-SERIE 12
-21- Guillermo Schmit (Nahuel Schmit)
-26- Federico Brezina (Gonzalo Brezina)
-156- Maximiliano Romero (Sebastián Todino)
-104- Juan Cossu (Maximiliano Hardoy)
-
-SERIE 13
-36- Hugo Giménez (Nicolás Macazaga)
-7- Fabián Papasidero (Ezequiel Roth)
-27- Mauro Caballero (Agustín Ausili)
-58- Sebastián Rosas (Marcelo Pérez)
-
-SERIE 14
-113- Juan Lucas De Acharán (Gabriel Marco)
-102- Lucas Laguzzi (Luciano Torres)
-50- Diego Andrade (Joaquín Andrade)
-48- Leandro Campos (Guillermo Yurovsky)
-
-SERIE 15
-32- Emiliano Antonelli (Julián Melger)
-65- Rodrigo Perugini (Pablo Alza)
-8- Leiza Grill (Kevin Altamirano)
-9- Hernán Molini (Matías Oyola)
-
-SERIE 16
-86- Gastón Salazar (Alfredo Salazar)
-67- Leonardo Vega (Gastón Hock)
-20- Guido Botelli (Sebastián Pérez)
-55- Alexia Eberling (Axel Antinori)
-
-SERIE 17
-111- Federico Maletto (Juan Pablo Bray)
-112- Rodrigo Troncoso (Agustín Gómez)
-76- Oscar Antonio Marichalar (Brian López)
-54- Francisco Ortiz Medina (Joaquín Toledo)
-
-SERIE 18
-14- Martín Saldamando (Fernando Saldamando)
-115- Ivano Bozzetti (Agustín López)
-109- Carlos Cardoso (Diego Anastasio)
-66- Marcos Bertolini (Valentín Yungblut)
-
-SERIE 19
-57- José María Pascual (Gonzalo Razquin)
-29- Juan Andrada (Joaquín García López)
-94- Ramiro Fernández (Alejandro Chiesa)
-110- Hugo Salaberry (Lautaro Ford)
-
-SERIE 20
-49- Manuel Sanchez Migliore (Flavio Perugini)
-31- Gustavo Conca (Carlos Puccinelli)
-6- Axel Garaban (Sebastian Burgos)
-79- Emmanuel Buzzo (Sebastian Lucero)
-
-SERIE 21
-137- Cristian Valencia (Ramiro Dailoff)
-72- Kevin Jacob (Rubén Jacob)
-134- Facundo Osvaldo (Nicolás Montanari)
-
-SERIE 22
-116- Adrián Seijas (Rodrigo Zubeldía)
-56- Miguel Chiapparo (Nicolás Chiapparo)
-46- Bruno Dupont (Braian Dupont)
+56 - CHIAPPARO
+5 - ALTAMIRANO R
+8 - ALTAMIRANO K
+12 - REY
+114 - CALVO
+63 - JACA AARON
+41 - CUTINI
