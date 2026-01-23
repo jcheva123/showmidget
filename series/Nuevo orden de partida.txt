@@ -1,11 +1,103 @@
-SERIE 1: Dupont, Vallejos, J. C. Rodríguez, Yurovsky, Ford, J. I. Calvo, Zubeldía, J. M. Soto.
-SERIE 2: S. Cutini, Melger, Andrade, N. Anastasio, Colturi, N. Dailoff, Jacob, Yungblut.
-SERIE 3: Rey, R. Dailoff, F. Perugini, Mancini, A. López, Alza, J. I. González, Brezina.
-SERIE 4: G. Cutini, García López, Schmit, Burgos, Pallotti, Razquin, Macazaga, Benítez.
-SERIE 5: Antinori, Pérez Meler, Piñeiro, K. Altamirano, G. Manzotti, Jaca Cortejarena, Zabalegui, Olivera.
-SERIE 6: Balduchi, Hock, Schiebelbein, M. Ausili, B. López, Hidalgo, S. Pérez.
-SERIE 7: Franchi, J. I. Todino, C. Roth, Grill, Moyano, A. Gómez, Palma.
-SERIE 8: Becchio, R. Altamirano, Bonivardo, Paglialunga, Onorato, Bray, M. Pérez.
-SERIE 9: Puccinelli, Fritz, Torres, Saldamando, Ramos, S. Todino, Lucero.
-SERIE 10: Petracci, Pascual, Ovejero, Oyola, Chiapparo, Marco, E. Roth.
-SERIE 11: Toledo, A. Ausili, Resola, Colaneri, Montanari, Hardoy, N. Marcos.
+SERIE 1
+46 - Dupont
+1 - Vallejos
+16 - J. C. Rodríguez
+48 - Yurovsky
+110 - Ford
+114 - J. I. Calvo
+116 - Zubeldía
+88 - J. M. Soto
+
+SERIE 2
+41 - S. Cutini
+32 - Melger
+50 - Andrade
+28 - N. Anastasio
+43 - Colturi
+34 - N. Dailoff
+72 - Jacob
+66 - Yungblut
+
+SERIE 3
+12 - Rey
+137 - R. Dailoff
+49 - F. Perugini
+11 - Mancini
+115 - A. López
+65 - Alza
+78 - J. I. González
+26 - Brezina
+
+SERIE 4
+47 - G. Cutini
+29 - García López
+21 - Schmit
+6 - Burgos
+95 - Pallotti
+57 - Razquin
+36 - Macazaga
+75 - Benítez
+
+SERIE 5
+55 - Antinori
+3 - Pérez Meler
+23 - Piñeiro
+8 - K. Altamirano
+74 - G. Manzotti
+63 - Jaca Cortejarena
+105 - Zabalegui
+142 - Olivera
+
+SERIE 6
+40 - Balduchi
+67 - Hock
+18 - Schiebelbein
+24 - M. Ausili
+76 - B. López
+15 - Hidalgo
+20 - S. Pérez
+
+SERIE 7
+2 - Franchi
+19 - J. I. Todino
+4 - C. Roth
+127 - Grill
+60 - Moyano
+112 - A. Gómez
+25 - Palma
+
+SERIE 8
+96 - Becchio
+5 - R. Altamirano
+22 - Bonivardo
+39 - Paglialunga
+51 - Onorato
+111 - Bray
+58 - M. Pérez
+
+SERIE 9
+31 - Puccinelli
+98 - Fritz
+102 - Torres
+14 - Saldamando
+33 - Ramos
+156 - S. Todino
+79 - Lucero
+
+SERIE 10
+45 - Petracci
+53 - Pascual
+69 - Ovejero
+9 - Oyola
+56 - Chiapparo
+113 - Marco
+7 - E. Roth
+
+SERIE 11
+54 - Toledo
+27 - A. Ausili
+30 - Resola
+123 - Colaneri
+134 - Montanari
+104 - Hardoy
+44 - N. Marcos
