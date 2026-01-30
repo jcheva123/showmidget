@@ -1,96 +1,96 @@
 SERIE 1
-41 S. Cutini
-79 Lucero
-24 M. Ausili
-18 Schiebelbein
-72 Jacob
-14 Saldamando
-36 Macazaga
+41 S. CUTINI
+79 LUCERO
+24 M. AUSILI
+18 SCHIEBELBEIN
+72 JACOB
+14 SALDAMANDO
+36 MACAZAGA
 
 SERIE 2
-123 Colaneri
-32 Melger
-39 Paglialunga
-127 Grill
-76 B. López
-134 Montanari
-58 M. Pérez
-26 Brezina
+123 COLANERI
+32 MELGER
+39 PAGLIALUNGA
+127 GRILL
+76 B. LÓPEZ
+134 MONTANARI
+58 M. PÉREZ
+26 BREZINA
 
 SERIE 3
-7 E. Roth
-102 Torres
-27 A. Ausili
-23 Piñeiro
-40 Balduchi
-47 G. Cutini
-38 Madril
-44 N. Marcos
+7 E. ROTH
+102 TORRES
+27 A. AUSILI
+23 PIÑEIRO
+40 BALDUCHI
+47 G. CUTINI
+38 MADRIL
+44 N. MARCOS
 
 SERIE 4
-8 K. Altamirano
-5 R. Altamirano
-6 Burgos
-48 Yurovsky
-96 Becchio
-110 Ford
-57 Razquin
-105 Zabalegui
+8 K. ALTAMIRANO
+5 R. ALTAMIRANO
+6 BURGOS
+48 YUROVSKY
+96 BECCHIO
+110 FORD
+57 RAZQUIN
+105 ZABALEGUI
 
 SERIE 5
-104 Hardoy
-22 Bonivardo
-69 Ovejero
-1 Vallejos
-51 Onorato
-74 G. Manzotti
-19 J. I. Todino
-11 Mancini
+104 HARDOY
+22 BONIVARDO
+69 OVEJERO
+1 VALLEJOS
+51 ONORATO
+74 G. MANZOTTI
+19 J. I. TODINO
+11 MANCINI
 
 SERIE 6
-9 Oyola
-60 Moyano
-53 Pascual
-49 F. Perugini
-21 Schmit
-67 Hock
-43 Colturi
-78 J. I. González
+9 OYOLA
+60 MOYANO
+53 PASCUAL
+49 F. PERUGINI
+21 SCHMIT
+67 HOCK
+43 COLTURI
+78 J. I. GONZÁLEZ
 
 SERIE 7
-15 Hidalgo
-29 García López
-55 Antinori
-3 Pérez Meler
-95 Pallotti
-111 Bray
-88 J. M. Soto
-113 Marco
+15 HIDALGO
+29 GARCÍA LÓPEZ
+55 ANTINORI
+3 PÉREZ MELER
+95 PALLOTTI
+111 BRAY
+88 J. M. SOTO
+113 MARCO
 
 SERIE 8
-50 Andrade
-45 Petracci
-34 N. Dailoff
-137 R. Dailoff
-16 J. C. Rodríguez
-109 Anastasio
-12 Rey
-66 Yungblut
+50 ANDRADE
+45 PETRACCI
+34 N. DAILOFF
+137 R. DAILOFF
+16 J. C. RODRÍGUEZ
+109 ANASTASIO
+12 REY
+66 YUNGBLUT
 
 SERIE 9
-31 Puccinelli
-30 Resola
-2 Franchi
-46 Dupont
-115 A. López
-56 Chiapparo
-116 Zubeldía
+31 PUCCINELLI
+30 RESOLA
+2 FRANCHI
+46 DUPONT
+115 A. LÓPEZ
+56 CHIAPPARO
+116 ZUBELDÍA
 
 SERIE 10
-98 Fritz
-20 S. Pérez
-4 C. Roth
-33 Ramos
-142 Olivera
-65 Alza
-54 Toledo
+98 FRITZ
+20 S. PÉREZ
+4 C. ROTH
+33 RAMOS
+142 OLIVERA
+65 ALZA
+54 TOLEDO
