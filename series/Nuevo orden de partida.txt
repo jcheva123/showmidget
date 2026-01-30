@@ -1,103 +1,96 @@
 SERIE 1
-46 - Dupont
-1 - Vallejos
-16 - J. C. Rodríguez
-48 - Yurovsky
-110 - Ford
-114 - J. I. Calvo
-116 - Zubeldía
-88 - J. M. Soto
+41 S. Cutini
+79 Lucero
+24 M. Ausili
+18 Schiebelbein
+72 Jacob
+14 Saldamando
+36 Macazaga
 
 SERIE 2
-41 - S. Cutini
-32 - Melger
-50 - Andrade
-28 - N. Anastasio
-43 - Colturi
-34 - N. Dailoff
-72 - Jacob
-66 - Yungblut
+123 Colaneri
+32 Melger
+39 Paglialunga
+127 Grill
+76 B. López
+134 Montanari
+58 M. Pérez
+26 Brezina
 
 SERIE 3
-12 - Rey
-137 - R. Dailoff
-49 - F. Perugini
-11 - Mancini
-115 - A. López
-65 - Alza
-78 - J. I. González
-26 - Brezina
+7 E. Roth
+102 Torres
+27 A. Ausili
+23 Piñeiro
+40 Balduchi
+47 G. Cutini
+38 Madril
+44 N. Marcos
 
 SERIE 4
-47 - G. Cutini
-29 - García López
-21 - Schmit
-6 - Burgos
-95 - Pallotti
-57 - Razquin
-36 - Macazaga
-75 - Benítez
+8 K. Altamirano
+5 R. Altamirano
+6 Burgos
+48 Yurovsky
+96 Becchio
+110 Ford
+57 Razquin
+105 Zabalegui
 
 SERIE 5
-55 - Antinori
-3 - Pérez Meler
-23 - Piñeiro
-8 - K. Altamirano
-74 - G. Manzotti
-63 - Jaca Cortejarena
-105 - Zabalegui
-142 - Olivera
+104 Hardoy
+22 Bonivardo
+69 Ovejero
+1 Vallejos
+51 Onorato
+74 G. Manzotti
+19 J. I. Todino
+11 Mancini
 
 SERIE 6
-40 - Balduchi
-67 - Hock
-18 - Schiebelbein
-24 - M. Ausili
-76 - B. López
-15 - Hidalgo
-20 - S. Pérez
+9 Oyola
+60 Moyano
+53 Pascual
+49 F. Perugini
+21 Schmit
+67 Hock
+43 Colturi
+78 J. I. González
 
 SERIE 7
-2 - Franchi
-19 - J. I. Todino
-4 - C. Roth
-127 - Grill
-60 - Moyano
-112 - A. Gómez
-25 - Palma
+15 Hidalgo
+29 García López
+55 Antinori
+3 Pérez Meler
+95 Pallotti
+111 Bray
+88 J. M. Soto
+113 Marco
 
 SERIE 8
-96 - Becchio
-5 - R. Altamirano
-22 - Bonivardo
-39 - Paglialunga
-51 - Onorato
-111 - Bray
-58 - M. Pérez
+50 Andrade
+45 Petracci
+34 N. Dailoff
+137 R. Dailoff
+16 J. C. Rodríguez
+109 Anastasio
+12 Rey
+66 Yungblut
 
 SERIE 9
-31 - Puccinelli
-98 - Fritz
-102 - Torres
-14 - Saldamando
-33 - Ramos
-156 - S. Todino
-79 - Lucero
+31 Puccinelli
+30 Resola
+2 Franchi
+46 Dupont
+115 A. López
+56 Chiapparo
+116 Zubeldía
 
 SERIE 10
-45 - Petracci
-53 - Pascual
-69 - Ovejero
-9 - Oyola
-56 - Chiapparo
-113 - Marco
-7 - E. Roth
-
-SERIE 11
-54 - Toledo
-27 - A. Ausili
-30 - Resola
-123 - Colaneri
-134 - Montanari
-104 - Hardoy
-44 - N. Marcos
+98 Fritz
+20 S. Pérez
+4 C. Roth
+33 Ramos
+142 Olivera
+65 Alza
+54 Toledo
