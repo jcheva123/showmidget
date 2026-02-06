@@ -1,20 +1,128 @@
 [
-  {"pos":1,"number":2,"name":"Franchi Luciano","points":5,"photo":"Franchi.jpg"},
-  {"pos":2,"number":1,"name":"Vallejos Luciano","points":3,"photo":"Vallejos.jpg"},
-  {"pos":3,"number":9,"name":"Oyola Matias Sebastian","points":1,"photo":"Oyola.jpg"},
-  {"pos":4,"number":21,"name":"Schmit Nahuel","points":1,"photo":"Schmit.jpg"},
-  {"pos":5,"number":5,"name":"Altamirano Roy","points":0,"photo":"Roy.jpg"},
-  {"pos":6,"number":3,"name":"Perez Meler Agustin","points":0,"photo":"Perez Meler.jpg"},
-  {"pos":7,"number":14,"name":"Saldamando Fernando","points":0,"photo":"Saldamando.jpg"},
-  {"pos":8,"number":30,"name":"Resola Johnatan","points":0,"photo":"Resola.jpg"},
-  {"pos":9,"number":6,"name":"Burgos Sebastian","points":0,"photo":"Burgos.jpg"},
-  {"pos":10,"number":22,"name":"Bonivardo Fernando","points":1,"photo":"Bonivardo.jpg"},
-  {"pos":11,"number":4,"name":"Roth Claudio","points":0,"photo":"Roth.jpg"},
-  {"pos":12,"number":11,"name":"Mancini Esteban","points":0,"photo":"Mancini.jpg"},
-  {"pos":13,"number":123,"name":"Colaneri Agustin","points":0,"photo":"Colaneri.jpg"},
-  {"pos":14,"number":31,"name":"Puccinelli Carlos","points":0,"photo":"Puccinelli.jpg"},
-  {"pos":15,"number":18,"name":"Schiebelbein Gabriel","points":0,"photo":"Schiebelbein.jpg"},
-  {"pos":16,"number":8,"name":"Altamirano Kevin","points":0,"photo":"Kevin.jpg"},
-  {"pos":17,"number":39,"name":"Paglialunga Eros","points":0,"photo":"Paglialunga.jpg"},
-  {"pos":18,"number":19,"name":"Todino Juan","points":0,"photo":"Todino.jpg"}
+  {
+    "pos": 1,
+    "number": 2,
+    "name": "Franchi Luciano",
+    "points": 5,
+    "photo": "Franchi.jpg"
+  },
+  {
+    "pos": 2,
+    "number": 1,
+    "name": "Vallejos Luciano",
+    "points": 3,
+    "photo": "Vallejos.jpg"
+  },
+  {
+    "pos": 3,
+    "number": 9,
+    "name": "Oyola Matias Sebastian",
+    "points": 1,
+    "photo": "Oyola.jpg"
+  },
+  {
+    "pos": 4,
+    "number": 21,
+    "name": "Schmit Nahuel",
+    "points": 1,
+    "photo": "Schmit.jpg"
+  },
+  {
+    "pos": 5,
+    "number": 5,
+    "name": "Altamirano Roy",
+    "points": 0,
+    "photo": "Roy.jpg"
+  },
+  {
+    "pos": 6,
+    "number": 3,
+    "name": "Perez Meler Agustin",
+    "points": 0,
+    "photo": "Perez Meler.jpg"
+  },
+  {
+    "pos": 7,
+    "number": 14,
+    "name": "Saldamando Fernando",
+    "points": 0,
+    "photo": "Saldamando.jpg"
+  },
+  {
+    "pos": 8,
+    "number": 30,
+    "name": "Resola Johnatan",
+    "points": 0,
+    "photo": "Resola.jpg"
+  },
+  {
+    "pos": 9,
+    "number": 6,
+    "name": "Burgos Sebastian",
+    "points": 0,
+    "photo": "Burgos.jpg"
+  },
+  {
+    "pos": 10,
+    "number": 22,
+    "name": "Bonivardo Fernando",
+    "points": 1,
+    "photo": "Bonivardo.jpg"
+  },
+  {
+    "pos": 11,
+    "number": 4,
+    "name": "Roth Claudio",
+    "points": 0,
+    "photo": "Roth.jpg"
+  },
+  {
+    "pos": 12,
+    "number": 11,
+    "name": "Mancini Esteban",
+    "points": 0,
+    "photo": "Mancini.jpg"
+  },
+  {
+    "pos": 13,
+    "number": 123,
+    "name": "Colaneri Agustin",
+    "points": 0,
+    "photo": "Colaneri.jpg"
+  },
+  {
+    "pos": 14,
+    "number": 31,
+    "name": "Puccinelli Carlos",
+    "points": 0,
+    "photo": "Puccinelli.jpg"
+  },
+  {
+    "pos": 15,
+    "number": 18,
+    "name": "Schiebelbein Gabriel",
+    "points": 0,
+    "photo": "Schiebelbein.jpg"
+  },
+  {
+    "pos": 16,
+    "number": 8,
+    "name": "Altamirano Kevin",
+    "points": 0,
+    "photo": "Kevin.jpg"
+  },
+  {
+    "pos": 17,
+    "number": 39,
+    "name": "Paglialunga Eros",
+    "points": 0,
+    "photo": "Paglialunga.jpg"
+  },
+  {
+    "pos": 18,
+    "number": 19,
+    "name": "Todino Juan",
+    "points": 0,
+    "photo": "Todino.jpg"
+  }
 ]
