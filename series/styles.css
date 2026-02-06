@@ -188,3 +188,22 @@ tbody tr:hover { background: #555; transition: background .2s ease; }
 #creditos { text-align: center; margin-top: 20px; font-family: 'Roboto', sans-serif; }
 #creditos a { color: #999; font-size: .9em; text-decoration: none; transition: color .3s ease; }
 #creditos a:hover { color: #ff4444; text-decoration: underline; }
+
+/* === Playoffs: resaltar pilotos clasificados === */
+tbody tr.playoff td{
+  font-weight: 800;
+  color: #ffefb0;
+  border-color: rgba(255, 215, 0, .35);
+}
+tbody tr.playoff td:nth-child(3){
+  color: #ffd54a;
+  text-shadow:
+    0 0 6px rgba(255, 215, 0, .70),
+    0 0 14px rgba(255, 165, 0, .35);
+}
+tbody tr.playoff{
+  background: rgba(255, 195, 0, .12);
+}
+tbody tr.playoff:hover{
+  background: rgba(255, 195, 0, .20);
+}
