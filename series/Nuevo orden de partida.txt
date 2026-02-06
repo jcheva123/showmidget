@@ -1,96 +1,96 @@
 SERIE 1
-41 S. CUTINI
-79 LUCERO
-24 M. AUSILI
-18 SCHIEBELBEIN
-72 JACOB
-14 SALDAMANDO
-36 MACAZAGA
+18 Schiebelbein
+4 C. Roth
+23 Piñeiro
+1 Vallejos
+102 Torres
+53 Pascual
+115 A. López
+57 Razquín
 
 SERIE 2
-123 COLANERI
-32 MELGER
-39 PAGLIALUNGA
-127 GRILL
-76 B. LÓPEZ
-134 MONTANARI
-58 M. PÉREZ
-26 BREZINA
+137 R. Dailoff
+104 Hardoy
+45 Petracci
+105 Zabalegui
+88 J. Soto
+55 Antinori
+16 J. C. Rodríguez
+32 Melger
 
 SERIE 3
-7 E. ROTH
-102 TORRES
-27 A. AUSILI
-23 PIÑEIRO
-40 BALDUCHI
-47 G. CUTINI
-38 MADRIL
-44 N. MARCOS
+111 Bray
+8 K. Altamirano
+46 Dupont
+43 Colturi
+113 Marco
+134 Montanari
+41 S. Cutini
+36 Macazaga
 
 SERIE 4
-8 K. ALTAMIRANO
-5 R. ALTAMIRANO
-6 BURGOS
-48 YUROVSKY
-96 BECCHIO
-110 FORD
-57 RAZQUIN
-105 ZABALEGUI
+39 Paglialunga
+34 N. Dailoff
+56 Chiapparo
+65 Alza
+49 F. Perugini
+33 Ramos
+50 Andrade
+63 Jaca Cortejarena
 
 SERIE 5
-104 HARDOY
-22 BONIVARDO
-69 OVEJERO
-1 VALLEJOS
-51 ONORATO
-74 G. MANZOTTI
-19 J. I. TODINO
-11 MANCINI
+21 Schmit
+123 Colaneri
+2 Franchi
+127 Grill
+78 J. González
+95 Pallotti
+38 Madril
+44 Marcos
 
 SERIE 6
-9 OYOLA
-60 MOYANO
-53 PASCUAL
-49 F. PERUGINI
-21 SCHMIT
-67 HOCK
-43 COLTURI
-78 J. I. GONZÁLEZ
+11 Mancini
+15 Hidalgo
+27 A. Ausili
+48 Yurovsky
+96 Becchio
+142 Olivera
+79 Lucero
+51 Onorato
 
 SERIE 7
-15 HIDALGO
-29 GARCÍA LÓPEZ
-55 ANTINORI
-3 PÉREZ MELER
-95 PALLOTTI
-111 BRAY
-88 J. M. SOTO
-113 MARCO
+12 Rey
+98 Fritz
+47 G. Cutini
+28 N. Anastasio
+67 Hock
+58 M. Pérez
+76 B. López
+75 Benítez
 
 SERIE 8
-50 ANDRADE
-45 PETRACCI
-34 N. DAILOFF
-137 R. DAILOFF
-16 J. C. RODRÍGUEZ
-109 ANASTASIO
-12 REY
-66 YUNGBLUT
+20 S. Pérez
+60 Moyano
+9 Oyola
+5 R. Altamirano
+7 E. Roth
+24 M. Ausili
+74 G. Manzotti
 
 SERIE 9
-31 PUCCINELLI
-30 RESOLA
-2 FRANCHI
-46 DUPONT
-115 A. LÓPEZ
-56 CHIAPPARO
-116 ZUBELDÍA
+29 García López
+19 J. Todino
+31 Puccinelli
+54 Toledo
+112 A. Gómez
+72 Jacob
+69 Ovejero
 
 SERIE 10
-98 FRITZ
-20 S. PÉREZ
-4 C. ROTH
-33 RAMOS
-142 OLIVERA
-65 ALZA
-54 TOLEDO
+14 Saldamando
+22 Bonivardo
+30 Resola
+6 Burgos
+26 Brezina
+116 Zubeldía
+66 Yungblut
