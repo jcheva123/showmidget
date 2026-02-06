@@ -6,11 +6,12 @@
 (() => {
   if (window.__SERIES_LOADED__) return;
   window.__SERIES_LOADED__ = true;
+  console.info("[series.js] loaded v2026-02-06-playoff2");
 
   // ===== Config =====
   const LOCAL_FILES = [
-    "./Nuevo%20orden%20de%20partida.txt",     // formato nuevo (tabs) :contentReference[oaicite:0]{index=0}
-    "./orden%20de%20partida%20series.txt"     // formato viejo (pos num nombre) :contentReference[oaicite:1]{index=1}
+    "./Nuevo%20orden%20de%20partida.txt",     // formato nuevo (tabs)
+    "./orden%20de%20partida%20series.txt"     // formato viejo (pos num nombre)
   ];
   // mismas rutas pero en el repo/CDN
   const REMOTE_FILES = [
@@ -123,11 +124,11 @@
   }
 
   // ===== 2) Parser que aguanta los 2 formatos =====
-  // Formato viejo (el primero):            :contentReference[oaicite:2]{index=2}
+  // Formato viejo (el primero):
   // SERIE 1
   // 1 61 CAMILLI Martin
   //
-  // Formato nuevo (el que te pasan ahora): :contentReference[oaicite:3]{index=3}
+  // Formato nuevo (el que te pasan ahora):
   // SERIE 1    22    TODINO
   //   29    PAGLIALUNGA
   //   62    ONORATO
@@ -285,8 +286,12 @@
         addRowLabel(tbody, "Segunda fila");
       }
       const tr = document.createElement("tr");
-      if (PLAYOFF_NUMBERS.has(r.number) || isPlayoffPilot(r.pilot)) {
+      const isPlayoff = (PLAYOFF_NUMBERS.has(r.number) || isPlayoffPilot(r.pilot));
+      if (isPlayoff) {
         tr.classList.add("playoff");
+        // Inline fallback (por si el CSS no refresca por caché)
+        tr.style.outline = "2px solid rgba(255, 215, 0, .85)";
+        tr.style.boxShadow = "0 0 10px rgba(255, 215, 0, .45)";
       }
       tr.innerHTML = `
         <td>${r.position ?? (idx+1)}</td>
