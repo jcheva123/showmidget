@@ -27,7 +27,44 @@
   // cuando empiece el playoff, metés los N° acá para resaltarlos
   const PLAYOFF_NUMBERS = new Set([]);
 
-  // ===== Utils =====
+  
+  // === Playoffs (por NOMBRE) ===
+  // Normalizamos (minúsculas, sin acentos, sin puntos) y matcheamos por apellido / keyword.
+  const PLAYOFF_MATCHERS = [
+    /\bfranchi\b/,
+    /\bvallejos\b/,
+    /\baltamirano\b/,
+    /\boyola\b/,
+    /\bmeler\b/,          // "Pérez Meler" (evita marcar cualquier "Pérez")
+    /\bsaldamando\b/,
+    /\bresola\b/,
+    /\bschmit\b/,
+    /\bburgos\b/,
+    /\bbonivardo\b/,
+    /\broth\b/,
+    /\bmancini\b/,
+    /\bcolaneri\b/,
+    /\bpuccinelli\b/,
+    /\bschiebelbein\b/,
+    /\bpaglialunga\b/,
+    /\btodino\b/
+  ];
+
+  function normalizeName(s) {
+    return String(s ?? "")
+      .toLowerCase()
+      .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // sin acentos
+      .replace(/[\.:,;'"()\[\]{}]/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
+  function isPlayoffPilot(pilot) {
+    const n = normalizeName(pilot);
+    if (!n) return false;
+    return PLAYOFF_MATCHERS.some(re => re.test(n));
+  }
+// ===== Utils =====
   const $  = (s, el=document) => el.querySelector(s);
   const $$ = (s, el=document) => [...el.querySelectorAll(s)];
   const sleep = ms => new Promise(r => setTimeout(r, ms));
@@ -248,8 +285,8 @@
         addRowLabel(tbody, "Segunda fila");
       }
       const tr = document.createElement("tr");
-      if (PLAYOFF_NUMBERS.has(r.number)) {
-        tr.style.outline = "2px solid #ffdd00";
+      if (PLAYOFF_NUMBERS.has(r.number) || isPlayoffPilot(r.pilot)) {
+        tr.classList.add("playoff");
       }
       tr.innerHTML = `
         <td>${r.position ?? (idx+1)}</td>
