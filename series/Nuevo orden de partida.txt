@@ -1,96 +1,92 @@
 SERIE 1
-18 Schiebelbein
-4 C. Roth
-23 Piñeiro
-1 Vallejos
-102 Torres
-53 Pascual
-115 A. López
-57 Razquín
+123 COLANERI
+18 SCHIEBELBEIN
+127 GRILL LUCAS
+69 OVEJERO
+49 PERUGINI
+53 PASCUAL
+102 TORRES
+60 MOYANO
 
 SERIE 2
-137 R. Dailoff
-104 Hardoy
-45 Petracci
-105 Zabalegui
-88 J. Soto
-55 Antinori
-16 J. C. Rodríguez
-32 Melger
+41 CUTINI
+14 SALDAMANDO
+67 HOCK
+12 REY
+23 PINEIRO
+44 MARCOS
+32 MELGER
+43 COLTURI
 
 SERIE 3
-111 Bray
-8 K. Altamirano
-46 Dupont
-43 Colturi
-113 Marco
-134 Montanari
-41 S. Cutini
-36 Macazaga
+22 BONIVARDO
+16 RODRIGUEZ
+26 BREZINA
+39 PAGLIALUNGA
+142 OLIVERA
+98 FRITZ
+54 TOLEDO
+66 YUNGBLUT
 
 SERIE 4
-39 Paglialunga
-34 N. Dailoff
-56 Chiapparo
-65 Alza
-49 F. Perugini
-33 Ramos
-50 Andrade
-63 Jaca Cortejarena
+31 PUCCINELLI
+50 ANDRADE
+47 CUTINI
+36 MACAZAGA
+38 MADRIL
+104 HARDOY
+96 BECCHIO
 
 SERIE 5
-21 Schmit
-123 Colaneri
-2 Franchi
-127 Grill
-78 J. González
-95 Pallotti
-38 Madril
-44 Marcos
+58 PEREZ
+5 ALTAMIRANO R
+1 VALLEJOS
+9 OYOLA
+63 JACA AARON
+75 BENITEZ
+137 DAILOFF R.
 
 SERIE 6
-11 Mancini
-15 Hidalgo
-27 A. Ausili
-48 Yurovsky
-96 Becchio
-142 Olivera
-79 Lucero
-51 Onorato
+46 DUPONT
+116 ZUBELDIA
+79 LUCERO
+45 PETRACCI
+65 ALZA PABLO
+24 AUSILI
+51 ONORATO
 
 SERIE 7
-12 Rey
-98 Fritz
-47 G. Cutini
-28 N. Anastasio
-67 Hock
-58 M. Pérez
-76 B. López
-75 Benítez
+119 SN
+30 RESOLA
+21 SCHMIT
+15 HIDALGO
+29 GARCIA LOPEZ
+115 LOPEZ
+55 ANTINORI
 
 SERIE 8
-20 S. Pérez
-60 Moyano
-9 Oyola
-5 R. Altamirano
-7 E. Roth
-24 M. Ausili
-74 G. Manzotti
+11 MANCINI
+76 LOPEZ
+19 TODINO
+2 FRANCHI
+113 MARCO
+78 GONZALEZ
+56 CHIAPPARO
 
 SERIE 9
-29 García López
-19 J. Todino
-31 Puccinelli
-54 Toledo
-112 A. Gómez
-72 Jacob
-69 Ovejero
+48 YUROVSKY
+27 AUSILI
+4 ROTH C.
+7 ROTH E.
+134 MONTANARI
+28 ANASTASIO
+105 ZABALEGUI
 
 SERIE 10
-14 Saldamando
-22 Bonivardo
-30 Resola
-6 Burgos
-26 Brezina
-116 Zubeldía
-66 Yungblut
+34 DAILOFF
+8 ALTAMIRANO K
+20 PEREZ
+6 BURGOS
+111 BRAY
+57 RAZQUIN
+74 MANZOTTI
