@@ -128,49 +128,6 @@
     @media (prefers-reduced-motion: reduce){
       a.btn.playoffs::before{ animation:none; opacity:.18 }
     } /* TABLA */
-    /* SELFIES (San Valentín) destacado (rojo con brillo) */
-    a.btn.selfies-love{
-      color: var(--white);
-      background:
-        radial-gradient(120% 120% at 20% 0%, rgba(255,255,255,.45) 0%, rgba(255,255,255,0) 55%),
-        linear-gradient(180deg, rgba(255,45,85,.55), rgba(127,0,0,.14));
-      border: 1px solid rgba(255,45,85,.75);
-      box-shadow:
-        0 14px 28px rgba(0,0,0,.30),
-        0 0 18px rgba(255,45,85,.55),
-        0 0 44px rgba(255,45,85,.24);
-      overflow:hidden;
-    }
-    a.btn.selfies-love::before{
-      content:"";
-      position:absolute;
-      inset:-35% -60%;
-      background: linear-gradient(115deg, transparent 45%, rgba(255,255,255,.40) 50%, transparent 55%);
-      transform: translateX(-55%) rotate(10deg);
-      opacity:.55;
-      animation: loveShine 2.3s ease-in-out infinite;
-      pointer-events:none;
-    }
-    a.btn.selfies-love::after{
-      content:"❤";
-      position:absolute;
-      top:10px;
-      right:12px;
-      font-size:2.1rem;
-      opacity:.22;
-      transform: rotate(-12deg);
-      text-shadow: 0 0 18px rgba(255,45,85,.55);
-      pointer-events:none;
-    }
-    @keyframes loveShine{
-      0%{ transform: translateX(-55%) rotate(10deg); opacity:.12 }
-      45%{ opacity:.55 }
-      100%{ transform: translateX(55%) rotate(10deg); opacity:.12 }
-    }
-    @media (prefers-reduced-motion: reduce){
-      a.btn.selfies-love::before{ animation:none; opacity:.18 }
-    }
-
 
     footer{
       text-align:center;padding:16px 0 22px;opacity:.95;font-size:1.30rem
@@ -204,8 +161,8 @@
       <a class="btn b3" href="mensajes.html">
         <div class="inner">💬 MENSAJES<small>Enviá tu aliento</small></div>
       </a>
-      <a class="btn b2 selfies-love" href="selfies.html">
-        <div class="inner">💘 SELFIES<small>Especial Enamorados</small></div>
+      <a class="btn b2" href="selfies.html">
+        <div class="inner">📸 SELFIES<small>Mandá tu foto a pantalla</small></div>
       </a>
 
 
