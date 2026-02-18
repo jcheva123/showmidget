@@ -66,6 +66,8 @@
       color:var(--muted);
       font-size: 12px;
       margin-top: 4px;
+      font-weight: 800;
+      letter-spacing:.2px;
     }
 
     .btn-back{
@@ -182,6 +184,7 @@
       gap: 8px;
       flex-wrap: wrap;
       margin-top: 8px;
+      align-items: center;
     }
     .pill{
       border:1px solid var(--line);
@@ -192,6 +195,31 @@
       font-size: 12px;
       font-weight: 900;
       letter-spacing:.2px;
+      white-space: nowrap;
+    }
+
+    /* ✅ Victorias */
+    .wins{
+      width: 100%;
+      display:flex;
+      align-items:center;
+      gap: 8px;
+      margin-top: 6px;
+      padding-top: 8px;
+      border-top: 1px solid rgba(255,255,255,.08);
+    }
+    .wins .icons{
+      font-size: 16px;
+      line-height: 1;
+      filter: drop-shadow(0 0 8px rgba(255,179,0,.18));
+      letter-spacing: 1px;
+    }
+    .wins .count{
+      font-size: 12px;
+      font-weight: 900;
+      color: var(--muted);
+      letter-spacing: .3px;
+      white-space: nowrap;
     }
 
     .points{
@@ -232,6 +260,7 @@
       .photo{min-width: 135px;}
       .surname{font-size: 16px;}
       .pts-num{font-size: 26px;}
+      .wins .icons{font-size: 15px;}
     }
   </style>
 </head>
@@ -241,6 +270,7 @@
       <div class="topbar">
         <div class="title">
           <h1>Playoffs</h1>
+          <small>2 fechas disputadas 🔥</small>
         </div>
         <button class="btn-back" onclick="history.back()">VOLVER</button>
       </div>
@@ -266,13 +296,25 @@
       return { surname: parts[0], firstname: parts.slice(1).join(' ') };
     }
 
+    function trophies(n){
+      const k = Math.max(0, Number(n || 0));
+      if(!k) return '';
+      return '🏆'.repeat(Math.min(k, 12));
+    }
+
     function cardHTML(row){
       const {surname, firstname} = splitName(row.name);
-
-      // ✅ misma carpeta que index.html (maneja espacios y subcarpetas)
       const imgUrl = new URL(row.photo, location.href).toString();
 
       const top1Class = (Number(row.pos) === 1) ? 'top1' : '';
+      const w = Number(row.wins || 0);
+
+      const winsHtml = w > 0 ? `
+        <div class="wins">
+          <span class="icons">${trophies(w)}</span>
+          <span class="count">(${w} victoria${w === 1 ? '' : 's'})</span>
+        </div>
+      ` : '';
 
       return `
         <div class="card ${top1Class}">
@@ -293,6 +335,8 @@
               <div class="meta">
                 <span class="pill">N° ${row.number}</span>
               </div>
+
+              ${winsHtml}
             </div>
 
             <div class="points">
@@ -306,7 +350,6 @@
 
     async function loadStandings(){
       try{
-        // ✅ JSON en la misma carpeta (cache-bust)
         const url = new URL('standings.json', location.href);
         url.searchParams.set('v', Date.now());
 
@@ -333,4 +376,3 @@
   </script>
 </body>
 </html>
-
