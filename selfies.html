@@ -3,280 +3,57 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SHOW MIDGET – Selfies de Enamorados</title>
+  <title>SHOW MIDGET – Selfies</title>
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
-  <meta name="theme-color" content="#ff2d55">
+  <meta name="theme-color" content="#000000">
   <style>
     :root{
-      --bg1:#12000a;
-      --bg2:#2a0011;
-      --bg3:#000000;
-      --hot:#ff2d55;
-      --hot2:#ff0033;
-      --pink:#ff7aa2;
-      --white:#ffffff;
-      --ink:#16040a;
-      --card: rgba(255,255,255,.08);
-      --border: rgba(255,45,85,.26);
+      --bg1:#7F0000; --bg2:#000000; --ink:#0b0f1a; --gold:#FFC928;
+      --card: rgba(255,255,255,.06); --border: rgba(255,255,255,.14); --white:#fff;
     }
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
-      margin:0;
-      color:var(--white);
+      margin:0;color:var(--white);
       font-family:'Roboto',system-ui,-apple-system,Segoe UI,Ubuntu,Helvetica,Arial,sans-serif;
-      min-height:100dvh;
-      display:flex;
-      flex-direction:column;
-      align-items:stretch;
-      text-align:center;
-      background:
-        radial-gradient(900px 520px at 20% 10%, rgba(255,45,85,.25), transparent 55%),
-        radial-gradient(900px 520px at 80% 0%, rgba(255,122,162,.14), transparent 60%),
-        linear-gradient(45deg, var(--bg1), var(--bg2), var(--bg3), var(--bg2));
+      min-height:100dvh; display:flex; flex-direction:column; align-items:stretch;
+      background: linear-gradient(45deg, var(--bg1), var(--bg2), var(--bg1), var(--bg2));
       background-size: 400% 400%;
-      animation: bgMove 14s ease-in-out infinite;
-      overflow-x:hidden;
+      animation: gradientAnimation 14s ease-in-out infinite;
+      text-align:center;
     }
-    @keyframes bgMove{
-      0%{background-position:0% 50%}
-      50%{background-position:100% 50%}
-      100%{background-position:0% 50%}
-    }
-
-    /* Capa de corazones flotando (atrás de todo) */
-    .hearts{
-      position:fixed;
-      inset:0;
-      overflow:hidden;
-      pointer-events:none;
-      z-index:0;
-    }
-    .hearts span{
-      position:absolute;
-      bottom:-12vh;
-      will-change: transform, opacity;
-      font-size: 22px;
-      opacity: .0;
-      filter: drop-shadow(0 0 12px rgba(255,45,85,.35));
-      animation-name: floatUp;
-      animation-timing-function: linear;
-      animation-iteration-count: infinite;
-    }
-    @keyframes floatUp{
-      0%   { transform: translateY(0) translateX(0) rotate(0deg) scale(.9); opacity:0 }
-      10%  { opacity:.55 }
-      60%  { opacity:.35 }
-      100% { transform: translateY(-122vh) translateX(80px) rotate(28deg) scale(1.35); opacity:0 }
-    }
-    @media (prefers-reduced-motion: reduce){
-      body{ animation:none }
-      .hearts span{ animation:none; display:none }
-    }
-
-    .wrap{
-      width:100%;
-      max-width:680px;
-      margin:0 auto;
-      padding:14px 16px 28px;
-      flex:1;
-      position:relative;
-      z-index:1;
-    }
-
-    .topbar{
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:10px;
-      margin:10px 0 12px;
-    }
-    .back{
-      background: rgba(0,0,0,.35);
-      color:var(--white);
-      border:1px solid rgba(255,45,85,.28);
-      border-radius:14px;
-      padding:10px 14px;
-      font-size:1rem;
-      cursor:pointer;
-      backdrop-filter: blur(6px);
-      box-shadow: 0 10px 18px rgba(0,0,0,.28);
-    }
-    .card{
-      background: var(--card);
-      border:1px solid var(--border);
-      border-radius:18px;
-      padding:16px;
-      backdrop-filter: blur(8px);
-      box-shadow:
-        0 18px 40px rgba(0,0,0,.35),
-        0 0 22px rgba(255,45,85,.18);
-      position:relative;
-      overflow:hidden;
-    }
-    .card::before{
-      content:"";
-      position:absolute;
-      inset:-40%;
-      background: radial-gradient(circle at 20% 10%, rgba(255,255,255,.22), transparent 60%);
-      transform: rotate(8deg);
-      opacity:.28;
-      pointer-events:none;
-    }
-    h1{
-      margin:6px 0 6px;
-      font-family:'Oswald',sans-serif;
-      letter-spacing:.4px;
-      font-weight:700;
-    }
-    .sub{
-      margin:0 auto 10px;
-      max-width: 520px;
-      opacity:.92;
-      font-size:1.02rem;
-      line-height:1.35;
-    }
-    .sub strong{ color: #ffd7e3; font-weight:800 }
-
-    .tips{
-      margin:10px auto 6px;
-      max-width: 520px;
-      border:1px dashed rgba(255,45,85,.28);
-      background: rgba(0,0,0,.22);
-      border-radius:14px;
-      padding:10px 12px;
-      text-align:left;
-      font-size:.98rem;
-      line-height:1.35;
-    }
-    .tips b{ color:#ffd7e3 }
-    .tips div{ margin:4px 0 }
-
-    input[type="file"]{display:none}
-
+    @keyframes gradientAnimation{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+    .wrap{width:100%;max-width:680px;margin:0 auto;padding:14px 16px 28px;flex:1}
+    .topbar{display:flex;align-items:center;gap:8px;margin:8px 0 12px;justify-content:center}
+    .back{background:#222;color:#fff;border:none;border-radius:12px;padding:10px 14px;font-size:1rem;cursor:pointer}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;backdrop-filter:blur(6px)}
+    h1{margin:6px 0 12px;font-family:'Oswald',sans-serif}
     button.action{
-      position:relative;
-      border:none;
-      width:100%;
-      max-width:460px;
-      margin:10px auto;
-      padding:14px 18px;
-      border-radius:16px;
-      cursor:pointer;
-      font-family:'Oswald',sans-serif;
-      letter-spacing:.3px;
-      font-weight:800;
-      font-size:1.25rem;
-      color:var(--white);
-      background:
-        radial-gradient(120% 160% at 20% 0%, rgba(255,255,255,.32) 0%, rgba(255,255,255,0) 55%),
-        linear-gradient(180deg, rgba(255,45,85,.92), rgba(127,0,0,.55));
-      box-shadow:
-        0 16px 28px rgba(0,0,0,.35),
-        0 0 18px rgba(255,45,85,.55),
-        0 0 44px rgba(255,45,85,.22);
-      transition: transform .08s ease, filter .2s ease;
-      overflow:hidden;
+      background:var(--sand,#af9b6f);color:var(--ink);border:none;
+      padding:14px 20px;font-size:1.2rem;border-radius:14px;cursor:pointer;font-weight:800;
+      width:100%;max-width:420px;margin:10px auto;font-family:'Oswald',sans-serif;letter-spacing:.2px
     }
-    button.action:active{ transform: scale(.99) }
-    button.action::before{
-      content:"";
-      position:absolute;
-      inset:-35% -60%;
-      background: linear-gradient(115deg, transparent 45%, rgba(255,255,255,.45) 50%, transparent 55%);
-      transform: translateX(-55%) rotate(10deg);
-      opacity:.55;
-      animation: shine 2.4s ease-in-out infinite;
-      pointer-events:none;
-    }
-    @keyframes shine{
-      0%{ transform: translateX(-55%) rotate(10deg); opacity:.12 }
-      45%{ opacity:.55 }
-      100%{ transform: translateX(55%) rotate(10deg); opacity:.12 }
-    }
-    @media (prefers-reduced-motion: reduce){
-      button.action::before{ animation:none; opacity:.18 }
-    }
-
-    #preview{
-      width:100%;
-      max-width:320px;
-      margin:14px auto 6px;
-      display:none;
-      border-radius:16px;
-      border:1px solid rgba(255,255,255,.18);
-      box-shadow:
-        0 14px 28px rgba(0,0,0,.35),
-        0 0 16px rgba(255,45,85,.40);
-    }
-
-    #estado{
-      margin-top:12px;
-      font-size:1.02rem;
-      min-height: 1.4em;
-      opacity:.95;
-    }
-    #estado.ok{ color:#b7ffcf; font-weight:800 }
-    #estado.warn{ color:#ffd7e3; font-weight:700 }
-
-    /* Mini "burst" de corazones al enviar */
-    .burst{
-      position:absolute;
-      left:50%;
-      top:58%;
-      transform: translate(-50%,-50%);
-      pointer-events:none;
-      z-index:2;
-    }
-    .burst i{
-      position:absolute;
-      left:0; top:0;
-      font-style:normal;
-      opacity:0;
-      filter: drop-shadow(0 0 10px rgba(255,45,85,.5));
-      animation: burst 900ms ease-out forwards;
-    }
-    @keyframes burst{
-      0%{ transform: translate(0,0) scale(.6); opacity:0 }
-      15%{ opacity:.95 }
-      100%{ transform: translate(var(--dx), var(--dy)) scale(1.25); opacity:0 }
-    }
-
-    footer{ margin-top:20px; opacity:.9 }
+    #preview{width:100%;max-width:320px;margin:16px auto;display:none;border-radius:14px;box-shadow:0 6px 14px rgba(0,0,0,.3)}
+    #estado{margin-top:14px;font-size:1rem}
+    #estado.mensaje-exito{color:#8fff8f;font-weight:700}
+    footer{margin-top:22px;opacity:.8}
+    input[type="file"]{display:none}
   </style>
 </head>
 <body>
-  <div class="hearts" id="hearts" aria-hidden="true"></div>
-
   <div class="wrap">
-    <div class="topbar">
+   <div class="topbar">
       <button class="back" onclick="location.href='index.html'">⬅️ Volver</button>
     </div>
 
-    <div class="card" id="card">
-      <h1>💘 Selfies de Enamorados</h1>
-      <p class="sub">
-        Especial <strong>14 de febrero</strong>: subí una foto de ustedes 💞<br/>
-        <span style="opacity:.9">beso, abrazo, manos juntas o declaración de amor.</span>
-      </p>
-
-      <div class="tips">
-        <div>❤️ <b>Tip rápido:</b> que se vea bien la cara (sin contraluz).</div>
-        <div>📸 Ideal: horizontal o vertical, como salga mejor.</div>
-      </div>
+    <div class="card">
+      <h1>📸 Enviá tu Selfie</h1>
 
       <input type="file" accept="image/*" capture="user" id="fileInput"/>
-
-      <button class="action" type="button" onclick="document.getElementById('fileInput').click()">
-        💞 Abrir cámara
-      </button>
+      <button class="action" onclick="document.getElementById('fileInput').click()">📸 Abrir cámara</button>
 
       <img id="preview" alt="Vista previa"/>
-
-      <button class="action" type="button" onclick="enviar()">
-        💌 Enviar a pantalla
-      </button>
-
+      <button class="action" onclick="enviar()">📤 Enviar</button>
       <div id="estado"></div>
     </div>
 
@@ -289,6 +66,7 @@
     <input type="hidden" name="imageData" id="imageDataInput"/>
   </form>
   <iframe name="invisibleFrame" style="display:none"></iframe>
+  <!-- Botón Volver abajo -->
 
 <script>
   const fileInput = document.getElementById('fileInput');
@@ -296,25 +74,7 @@
   const estado    = document.getElementById('estado');
   const form      = document.getElementById('formulario');
   const imageDataInput = document.getElementById('imageDataInput');
-  const heartsBox = document.getElementById('hearts');
-  const card      = document.getElementById('card');
-
   let imagenBase64 = "";
-
-  // Corazones flotantes de fondo (ligero + random)
-  (function spawnHearts(){
-    const n = 18;
-    for(let i=0;i<n;i++){
-      const s = document.createElement('span');
-      s.textContent = (Math.random() > 0.5) ? '❤' : '💗';
-      s.style.left = Math.random() * 100 + 'vw';
-      s.style.fontSize = (16 + Math.random()*28).toFixed(0) + 'px';
-      s.style.opacity = (0.15 + Math.random()*0.35).toFixed(2);
-      s.style.animationDuration = (9 + Math.random()*10).toFixed(1) + 's';
-      s.style.animationDelay = (-Math.random()*10).toFixed(1) + 's';
-      heartsBox.appendChild(s);
-    }
-  })();
 
   fileInput.addEventListener('change', function(){
     const file = this.files[0];
@@ -325,50 +85,25 @@
       preview.src = imagenBase64;
       preview.style.display = 'block';
       estado.textContent = '';
-      estado.className = '';
     };
     reader.readAsDataURL(file);
   });
 
-  function heartBurst(){
-    const burst = document.createElement('div');
-    burst.className = 'burst';
-    const pieces = 10;
-    for(let i=0;i<pieces;i++){
-      const p = document.createElement('i');
-      p.textContent = (Math.random() > 0.5) ? '❤' : '💖';
-      const a = (Math.PI * 2) * (i/pieces);
-      const r = 18 + Math.random()*34;
-      const dx = Math.cos(a) * r;
-      const dy = Math.sin(a) * r - 10;
-      p.style.setProperty('--dx', dx.toFixed(0) + 'px');
-      p.style.setProperty('--dy', dy.toFixed(0) + 'px');
-      p.style.animationDelay = (Math.random()*120).toFixed(0) + 'ms';
-      burst.appendChild(p);
-    }
-    card.appendChild(burst);
-    setTimeout(()=> burst.remove(), 1100);
-  }
-
   function enviar(){
     if(!imagenBase64){
-      estado.textContent = '⚠️ Primero sacá o elegí una selfie.';
-      estado.className = 'warn';
+      estado.textContent='⚠️ Primero seleccioná una imagen.';
       return;
     }
     imageDataInput.value = imagenBase64;
-    estado.textContent = '⏳ Enviando amor...';
-    estado.className = '';
-    heartBurst();
+    estado.textContent='⏳ Enviando...';
     form.submit();
     setTimeout(()=>{
-      estado.textContent = '✅ ¡Selfie enviada! 💘';
-      estado.className = 'ok';
-      preview.style.display = 'none';
-      fileInput.value = '';
-      imagenBase64 = '';
-      heartBurst();
-    }, 2200);
+      estado.textContent='✅ Selfie enviada correctamente.';
+      estado.className='mensaje-exito';
+      preview.style.display='none';
+      fileInput.value='';
+      imagenBase64='';
+    }, 2000);
   }
 </script>
 </body>
