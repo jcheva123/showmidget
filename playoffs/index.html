@@ -198,7 +198,7 @@
       white-space: nowrap;
     }
 
-    /* ✅ Victorias */
+    /* Victorias */
     .wins{
       width: 100%;
       display:flex;
@@ -222,13 +222,20 @@
       white-space: nowrap;
     }
 
+    /* Puntos + diferencia */
+    .points-box{
+      display:flex;
+      flex-direction:column;
+      align-items:flex-end;
+      gap: 6px;
+      border-top: 1px solid rgba(255,255,255,.08);
+      padding-top: 10px;
+    }
     .points{
       display:flex;
       align-items:baseline;
       justify-content:flex-end;
       gap: 8px;
-      border-top: 1px solid rgba(255,255,255,.08);
-      padding-top: 10px;
     }
     .pts-num{
       font-size: 28px;
@@ -240,6 +247,20 @@
       color: var(--muted);
       font-weight: 900;
       letter-spacing:.6px;
+    }
+    .diff{
+      display:flex;
+      gap: 8px;
+      align-items:baseline;
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 900;
+      letter-spacing:.2px;
+      white-space: nowrap;
+    }
+    .diff strong{
+      color: var(--text);
+      font-weight: 950;
     }
 
     .loading, .error{
@@ -270,7 +291,7 @@
       <div class="topbar">
         <div class="title">
           <h1>Playoffs</h1>
-          <small>2 fechas disputadas 🔥</small>
+          <small>Tabla actualizada 🔥</small>
         </div>
         <button class="btn-back" onclick="history.back()">VOLVER</button>
       </div>
@@ -283,6 +304,8 @@
   <script>
     const STATUS = document.getElementById('status');
     const LIST = document.getElementById('list');
+
+    const fmt = new Intl.NumberFormat('es-AR', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
 
     function splitName(full){
       const parts = String(full || '').trim().split(/\s+/);
@@ -302,7 +325,7 @@
       return '🏆'.repeat(Math.min(k, 12));
     }
 
-    function cardHTML(row){
+    function cardHTML(row, leaderPoints){
       const {surname, firstname} = splitName(row.name);
       const imgUrl = new URL(row.photo, location.href).toString();
 
@@ -315,6 +338,15 @@
           <span class="count">(${w} victoria${w === 1 ? '' : 's'})</span>
         </div>
       ` : '';
+
+      const isLeader = Number(row.pos) === 1;
+      const diff = isLeader ? 0 : Math.max(0, Number(leaderPoints) - Number(row.points));
+      const diffHtml = isLeader ? '' : `
+        <div class="diff">
+          <span>Diferencia al 1°</span>
+          <strong>${fmt.format(diff)}</strong>
+        </div>
+      `;
 
       return `
         <div class="card ${top1Class}">
@@ -339,9 +371,12 @@
               ${winsHtml}
             </div>
 
-            <div class="points">
-              <span class="pts-num">${row.points}</span>
-              <span class="pts-lbl">PUNTOS</span>
+            <div class="points-box">
+              <div class="points">
+                <span class="pts-num">${fmt.format(Number(row.points))}</span>
+                <span class="pts-lbl">PUNTOS</span>
+              </div>
+              ${diffHtml}
             </div>
           </div>
         </div>
@@ -358,9 +393,14 @@
 
         const data = await res.json();
 
-        LIST.innerHTML = data
-          .sort((a,b) => Number(a.pos) - Number(b.pos))
-          .map(cardHTML)
+        const rows = data
+          .slice()
+          .sort((a,b) => Number(a.pos) - Number(b.pos));
+
+        const leaderPoints = Number(rows[0]?.points || 0);
+
+        LIST.innerHTML = rows
+          .map(r => cardHTML(r, leaderPoints))
           .join('');
 
         STATUS.style.display = 'none';
