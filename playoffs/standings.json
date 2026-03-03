@@ -3,7 +3,7 @@
     "pos": 1,
     "number": 1,
     "name": "Vallejos Luciano",
-    "points": 51.0,
+    "points": 77.0,
     "wins": 4,
     "photo": "Vallejos.jpg"
   },
@@ -11,7 +11,7 @@
     "pos": 2,
     "number": 2,
     "name": "Franchi Luciano",
-    "points": 48.5,
+    "points": 71.5,
     "wins": 6,
     "photo": "Franchi.jpg"
   },
@@ -19,7 +19,7 @@
     "pos": 3,
     "number": 5,
     "name": "Altamirano Roy",
-    "points": 44.75,
+    "points": 59.25,
     "wins": 1,
     "photo": "Roy.jpg"
   },
@@ -27,103 +27,103 @@
     "pos": 4,
     "number": 11,
     "name": "Mancini Esteban",
-    "points": 36.5,
+    "points": 47.5,
     "wins": 0,
     "photo": "Mancini.jpg"
   },
   {
     "pos": 5,
-    "number": 21,
-    "name": "Schmit Nahuel",
-    "points": 33.75,
-    "wins": 1,
-    "photo": "Schmit.jpg"
+    "number": 30,
+    "name": "Resola Johnatan",
+    "points": 45.0,
+    "wins": 0,
+    "photo": "Resola.jpg"
   },
   {
     "pos": 6,
-    "number": 4,
-    "name": "Roth Claudio",
-    "points": 32.75,
-    "wins": 0,
-    "photo": "Roth.jpg"
-  },
-  {
-    "pos": 7,
-    "number": 9,
-    "name": "Oyola Matias Sebastian",
-    "points": 29.75,
-    "wins": 1,
-    "photo": "Oyola.jpg"
-  },
-  {
-    "pos": 8,
     "number": 14,
     "name": "Saldamando Fernando",
-    "points": 29.75,
+    "points": 43.25,
     "wins": 0,
     "photo": "Saldamando.jpg"
   },
   {
-    "pos": 9,
-    "number": 123,
-    "name": "Colaneri Agustin",
-    "points": 29.0,
-    "wins": 0,
-    "photo": "Colaneri.jpg"
-  },
-  {
-    "pos": 10,
+    "pos": 7,
     "number": 31,
     "name": "Puccinelli Carlos",
-    "points": 28.75,
+    "points": 42.75,
     "wins": 0,
     "photo": "Puccinelli.jpg"
   },
   {
-    "pos": 11,
-    "number": 30,
-    "name": "Resola Johnatan",
-    "points": 28.25,
+    "pos": 8,
+    "number": 9,
+    "name": "Oyola Matias Sebastian",
+    "points": 42.5,
+    "wins": 1,
+    "photo": "Oyola.jpg"
+  },
+  {
+    "pos": 9,
+    "number": 21,
+    "name": "Schmit Nahuel",
+    "points": 40.25,
+    "wins": 1,
+    "photo": "Schmit.jpg"
+  },
+  {
+    "pos": 10,
+    "number": 4,
+    "name": "Roth Claudio",
+    "points": 38.25,
     "wins": 0,
-    "photo": "Resola.jpg"
+    "photo": "Roth.jpg"
+  },
+  {
+    "pos": 11,
+    "number": 123,
+    "name": "Colaneri Agustin",
+    "points": 36.5,
+    "wins": 0,
+    "photo": "Colaneri.jpg"
   },
   {
     "pos": 12,
     "number": 18,
     "name": "Schiebelbein Gabriel",
-    "points": 27.75,
+    "points": 35.5,
     "wins": 0,
     "photo": "Schiebelbein.jpg"
   },
   {
     "pos": 13,
-    "number": 39,
-    "name": "Paglialunga Eros",
-    "points": 20.75,
+    "number": 8,
+    "name": "Altamirano Kevin",
+    "points": 33.25,
     "wins": 0,
-    "photo": "Paglialunga.jpg"
+    "photo": "Kevin.jpg"
   },
   {
     "pos": 14,
     "number": 6,
     "name": "Burgos Sebastian",
-    "points": 20.25,
+    "points": 24.25,
     "wins": 0,
     "photo": "Burgos.jpg"
   },
   {
     "pos": 15,
-    "number": 8,
-    "name": "Altamirano Kevin",
-    "points": 18.5,
+    "number": 39,
+    "name": "Paglialunga Eros",
+    "points": 23.75,
     "wins": 0,
-    "photo": "Kevin.jpg"
+    "photo": "Paglialunga.jpg"
   },
   {
     "pos": 16,
     "number": 19,
     "name": "Todino Juan",
-    "points": 18.0,
+    "points": 22.25,
     "wins": 0,
     "photo": "Todino.jpg"
   },
@@ -131,7 +131,7 @@
     "pos": 17,
     "number": 22,
     "name": "Bonivardo Fernando",
-    "points": 13.25,
+    "points": 20.25,
     "wins": 1,
     "photo": "Bonivardo.jpg"
   },
@@ -144,4 +144,3 @@
     "photo": "Perez Meler.jpg"
   }
 ]
-
