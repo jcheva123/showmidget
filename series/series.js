@@ -6,7 +6,7 @@
 (() => {
   if (window.__SERIES_LOADED__) return;
   window.__SERIES_LOADED__ = true;
-  console.info("[series.js] loaded v2026-03-10-contenders2");
+  console.info("[series.js] loaded v2026-03-10-contenders3-buttons");
 
   // ===== Config =====
   const LOCAL_FILES = [
@@ -257,6 +257,13 @@
     for (const name of names) {
       const li = document.createElement("li");
       li.textContent = name;
+
+      // Si en esta serie corre alguno de los 2 contendientes (Vallejos/Franchi),
+      // resaltamos el "botón" de la serie para que el público lo vea rápido.
+      const rows = bySerie.get(name) || [];
+      const hasContender = rows.some(r => isContenderPilot(r.pilot));
+      if (hasContender) li.classList.add("contender");
+
       li.onclick = () => renderSerie(name, bySerie.get(name));
       ul.appendChild(li);
     }
