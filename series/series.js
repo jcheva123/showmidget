@@ -6,7 +6,7 @@
 (() => {
   if (window.__SERIES_LOADED__) return;
   window.__SERIES_LOADED__ = true;
-  console.info("[series.js] loaded v2026-02-06-playoff2");
+  console.info("[series.js] loaded v2026-03-10-contenders1");
 
   // ===== Config =====
   const LOCAL_FILES = [
@@ -287,13 +287,21 @@
       }
       const tr = document.createElement("tr");
       const isPlayoff = (PLAYOFF_NUMBERS.has(r.number) || isPlayoffPilot(r.pilot));
-      if (isPlayoff) {
+            const isContender = (typeof isContenderPilot === "function" && isContenderPilot(r.pilot));
+if (isPlayoff) {
         tr.classList.add("playoff");
         // Inline fallback (por si el CSS no refresca por caché)
-        tr.style.outline = "2px solid rgba(255, 215, 0, .85)";
-        tr.style.boxShadow = "0 0 10px rgba(255, 215, 0, .45)";
+        tr.style.outline = "2px solid rgba(255, 215, 0, .75)";
+        tr.style.boxShadow = "0 0 10px rgba(255, 215, 0, .35)";
       }
-      tr.innerHTML = `
+      
+      if (isContender) {
+        tr.classList.add("contender");
+        // Si es contendiente, que prevalezca sobre el fallback dorado
+        tr.style.outline = "2px solid rgba(255, 64, 64, .9)";
+        tr.style.boxShadow = "0 0 14px rgba(255, 64, 64, .45)";
+      }
+tr.innerHTML = `
         <td>${r.position ?? (idx+1)}</td>
         <td>${r.number}</td>
         <td>${r.pilot}</td>
@@ -346,6 +354,21 @@
   }
 
   document.addEventListener("DOMContentLoaded", init);
-})();
+}
+
+  // === Contendientes al título (resaltado ESPECIAL) ===
+  // Estos 2 quedan con una marca distinta encima del resaltado de Playoffs.
+  const CONTENDER_MATCHERS = [
+    /\bvallejos\b/,
+    /\bvallenjos\b/, // por si viene con la errata
+    /\bfranchi\b/
+  ];
+
+  function isContenderPilot(pilot) {
+    const n = normalizeName(pilot);
+    if (!n) return false;
+    return CONTENDER_MATCHERS.some(re => re.test(n));
+  }
+)();
 
 
