@@ -226,3 +226,25 @@ tbody tr.contender td:last-child{
 @media (prefers-reduced-motion: reduce) {
   tbody tr.contender td{ animation: none !important; }
 }
+
+/* === Botones de serie: Contendientes (Vallejos / Franchi) === */
+#race-list li.contender{
+  border-color: rgba(255, 80, 80, .95);
+  box-shadow: 0 0 0 rgba(255, 80, 80, 0);
+  position: relative;
+  animation: contenderBtnPulse 1.05s ease-in-out infinite;
+}
+
+/* Si además está activa, mantenemos el outline dorado existente y sumamos glow rojo */
+#race-list li.contender.active{
+  box-shadow: 0 0 18px rgba(255, 80, 80, .45);
+}
+
+@keyframes contenderBtnPulse{
+  0%, 100% { transform: scale(1); box-shadow: 0 0 0 rgba(255, 80, 80, 0); }
+  50% { transform: scale(1.03); box-shadow: 0 0 18px rgba(255, 80, 80, .40); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #race-list li.contender{ animation: none !important; }
+}
