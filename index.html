@@ -3,22 +3,27 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>CMS APP</title>
-  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
-  <meta name="theme-color" content="#000000">
+  <title>PLAYOFFS FECHA 18 | DARSUR</title>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <meta name="theme-color" content="#120000">
   <style>
     :root{
-      --bg1:#7F0000;
-      --bg2:#000000;
-      --ink:#0b0f1a;
-      --gold:#FFC928;
-      --sand:#af9b6f;
-      --card: rgba(255,255,255,.06);
-      --border: rgba(255,255,255,.14);
+      --bg1:#180000;
+      --bg2:#4d0000;
+      --bg3:#000000;
+      --ink:#101218;
+      --gold:#ffd34f;
+      --gold-2:#ffefb3;
+      --red:#d10000;
+      --red-soft:#ff4d4d;
+      --card: rgba(255,255,255,.07);
+      --border: rgba(255,255,255,.16);
       --white: #ffffff;
     }
+
     *{box-sizing:border-box}
     html,body{height:100%}
+
     body{
       margin:0;
       font-family:'Roboto',system-ui,-apple-system,Segoe UI,Ubuntu,Helvetica,Arial,sans-serif;
@@ -26,42 +31,131 @@
       display:flex;
       flex-direction:column;
       min-height:100dvh;
-      background: linear-gradient(45deg, var(--bg1), var(--bg2), var(--bg1), var(--bg2));
-      background-size: 400% 400%;
-      animation: gradientAnimation 14s ease-in-out infinite;
+      background:
+        radial-gradient(circle at top center, rgba(255,211,79,.16) 0%, rgba(255,211,79,0) 28%),
+        linear-gradient(135deg, var(--bg1), var(--bg2) 45%, var(--bg3) 100%);
+      background-attachment: fixed;
+      overflow-x:hidden;
     }
-    @keyframes gradientAnimation{
-      0%{background-position:0% 50%}
-      50%{background-position:100% 50%}
-      100%{background-position:0% 50%}
+
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      background:
+        linear-gradient(90deg, rgba(255,255,255,.02) 0 1px, transparent 1px 100%),
+        linear-gradient(rgba(255,255,255,.02) 0 1px, transparent 1px 100%);
+      background-size: 34px 34px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,.75), rgba(0,0,0,.15));
+      opacity:.35;
     }
+
     header{
-      display:flex;align-items:center;justify-content:center;
+      display:flex;
+      align-items:center;
+      justify-content:center;
       padding:18px 16px 8px;
       text-align:center;
     }
+
+    .hero{
+      width:100%;
+      max-width:840px;
+      padding:18px 18px 16px;
+      border:1px solid rgba(255,211,79,.22);
+      background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+      border-radius:24px;
+      box-shadow:0 18px 45px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.05);
+      backdrop-filter: blur(6px);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .hero::after{
+      content:"";
+      position:absolute;
+      inset:auto -15% -40% auto;
+      width:220px;
+      height:220px;
+      border-radius:50%;
+      background:radial-gradient(circle, rgba(255,211,79,.20) 0%, rgba(255,211,79,0) 70%);
+      pointer-events:none;
+    }
+
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:6px 12px;
+      border-radius:999px;
+      margin-bottom:10px;
+      font-size:.82rem;
+      font-weight:700;
+      letter-spacing:.9px;
+      text-transform:uppercase;
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.12);
+    }
+
     h1{
       margin:0;
       font-family:'Oswald',sans-serif;
+      font-size:clamp(2rem, 5vw, 3.2rem);
       font-weight:700;
-      letter-spacing:.5px;
-      text-shadow: 4px 4px 4px rgba(0,0,0,.35);
+      letter-spacing:.8px;
+      line-height:1.02;
+      text-shadow:4px 4px 4px rgba(0,0,0,.35);
     }
-    .wrap{width:100%;max-width:840px;margin:0 auto;padding:8px 14px 24px;flex:1}
+
+    .subtitle{
+      margin:12px auto 0;
+      max-width:680px;
+      font-size:1rem;
+      line-height:1.35;
+      color:rgba(255,255,255,.92);
+    }
+
+    .duel{
+      display:flex;
+      justify-content:center;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-top:14px;
+    }
+
+    .duel-pill{
+      padding:10px 14px;
+      border-radius:999px;
+      background:rgba(0,0,0,.22);
+      border:1px solid rgba(255,255,255,.15);
+      font-weight:700;
+      font-size:.98rem;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.06);
+    }
+
+    .wrap{width:100%;max-width:840px;margin:0 auto;padding:10px 14px 24px;flex:1}
+
     .grid{
       display:grid;
       grid-template-columns:repeat(2,minmax(0,1fr));
       gap:12px;
       margin-top:8px;
     }
+
     @media (min-width:520px){ .grid{ gap:16px } }
+
+    .featured-slot{
+      grid-column:1 / -1;
+    }
+
     a.btn{
       position:relative;
       display:flex;
       align-items:center;
       justify-content:center;
       min-height:120px;
-      border-radius:16px;
+      border-radius:18px;
       text-decoration:none;
       color:var(--white);
       font-weight:800;
@@ -71,120 +165,164 @@
       background: var(--card);
       border:1px solid var(--border);
       backdrop-filter: blur(6px);
-      box-shadow: 0 10px 20px rgba(0,0,0,.25);
+      box-shadow: 0 10px 22px rgba(0,0,0,.28);
       transition: transform .08s ease, box-shadow .2s ease, border-color .2s ease;
+      overflow:hidden;
     }
+
+    a.btn:hover{
+      box-shadow: 0 14px 28px rgba(0,0,0,.34);
+      border-color: rgba(255,255,255,.28);
+    }
+
     a.btn:active{ transform: scale(.98) }
+
     a.btn .inner{
-      display:flex;flex-direction:column;align-items:center;gap:8px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:8px;
       font-size:1.8rem;
       line-height:1.05;
+      padding:12px;
     }
+
     a.btn small{
       display:block;
       font-weight:500;
       font-family:'Roboto',sans-serif;
       font-size:.95rem;
-      opacity:.9;
+      opacity:.95;
     }
-    .b1{ background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03)); }
+
+    .b1{ background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03)); }
     .b2{ background: linear-gradient(180deg, rgba(37,211,102,.15), rgba(37,211,102,.08)); }
     .b3{ background: linear-gradient(180deg, rgba(58,142,155,.15), rgba(58,142,155,.08)); }
-    .b4{ background: linear-gradient(180deg, rgba(127,0,0,.20), rgba(127,0,0,.08)); }
-    .b5{ background: linear-gradient(180deg, rgba(255,201,40,.20), rgba(255,201,40,.08)); color:#0b0f1a }
+    .b4{ background: linear-gradient(180deg, rgba(127,0,0,.23), rgba(127,0,0,.10)); }
+    .b5{ background: linear-gradient(180deg, rgba(255,201,40,.22), rgba(255,201,40,.10)); color:#0b0f1a }
     .b6{ background: linear-gradient(180deg, rgba(0,153,255,.20), rgba(0,153,255,.08)); }
+    .b7{ background: linear-gradient(180deg, rgba(255,255,255,.11), rgba(255,255,255,.04)); }
 
-    /* PLAYOFFS destacado (dorado con brillo) */
-    a.btn.playoffs{
+    .definicion{
+      min-height:130px;
       color: var(--ink);
       background:
-        radial-gradient(120% 120% at 20% 0%, rgba(255,255,255,.55) 0%, rgba(255,255,255,0) 55%),
-        linear-gradient(180deg, rgba(255,201,40,.45), rgba(255,201,40,.18));
-      border: 1px solid rgba(255,201,40,.75);
+        radial-gradient(120% 120% at 15% 0%, rgba(255,255,255,.62) 0%, rgba(255,255,255,0) 58%),
+        linear-gradient(180deg, rgba(255,211,79,.90), rgba(255,211,79,.58));
+      border:1px solid rgba(255,211,79,.92);
       box-shadow:
-        0 14px 28px rgba(0,0,0,.30),
-        0 0 18px rgba(255,201,40,.55),
-        0 0 42px rgba(255,201,40,.22);
-      overflow:hidden;
+        0 16px 34px rgba(0,0,0,.34),
+        0 0 20px rgba(255,211,79,.58),
+        0 0 46px rgba(209,0,0,.22);
     }
-    a.btn.playoffs::before{
+
+    .definicion::before{
       content:"";
       position:absolute;
       inset:-35% -60%;
-      background: linear-gradient(115deg, transparent 45%, rgba(255,255,255,.45) 50%, transparent 55%);
-      transform: translateX(-55%) rotate(10deg);
+      background:linear-gradient(115deg, transparent 45%, rgba(255,255,255,.48) 50%, transparent 55%);
+      transform: translateX(-58%) rotate(10deg);
       opacity:.55;
-      animation: playoffsShine 2.6s ease-in-out infinite;
+      animation: shine 2.7s ease-in-out infinite;
       pointer-events:none;
     }
-    a.btn.playoffs .inner{
-      text-shadow: 0 2px 10px rgba(0,0,0,.28);
+
+    .definicion .inner{
+      text-shadow:0 2px 10px rgba(0,0,0,.22);
     }
-    @keyframes playoffsShine{
-      0%{ transform: translateX(-55%) rotate(10deg); opacity:.15 }
-      45%{ opacity:.55 }
-      100%{ transform: translateX(55%) rotate(10deg); opacity:.15 }
+
+    .playoffs-normal{
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+      color:var(--white);
+      border:1px solid rgba(255,255,255,.14);
+      box-shadow: 0 10px 22px rgba(0,0,0,.28);
     }
+
+    .playoffs-normal::before{ display:none; }
+
+    @keyframes shine{
+      0%{ transform: translateX(-58%) rotate(10deg); opacity:.16 }
+      45%{ opacity:.58 }
+      100%{ transform: translateX(58%) rotate(10deg); opacity:.16 }
+    }
+
     @media (prefers-reduced-motion: reduce){
-      a.btn.playoffs::before{ animation:none; opacity:.18 }
-    } /* TABLA */
+      .definicion::before{ animation:none; opacity:.18 }
+    }
 
     footer{
-      text-align:center;padding:16px 0 22px;opacity:.95;font-size:1.30rem
+      text-align:center;
+      padding:16px 0 22px;
+      opacity:.95;
+      font-size:1.30rem;
     }
-    footer a{ color:#ccc; text-decoration:none }
+
+    footer a{ color:#d7d7d7; text-decoration:none }
+
+    @media (max-width:560px){
+      .hero{ padding:16px 14px 14px; border-radius:20px; }
+      .subtitle{ font-size:.95rem; }
+      a.btn{ min-height:110px; }
+      a.btn .inner{ font-size:1.55rem; }
+      a.btn small{ font-size:.88rem; }
+    }
   </style>
 </head>
 <body>
   <header>
-        <h1>PLAYOFFS FECHA 17 | LÜSQTOFF </h1>
+    <div class="hero">
+      <div class="eyebrow">🏆 definición del campeonato</div>
+      <h1>PLAYOFFS FECHA 18 | DARSUR</h1>
+      <p class="subtitle">Última fecha. Solo dos pilotos llegan con chances matemáticas de pelear el título y toda la jornada se vive en clave de definición.</p>
+      <div class="duel">
+        <div class="duel-pill">🔥 Luciano Franchi</div>
+        <div class="duel-pill">⚡ Luciano Vallejos</div>
+      </div>
+    </div>
   </header>
+
   <main class="wrap">
     <div class="grid">
+      <a class="btn definicion featured-slot" href="/definicion">
+        <div class="inner">👑 LA DEFINICIÓN<small>Seguimiento del duelo por el campeonato</small></div>
+      </a>
 
-            <!-- NUEVO botón #7 -->
       <a class="btn b7" href="/series">
         <div class="inner">🏁 SERIES<small>Orden de partida</small></div>
       </a>
+
       <a class="btn b1" href="/tiempos">
         <div class="inner">🕑 TIEMPOS<small>Resultados y parciales</small></div>
       </a>
-      <!-- NUEVO botón #4 -->
+
       <a class="btn b6" href="/posiciones">
         <div class="inner">📊 POSICIONES<small>Actualizada semanalmente</small></div>
       </a>
 
-      <!-- NUEVO botón #4 -->
-      <a class="btn playoffs" href="/playoffs">
+      <a class="btn playoffs-normal" href="/playoffs">
         <div class="inner">🥇 PLAYOFFS<small>Campeonato</small></div>
       </a>
+
       <a class="btn b3" href="mensajes.html">
         <div class="inner">💬 MENSAJES<small>Enviá tu aliento</small></div>
       </a>
+
       <a class="btn b2" href="selfies.html">
         <div class="inner">📸 SELFIES<small>Mandá tu foto a pantalla</small></div>
       </a>
 
-
       <a class="btn b4" href="https://app.sli.do/event/kE4DFoKFjVV4Wjy8tGUste" target="_blank" rel="noopener">
         <div class="inner">🏆 PRODE<small>Pronosticá los ganadores</small></div>
       </a>
+
       <a class="btn b5" href="info.html">
         <div class="inner">ℹ️ INFO<small>Redes y contacto</small></div>
       </a>
     </div>
   </main>
+
   <footer>
     <a href="https://primateled.pages.dev/" target="_blank" rel="noopener">PRIMATE ®</a>
   </footer>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
