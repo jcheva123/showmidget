@@ -194,17 +194,35 @@ tbody tr.playoff td{
   font-weight: 800;
 }
 
-/* === Contendientes al título (solo 2: Vallejos y Franchi) === */
+/* === Contendientes al título (Vallejos y Franchi) === */
 tbody tr.contender td{
   font-weight: 900;
-  border-color: rgba(255, 64, 64, .95);
-  text-shadow: 0 0 10px rgba(255, 80, 80, .75);
-  animation: contenderCellGlow 1.1s ease-in-out infinite;
+  background: rgba(255, 60, 60, 0.10);
+  text-shadow: 0 0 10px rgba(255, 80, 80, .65);
+  animation: contenderPulse 1.1s ease-in-out infinite;
 }
-@keyframes contenderCellGlow{
-  0%, 100% { box-shadow: 0 0 0 rgba(255, 80, 80, 0), 0 0 0 rgba(255, 215, 0, 0); }
-  50% { box-shadow: 0 0 14px rgba(255, 80, 80, .55), 0 0 22px rgba(255, 215, 0, .22); }
+
+/* marco rojo por celdas para que se lea como "una sola fila" */
+tbody tr.contender td{
+  border-top: 1px solid rgba(255, 60, 60, .55);
+  border-bottom: 1px solid rgba(255, 60, 60, .55);
 }
+tbody tr.contender td:first-child{
+  border-left: 2px solid rgba(255, 60, 60, .90);
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+tbody tr.contender td:last-child{
+  border-right: 2px solid rgba(255, 60, 60, .90);
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+@keyframes contenderPulse{
+  0%, 100% { box-shadow: 0 0 0 rgba(255, 80, 80, 0); }
+  50% { box-shadow: 0 0 16px rgba(255, 80, 80, .35); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   tbody tr.contender td{ animation: none !important; }
 }
