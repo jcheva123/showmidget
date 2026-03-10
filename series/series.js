@@ -6,7 +6,7 @@
 (() => {
   if (window.__SERIES_LOADED__) return;
   window.__SERIES_LOADED__ = true;
-  console.info("[series.js] loaded v2026-03-10-contenders1");
+  console.info("[series.js] loaded v2026-03-10-contenders2");
 
   // ===== Config =====
   const LOCAL_FILES = [
@@ -65,6 +65,22 @@
     if (!n) return false;
     return PLAYOFF_MATCHERS.some(re => re.test(n));
   }
+
+  // === Contendientes al título (resaltado ESPECIAL) ===
+  // Solo 2 pilotos con chances matemáticas de pelear el título:
+  // Luciano Vallejos y Luciano Franchi.
+  const CONTENDER_MATCHERS = [
+    /\bvallejos\b/,
+    /\bvallenjos\b/, // por si viene con errata
+    /\bfranchi\b/
+  ];
+
+  function isContenderPilot(pilot) {
+    const n = normalizeName(pilot);
+    if (!n) return false;
+    return CONTENDER_MATCHERS.some(re => re.test(n));
+  }
+
 // ===== Utils =====
   const $  = (s, el=document) => el.querySelector(s);
   const $$ = (s, el=document) => [...el.querySelectorAll(s)];
@@ -287,17 +303,12 @@
       }
       const tr = document.createElement("tr");
       const isPlayoff = (PLAYOFF_NUMBERS.has(r.number) || isPlayoffPilot(r.pilot));
-            const isContender = (typeof isContenderPilot === "function" && isContenderPilot(r.pilot));
+            const isContender = isContenderPilot(r.pilot);
 if (isPlayoff) {
         tr.classList.add("playoff");
-        // Inline fallback (por si el CSS no refresca por caché)
-        tr.style.outline = "2px solid rgba(255, 215, 0, .75)";
-        tr.style.boxShadow = "0 0 10px rgba(255, 215, 0, .35)";
-      }
-      
-      if (isContender) {
+        }
+            if (isContender) {
         tr.classList.add("contender");
-        // Si es contendiente, que prevalezca sobre el fallback dorado
         tr.style.outline = "2px solid rgba(255, 64, 64, .9)";
         tr.style.boxShadow = "0 0 14px rgba(255, 64, 64, .45)";
       }
@@ -354,21 +365,6 @@ tr.innerHTML = `
   }
 
   document.addEventListener("DOMContentLoaded", init);
-}
-
-  // === Contendientes al título (resaltado ESPECIAL) ===
-  // Estos 2 quedan con una marca distinta encima del resaltado de Playoffs.
-  const CONTENDER_MATCHERS = [
-    /\bvallejos\b/,
-    /\bvallenjos\b/, // por si viene con la errata
-    /\bfranchi\b/
-  ];
-
-  function isContenderPilot(pilot) {
-    const n = normalizeName(pilot);
-    if (!n) return false;
-    return CONTENDER_MATCHERS.some(re => re.test(n));
-  }
-)();
+})();
 
 
