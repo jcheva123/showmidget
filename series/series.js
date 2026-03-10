@@ -6,9 +6,36 @@
 (() => {
   if (window.__SERIES_LOADED__) return;
   window.__SERIES_LOADED__ = true;
-  console.info("[series.js] loaded v2026-03-10-contenders3-buttons");
+  console.info("[series.js] loaded v2026-03-10-contenders4-btnglow");
 
-  // ===== Config =====
+  
+
+function ensureContenderButtonStyles() {
+    if (document.getElementById("contender-btn-styles")) return;
+    const st = document.createElement("style");
+    st.id = "contender-btn-styles";
+    st.textContent = `
+      /* Botones de serie con contendiente (Vallejos / Franchi) */
+      #race-list li.contender{
+        border-color: rgba(255, 80, 80, .95) !important;
+        box-shadow: 0 0 0 rgba(255, 80, 80, 0);
+        position: relative;
+        animation: contenderBtnPulse 1.05s ease-in-out infinite;
+      }
+      #race-list li.contender.active{
+        box-shadow: 0 0 18px rgba(255, 80, 80, .45);
+      }
+      @keyframes contenderBtnPulse{
+        0%, 100% { transform: scale(1); box-shadow: 0 0 0 rgba(255, 80, 80, 0); }
+        50% { transform: scale(1.03); box-shadow: 0 0 18px rgba(255, 80, 80, .40); }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        #race-list li.contender{ animation: none !important; }
+      }
+    `;
+    document.head.appendChild(st);
+  }
+// ===== Config =====
   const LOCAL_FILES = [
     "./Nuevo%20orden%20de%20partida.txt",     // formato nuevo (tabs)
     "./orden%20de%20partida%20series.txt"     // formato viejo (pos num nombre)
@@ -262,9 +289,13 @@
       // resaltamos el "botón" de la serie para que el público lo vea rápido.
       const rows = bySerie.get(name) || [];
       const hasContender = rows.some(r => isContenderPilot(r.pilot));
-      if (hasContender) li.classList.add("contender");
-
-      li.onclick = () => renderSerie(name, bySerie.get(name));
+      if (hasContender) {
+        li.classList.add("contender");
+        li.style.borderColor = "rgba(255, 80, 80, .95)";
+        li.style.boxShadow = "0 0 18px rgba(255, 80, 80, .40)";
+        li.style.animation = "contenderBtnPulse 1.05s ease-in-out infinite";
+      }
+li.onclick = () => renderSerie(name, bySerie.get(name));
       ul.appendChild(li);
     }
 
@@ -345,7 +376,9 @@ tr.innerHTML = `
 
   // ===== 4) init =====
   async function init() {
-    beginLoading("Cargando series…");
+    
+    ensureContenderButtonStyles();
+beginLoading("Cargando series…");
     try {
       const txt = await fetchTXT();
       const bySerie = parseSeriesTXT(txt);
