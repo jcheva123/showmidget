@@ -122,6 +122,56 @@
       animation:shine 3s ease-in-out infinite;
     }
 
+    .card.champion{
+      border-color:rgba(255,201,40,.92);
+      box-shadow:
+        0 22px 56px rgba(0,0,0,.4),
+        0 0 26px rgba(255,201,40,.6),
+        0 0 64px rgba(255,201,40,.28);
+      transform:translateY(-4px) scale(1.01);
+    }
+
+    .card.champion::after{
+      content:"";
+      position:absolute;
+      inset:-35% -60%;
+      pointer-events:none;
+      background:linear-gradient(115deg, transparent 44%, rgba(255,255,255,.34) 50%, transparent 56%);
+      transform:translateX(-60%) rotate(10deg);
+      animation:shine 2.4s ease-in-out infinite;
+    }
+
+    .card.champion .head{
+      background:
+        radial-gradient(120% 160% at 50% 0%, rgba(255,201,40,.18), transparent 62%),
+        linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,0));
+    }
+
+    .champion-badge{
+      position:absolute;
+      left:50%;
+      top:12px;
+      transform:translateX(-50%);
+      padding:5px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,201,40,.72);
+      background:rgba(255,201,40,.14);
+      color:#fff4c7;
+      font-family:"Oswald", sans-serif;
+      font-size:.72rem;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      opacity:0;
+      transition:opacity .22s ease, transform .22s ease;
+      box-shadow:0 0 18px rgba(255,201,40,.18);
+      white-space:nowrap;
+    }
+
+    .card.champion .champion-badge{
+      opacity:1;
+      transform:translateX(-50%) translateY(0);
+    }
+
     @keyframes shine{
       0%{transform:translateX(-60%) rotate(10deg);opacity:.08}
       45%{opacity:.34}
@@ -210,6 +260,129 @@
       text-shadow:0 0 18px rgba(255,201,40,.16);
     }
 
+
+
+    .points-guide{
+      width:min(720px, calc(100% - 14px));
+      margin:40px auto 0;
+      display:grid;
+      gap:8px;
+      opacity:.88;
+    }
+
+    .guide-title{
+      margin:0 0 2px;
+      font-family:"Oswald", sans-serif;
+      font-size:.88rem;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      color:rgba(255,242,194,.72);
+      text-align:center;
+    }
+
+    .guide-item{
+      border:1px solid rgba(255,255,255,.07);
+      border-radius:18px;
+      background:linear-gradient(180deg, rgba(255,255,255,.025), rgba(255,255,255,.015));
+      overflow:hidden;
+      box-shadow:0 8px 20px rgba(0,0,0,.18);
+    }
+
+    .guide-item summary{
+      list-style:none;
+      cursor:pointer;
+      padding:11px 14px;
+      font-family:"Oswald", sans-serif;
+      font-size:.94rem;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      color:rgba(243,243,247,.88);
+    }
+
+    .guide-item summary::-webkit-details-marker{display:none}
+
+    .guide-item summary::after{
+      content:"＋";
+      font-size:1.15rem;
+      color:#fff2c2;
+      transition:transform .2s ease;
+    }
+
+    .guide-item[open] summary::after{
+      content:"−";
+    }
+
+    .guide-body{
+      padding:0 14px 12px;
+      border-top:1px solid rgba(255,255,255,.07);
+    }
+
+    .pts-row{
+      display:grid;
+      grid-template-columns:1fr auto;
+      gap:12px;
+      align-items:center;
+      min-height:32px;
+      border-bottom:1px solid rgba(255,255,255,.05);
+      color:rgba(239,239,244,.9);
+      font-size:.92rem;
+    }
+
+    .pts-row:last-child{border-bottom:none}
+
+    .pts-pos{
+      opacity:.92;
+    }
+
+    .pts-val{
+      font-family:"Oswald", sans-serif;
+      font-size:1rem;
+      letter-spacing:.03em;
+      color:#fff6d9;
+    }
+
+    .confetti-layer{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      overflow:hidden;
+      z-index:99;
+    }
+
+    .confetti{
+      position:absolute;
+      top:-10vh;
+      width:10px;
+      height:18px;
+      border-radius:2px;
+      opacity:.95;
+      animation:confettiFall linear forwards;
+      will-change:transform, opacity;
+    }
+
+    @keyframes confettiFall{
+      0%{
+        transform:translate3d(0, -12vh, 0) rotate(0deg);
+        opacity:0;
+      }
+      10%{opacity:1}
+      100%{
+        transform:translate3d(var(--drift, 0px), 112vh, 0) rotate(var(--spin, 720deg));
+        opacity:0;
+      }
+    }
+
+    @media (max-width:700px){
+      .points-guide{margin-top:26px; gap:7px}
+      .guide-title{font-size:.92rem}
+      .guide-item summary{padding:11px 12px; font-size:.94rem}
+      .guide-body{padding:0 12px 10px}
+      .pts-row{font-size:.9rem; min-height:30px}
+    }
+
     @media (max-width:700px){
       .wrap{width:min(100%, calc(100% - 12px)); padding:10px 0 14px}
       .board{gap:8px}
@@ -234,6 +407,7 @@
       <article class="card" id="card-franchi">
         <div class="head">
           <div class="lead-crown">👑</div>
+          <div class="champion-badge">Campeón</div>
           <h2 class="name">Franchi 🔥</h2>
         </div>
         <div class="grid">
@@ -248,6 +422,7 @@
       <article class="card" id="card-vallejos">
         <div class="head">
           <div class="lead-crown">👑</div>
+          <div class="champion-badge">Campeón</div>
           <h2 class="name">Vallejos ⚡</h2>
         </div>
         <div class="grid">
@@ -259,7 +434,71 @@
         </div>
       </article>
     </section>
+
+    <section class="points-guide" aria-label="Puntos en juego">
+      <h3 class="guide-title">Puntos en juego</h3>
+
+      <details class="guide-item">
+        <summary>Series</summary>
+        <div class="guide-body">
+          <div class="pts-row"><div class="pts-pos">1°</div><div class="pts-val">3,00</div></div>
+          <div class="pts-row"><div class="pts-pos">2°</div><div class="pts-val">2,75</div></div>
+          <div class="pts-row"><div class="pts-pos">3°</div><div class="pts-val">2,50</div></div>
+          <div class="pts-row"><div class="pts-pos">4°</div><div class="pts-val">2,25</div></div>
+          <div class="pts-row"><div class="pts-pos">5°</div><div class="pts-val">2,00</div></div>
+          <div class="pts-row"><div class="pts-pos">6°</div><div class="pts-val">1,75</div></div>
+          <div class="pts-row"><div class="pts-pos">7°</div><div class="pts-val">1,50</div></div>
+          <div class="pts-row"><div class="pts-pos">8°</div><div class="pts-val">0,50</div></div>
+        </div>
+      </details>
+
+      <details class="guide-item">
+        <summary>Semifinales</summary>
+        <div class="guide-body">
+          <div class="pts-row"><div class="pts-pos">1°</div><div class="pts-val">8,00</div></div>
+          <div class="pts-row"><div class="pts-pos">2°</div><div class="pts-val">7,00</div></div>
+          <div class="pts-row"><div class="pts-pos">3°</div><div class="pts-val">6,00</div></div>
+          <div class="pts-row"><div class="pts-pos">4°</div><div class="pts-val">5,00</div></div>
+          <div class="pts-row"><div class="pts-pos">5°</div><div class="pts-val">4,00</div></div>
+          <div class="pts-row"><div class="pts-pos">6°</div><div class="pts-val">3,50</div></div>
+          <div class="pts-row"><div class="pts-pos">7°</div><div class="pts-val">3,00</div></div>
+          <div class="pts-row"><div class="pts-pos">8°</div><div class="pts-val">2,50</div></div>
+          <div class="pts-row"><div class="pts-pos">9°</div><div class="pts-val">2,00</div></div>
+          <div class="pts-row"><div class="pts-pos">10°</div><div class="pts-val">1,50</div></div>
+          <div class="pts-row"><div class="pts-pos">11°</div><div class="pts-val">1,00</div></div>
+          <div class="pts-row"><div class="pts-pos">12°</div><div class="pts-val">0,50</div></div>
+        </div>
+      </details>
+
+      <details class="guide-item">
+        <summary>Prefinal</summary>
+        <div class="guide-body">
+          <div class="pts-row"><div class="pts-pos">1°</div><div class="pts-val">2,00</div></div>
+          <div class="pts-row"><div class="pts-pos">2°</div><div class="pts-val">1,00</div></div>
+        </div>
+      </details>
+
+      <details class="guide-item">
+        <summary>Final</summary>
+        <div class="guide-body">
+          <div class="pts-row"><div class="pts-pos">1°</div><div class="pts-val">15,00</div></div>
+          <div class="pts-row"><div class="pts-pos">2°</div><div class="pts-val">12,00</div></div>
+          <div class="pts-row"><div class="pts-pos">3°</div><div class="pts-val">10,00</div></div>
+          <div class="pts-row"><div class="pts-pos">4°</div><div class="pts-val">7,00</div></div>
+          <div class="pts-row"><div class="pts-pos">5°</div><div class="pts-val">6,00</div></div>
+          <div class="pts-row"><div class="pts-pos">6°</div><div class="pts-val">5,50</div></div>
+          <div class="pts-row"><div class="pts-pos">7°</div><div class="pts-val">5,00</div></div>
+          <div class="pts-row"><div class="pts-pos">8°</div><div class="pts-val">4,50</div></div>
+          <div class="pts-row"><div class="pts-pos">9°</div><div class="pts-val">4,00</div></div>
+          <div class="pts-row"><div class="pts-pos">10°</div><div class="pts-val">3,50</div></div>
+          <div class="pts-row"><div class="pts-pos">11°</div><div class="pts-val">3,00</div></div>
+          <div class="pts-row"><div class="pts-pos">12°</div><div class="pts-val">2,50</div></div>
+        </div>
+      </details>
+    </section>
   </main>
+
+  <div class="confetti-layer" id="confetti-layer" aria-hidden="true"></div>
 
   <script>
     const data = {
@@ -278,6 +517,18 @@
         final: 0,
       }
     };
+
+    // CAMPEÓN MANUAL:
+    // 'none'      = sin campeón confirmado
+    // 'franchi'   = coronar a Franchi
+    // 'vallejos'  = coronar a Vallejos
+    const MANUAL_CHAMPION = 'none';
+
+    let confirmedChampion = MANUAL_CHAMPION === 'none' ? null : MANUAL_CHAMPION;
+
+    const confettiLayer = document.getElementById('confetti-layer');
+    let confettiInterval = null;
+    let confettiStopTimer = null;
 
     const formatPts = (n) => new Intl.NumberFormat('es-AR', {
       minimumFractionDigits: 2,
@@ -303,11 +554,81 @@
       const cardFranchi = document.getElementById('card-franchi');
       const cardVallejos = document.getElementById('card-vallejos');
 
-      cardFranchi.classList.remove('leader');
-      cardVallejos.classList.remove('leader');
+      cardFranchi.classList.remove('leader', 'champion');
+      cardVallejos.classList.remove('leader', 'champion');
+
+      if (confirmedChampion === 'franchi'){
+        cardFranchi.classList.add('champion');
+        return;
+      }
+
+      if (confirmedChampion === 'vallejos'){
+        cardVallejos.classList.add('champion');
+        return;
+      }
 
       if (tFranchi > tVallejos) cardFranchi.classList.add('leader');
       if (tVallejos > tFranchi) cardVallejos.classList.add('leader');
+    }
+
+    function createConfettiBurst(){
+      const colors = ['#ffc928', '#fff3c0', '#ffffff', '#ff8a00', '#ffd84f'];
+      const pieces = 110;
+
+      for(let i = 0; i < pieces; i++){
+        const piece = document.createElement('span');
+        piece.className = 'confetti';
+        const left = Math.random() * 100;
+        const drift = `${(Math.random() - 0.5) * 240}px`;
+        const spin = `${(Math.random() > 0.5 ? 1 : -1) * (360 + Math.random() * 1080)}deg`;
+        const duration = 2.9 + Math.random() * 2.2;
+        const delay = Math.random() * 0.7;
+        const width = 7 + Math.random() * 7;
+        const height = 12 + Math.random() * 12;
+
+        piece.style.left = `${left}%`;
+        piece.style.width = `${width}px`;
+        piece.style.height = `${height}px`;
+        piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+        piece.style.setProperty('--drift', drift);
+        piece.style.setProperty('--spin', spin);
+        piece.style.animationDuration = `${duration}s`;
+        piece.style.animationDelay = `${delay}s`;
+
+        confettiLayer.appendChild(piece);
+
+        window.setTimeout(() => {
+          piece.remove();
+        }, (duration + delay + 0.2) * 1000);
+      }
+    }
+
+    function startConfettiLoop(durationMs = 60000){
+      window.clearInterval(confettiInterval);
+      window.clearTimeout(confettiStopTimer);
+      confettiLayer.innerHTML = '';
+
+      createConfettiBurst();
+      confettiInterval = window.setInterval(createConfettiBurst, 1800);
+
+      confettiStopTimer = window.setTimeout(() => {
+        window.clearInterval(confettiInterval);
+        confettiInterval = null;
+      }, durationMs);
+    }
+
+    function setChampion(key){
+      confirmedChampion = key === 'none' ? null : key;
+      renderLeader();
+
+      if (confirmedChampion){
+        startConfettiLoop(60000);
+      } else {
+        window.clearInterval(confettiInterval);
+        window.clearTimeout(confettiStopTimer);
+        confettiInterval = null;
+        confettiLayer.innerHTML = '';
+      }
     }
 
     function render(){
@@ -319,6 +640,7 @@
     }
 
     render();
+    if (confirmedChampion) startConfettiLoop(60000);
   </script>
 </body>
 </html>
