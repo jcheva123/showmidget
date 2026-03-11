@@ -277,29 +277,62 @@
     }
 
     @media (max-width:820px){
-      .board{grid-template-columns:1fr}
-    }
-
-    @media (max-width:560px){
-      .wrap{width:min(100%, calc(100% - 12px)); padding:10px 0 14px}
-      .row{
-        grid-template-columns:1fr auto;
+      .wrap{width:min(100%, calc(100% - 14px)); padding:10px 0 18px}
+      .board{
+        grid-template-columns:repeat(2, minmax(0,1fr));
         gap:8px;
-        padding:11px 10px;
       }
-      .pts{
-        grid-column:2;
-        justify-self:end;
+      .head{padding:12px 8px 10px}
+      .name{font-size:clamp(1.05rem, 4.8vw, 1.45rem)}
+      .base{font-size:.72rem}
+      .row{
+        grid-template-columns:1fr;
+        gap:6px;
+        padding:10px 8px;
+        min-height:auto;
       }
-      .row.total{
-        grid-template-columns:1fr auto;
+      .label{
+        font-size:.8rem;
+        letter-spacing:.06em;
+      }
+      .row-controls{
+        display:grid;
+        grid-template-columns:minmax(0,1fr) auto;
+        gap:6px;
+        align-items:center;
       }
       .pick{
-        min-width:88px;
-        font-size:.92rem;
+        min-width:0;
+        width:100%;
+        padding:8px 9px;
+        font-size:.9rem;
       }
-      .label{font-size:.92rem}
-      .row.total .pts{font-size:1.6rem}
+      .pts{
+        min-width:auto;
+        font-size:1rem;
+        text-align:right;
+      }
+      .row.total{
+        grid-template-columns:1fr;
+        gap:4px;
+      }
+      .row.total .label{font-size:.9rem}
+      .row.total .pts{font-size:1.45rem}
+      .lead-crown{top:8px; right:8px; font-size:.95rem}
+      .foot{margin-top:16px; font-size:.72rem; padding:0 6px}
+    }
+
+    @media (max-width:420px){
+      .board{gap:6px}
+      .title{font-size:clamp(1.45rem, 7vw, 2rem)}
+      .vs{font-size:clamp(.95rem, 4vw, 1.2rem)}
+      .chip{padding:9px 10px; font-size:.82rem}
+      .name{font-size:clamp(.96rem, 4.6vw, 1.18rem)}
+      .base{font-size:.68rem}
+      .label{font-size:.74rem}
+      .pick{font-size:.84rem; padding:7px 8px}
+      .pts{font-size:.94rem}
+      .row.total .pts{font-size:1.28rem}
     }
   </style>
 </head>
@@ -327,23 +360,31 @@
         <div class="grid">
           <div class="row">
             <div class="label">Series</div>
+            <div class="row-controls">
             <select class="pick" id="franchi-series-pos"></select>
             <div class="pts" id="franchi-series-pts">0,00</div>
+            </div>
           </div>
           <div class="row">
             <div class="label">Semifinal</div>
+            <div class="row-controls">
             <select class="pick" id="franchi-semifinal-pos"></select>
             <div class="pts" id="franchi-semifinal-pts">0,00</div>
+            </div>
           </div>
           <div class="row">
             <div class="label">Prefinal</div>
+            <div class="row-controls">
             <select class="pick" id="franchi-prefinal-pos"></select>
             <div class="pts" id="franchi-prefinal-pts">0,00</div>
+            </div>
           </div>
           <div class="row">
             <div class="label">Final</div>
+            <div class="row-controls">
             <select class="pick" id="franchi-final-pos"></select>
             <div class="pts" id="franchi-final-pts">0,00</div>
+            </div>
           </div>
           <div class="row total">
             <div class="label">Total</div>
@@ -362,23 +403,31 @@
         <div class="grid">
           <div class="row">
             <div class="label">Series</div>
+            <div class="row-controls">
             <select class="pick" id="vallejos-series-pos"></select>
             <div class="pts" id="vallejos-series-pts">0,00</div>
+            </div>
           </div>
           <div class="row">
             <div class="label">Semifinal</div>
+            <div class="row-controls">
             <select class="pick" id="vallejos-semifinal-pos"></select>
             <div class="pts" id="vallejos-semifinal-pts">0,00</div>
+            </div>
           </div>
           <div class="row">
             <div class="label">Prefinal</div>
+            <div class="row-controls">
             <select class="pick" id="vallejos-prefinal-pos"></select>
             <div class="pts" id="vallejos-prefinal-pts">0,00</div>
+            </div>
           </div>
           <div class="row">
             <div class="label">Final</div>
+            <div class="row-controls">
             <select class="pick" id="vallejos-final-pos"></select>
             <div class="pts" id="vallejos-final-pts">0,00</div>
+            </div>
           </div>
           <div class="row total">
             <div class="label">Total</div>
