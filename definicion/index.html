@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>👑 LA DEFINICIÓN | DARSUR</title>
+  <meta name="theme-color" content="#0d0d10" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0d0d10;
+      --panel:#141419;
+      --panel-2:#191921;
+      --line:rgba(255,255,255,.09);
+      --text:#f7f7fb;
+      --muted:rgba(255,255,255,.62);
+      --gold:#ffc928;
+      --gold-soft:rgba(255,201,40,.18);
+      --gold-border:rgba(255,201,40,.68);
+      --shadow:0 16px 40px rgba(0,0,0,.32);
+      --lead-shadow:0 0 20px rgba(255,201,40,.34), 0 0 48px rgba(255,201,40,.16);
+      --radius:22px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--text)}
+    body{
+      font-family:"Inter",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+      min-height:100dvh;
+      background:
+        radial-gradient(circle at top, rgba(255,201,40,.08), transparent 26%),
+        radial-gradient(circle at bottom, rgba(160,0,0,.12), transparent 28%),
+        linear-gradient(180deg, #111116 0%, #0d0d10 100%);
+    }
+
+    .wrap{
+      width:min(980px, calc(100% - 22px));
+      margin:0 auto;
+      padding:14px 0 20px;
+    }
+
+    .hero{
+      text-align:center;
+      margin-bottom:12px;
+    }
+
+    .title{
+      margin:0;
+      font-family:"Oswald", sans-serif;
+      font-size:clamp(2rem, 7vw, 3.8rem);
+      font-weight:700;
+      letter-spacing:.03em;
+      line-height:.95;
+      text-transform:uppercase;
+      text-shadow:0 6px 20px rgba(0,0,0,.35);
+    }
+
+    .vs{
+      margin:6px 0 0;
+      font-family:"Oswald", sans-serif;
+      font-size:clamp(1.15rem, 4.4vw, 1.9rem);
+      letter-spacing:.04em;
+      color:#fff2c2;
+    }
+
+    .arrival{
+      margin:10px auto 0;
+      width:fit-content;
+      max-width:100%;
+      padding:8px 12px;
+      border-radius:999px;
+      background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.08);
+      color:var(--muted);
+      font-size:.84rem;
+      line-height:1.25;
+      text-align:center;
+    }
+
+    .board{
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0,1fr));
+      gap:12px;
+      align-items:start;
+    }
+
+    .card{
+      position:relative;
+      background:linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.03));
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      overflow:hidden;
+      box-shadow:var(--shadow);
+      transition:border-color .25s ease, box-shadow .25s ease, transform .25s ease;
+      backdrop-filter: blur(6px);
+    }
+
+    .card::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      background:linear-gradient(180deg, rgba(255,255,255,.05), transparent 28%);
+      opacity:.7;
+    }
+
+    .card.leader{
+      border-color:var(--gold-border);
+      box-shadow:var(--shadow), var(--lead-shadow);
+      transform:translateY(-2px);
+    }
+
+    .card.leader::after{
+      content:"";
+      position:absolute;
+      inset:-30% -50%;
+      pointer-events:none;
+      background:linear-gradient(115deg, transparent 45%, rgba(255,255,255,.22) 50%, transparent 55%);
+      transform:translateX(-60%) rotate(10deg);
+      animation:shine 3s ease-in-out infinite;
+    }
+
+    @keyframes shine{
+      0%{transform:translateX(-60%) rotate(10deg);opacity:.08}
+      45%{opacity:.34}
+      100%{transform:translateX(60%) rotate(10deg);opacity:.08}
+    }
+
+    .head{
+      padding:14px 12px 12px;
+      border-bottom:1px solid var(--line);
+      text-align:center;
+      position:relative;
+      z-index:1;
+    }
+
+    .lead-crown{
+      position:absolute;
+      top:10px;
+      right:10px;
+      font-size:1.05rem;
+      opacity:0;
+      transform:scale(.85);
+      transition:opacity .2s ease, transform .2s ease;
+      filter:drop-shadow(0 0 10px rgba(255,201,40,.6));
+    }
+
+    .card.leader .lead-crown{
+      opacity:1;
+      transform:scale(1);
+    }
+
+    .name{
+      margin:0;
+      font-family:"Oswald", sans-serif;
+      font-size:clamp(1.5rem, 5vw, 2.2rem);
+      line-height:1;
+      letter-spacing:.03em;
+      text-transform:uppercase;
+    }
+
+    .grid{
+      position:relative;
+      z-index:1;
+    }
+
+    .row{
+      display:grid;
+      grid-template-columns:1fr auto;
+      gap:10px;
+      align-items:center;
+      padding:14px 14px;
+      border-bottom:1px solid var(--line);
+      min-height:58px;
+    }
+
+    .row:last-child{border-bottom:none}
+
+    .label{
+      font-family:"Oswald", sans-serif;
+      font-size:1rem;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      color:#f0f0f4;
+    }
+
+    .value{
+      font-family:"Oswald", sans-serif;
+      font-size:1.45rem;
+      line-height:1;
+      letter-spacing:.02em;
+      min-width:66px;
+      text-align:right;
+    }
+
+    .row.total{
+      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+    }
+
+    .row.total .label{
+      color:#fff2c2;
+      font-size:1.08rem;
+    }
+
+    .row.total .value{
+      font-size:2.05rem;
+      color:#fff6d9;
+      text-shadow:0 0 18px rgba(255,201,40,.16);
+    }
+
+    @media (max-width:700px){
+      .wrap{width:min(100%, calc(100% - 12px)); padding:10px 0 14px}
+      .board{gap:8px}
+      .head{padding:12px 8px 10px}
+      .row{padding:12px 10px; min-height:52px}
+      .label{font-size:.92rem; letter-spacing:.06em}
+      .value{font-size:1.25rem; min-width:52px}
+      .row.total .value{font-size:1.72rem}
+      .arrival{font-size:.76rem; padding:7px 10px}
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="hero">
+      <h1 class="title">👑 LA DEFINICIÓN</h1>
+      <p class="vs">Franchi 🔥 vs Vallejos ⚡</p>
+      <div class="arrival">LLEGAN: Franchi <span id="arrival-franchi">97,50</span> · Vallejos <span id="arrival-vallejos">100,00</span></div>
+    </section>
+
+    <section class="board">
+      <article class="card" id="card-franchi">
+        <div class="head">
+          <div class="lead-crown">👑</div>
+          <h2 class="name">Franchi 🔥</h2>
+        </div>
+        <div class="grid">
+          <div class="row"><div class="label">Series</div><div class="value" id="franchi-series">0,00</div></div>
+          <div class="row"><div class="label">Semifinal</div><div class="value" id="franchi-semifinal">0,00</div></div>
+          <div class="row"><div class="label">Prefinal</div><div class="value" id="franchi-prefinal">0,00</div></div>
+          <div class="row"><div class="label">Final</div><div class="value" id="franchi-final">0,00</div></div>
+          <div class="row total"><div class="label">Total</div><div class="value" id="franchi-total">97,50</div></div>
+        </div>
+      </article>
+
+      <article class="card" id="card-vallejos">
+        <div class="head">
+          <div class="lead-crown">👑</div>
+          <h2 class="name">Vallejos ⚡</h2>
+        </div>
+        <div class="grid">
+          <div class="row"><div class="label">Series</div><div class="value" id="vallejos-series">0,00</div></div>
+          <div class="row"><div class="label">Semifinal</div><div class="value" id="vallejos-semifinal">0,00</div></div>
+          <div class="row"><div class="label">Prefinal</div><div class="value" id="vallejos-prefinal">0,00</div></div>
+          <div class="row"><div class="label">Final</div><div class="value" id="vallejos-final">0,00</div></div>
+          <div class="row total"><div class="label">Total</div><div class="value" id="vallejos-total">100,00</div></div>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <script>
+    const data = {
+      franchi: {
+        base: 97.5,
+        series: 0,
+        semifinal: 0,
+        prefinal: 0,
+        final: 0,
+      },
+      vallejos: {
+        base: 100,
+        series: 0,
+        semifinal: 0,
+        prefinal: 0,
+        final: 0,
+      }
+    };
+
+    const formatPts = (n) => new Intl.NumberFormat('es-AR', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    }).format(n);
+
+    function totalOf(driver){
+      return driver.base + driver.series + driver.semifinal + driver.prefinal + driver.final;
+    }
+
+    function renderDriver(key){
+      const d = data[key];
+      document.getElementById(`${key}-series`).textContent = formatPts(d.series);
+      document.getElementById(`${key}-semifinal`).textContent = formatPts(d.semifinal);
+      document.getElementById(`${key}-prefinal`).textContent = formatPts(d.prefinal);
+      document.getElementById(`${key}-final`).textContent = formatPts(d.final);
+      document.getElementById(`${key}-total`).textContent = formatPts(totalOf(d));
+    }
+
+    function renderLeader(){
+      const tFranchi = totalOf(data.franchi);
+      const tVallejos = totalOf(data.vallejos);
+      const cardFranchi = document.getElementById('card-franchi');
+      const cardVallejos = document.getElementById('card-vallejos');
+
+      cardFranchi.classList.remove('leader');
+      cardVallejos.classList.remove('leader');
+
+      if (tFranchi > tVallejos) cardFranchi.classList.add('leader');
+      if (tVallejos > tFranchi) cardVallejos.classList.add('leader');
+    }
+
+    function render(){
+      document.getElementById('arrival-franchi').textContent = formatPts(data.franchi.base);
+      document.getElementById('arrival-vallejos').textContent = formatPts(data.vallejos.base);
+      renderDriver('franchi');
+      renderDriver('vallejos');
+      renderLeader();
+    }
+
+    render();
+  </script>
+</body>
+</html>
