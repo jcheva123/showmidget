@@ -6,7 +6,7 @@
     "columnas": {
       "fechas": 17,
       "incluye_descarte": true,
-      "puntos_usados": "Final"
+      "puntos_usados": "total"
     }
   },
   "standings": [
@@ -33,9 +33,9 @@
         23.0,
         26.0
       ],
-      "total": 335.75,
+      "points": 335.75,
       "descarte": 0.0,
-      "final": 335.75,
+      "total": 335.75,
       "diferencia_al_1": 0.0
     },
     {
@@ -61,9 +61,9 @@
         26.0,
         23.0
       ],
-      "total": 310.75,
+      "points": 310.75,
       "descarte": 3.0,
-      "final": 307.75,
+      "total": 307.75,
       "diferencia_al_1": 28.0
     },
     {
@@ -89,9 +89,9 @@
         0.0,
         7.25
       ],
-      "total": 258.25,
+      "points": 258.25,
       "descarte": 0.0,
-      "final": 258.25,
+      "total": 258.25,
       "diferencia_al_1": 77.5
     },
     {
@@ -117,9 +117,9 @@
         12.75,
         13.25
       ],
-      "total": 212.25,
+      "points": 212.25,
       "descarte": 0.0,
-      "final": 212.25,
+      "total": 212.25,
       "diferencia_al_1": 123.5
     },
     {
@@ -145,9 +145,9 @@
         13.5,
         15.0
       ],
-      "total": 193.75,
+      "points": 193.75,
       "descarte": 0.0,
-      "final": 193.75,
+      "total": 193.75,
       "diferencia_al_1": 142.0
     },
     {
@@ -173,9 +173,9 @@
         16.75,
         3.5
       ],
-      "total": 188.5,
+      "points": 188.5,
       "descarte": 3.5,
-      "final": 185.0,
+      "total": 185.0,
       "diferencia_al_1": 150.75
     },
     {
@@ -201,9 +201,9 @@
         6.5,
         15.5
       ],
-      "total": 184.75,
+      "points": 184.75,
       "descarte": 0.0,
-      "final": 184.75,
+      "total": 184.75,
       "diferencia_al_1": 151.0
     },
     {
@@ -229,9 +229,9 @@
         11.0,
         9.25
       ],
-      "total": 179.5,
+      "points": 179.5,
       "descarte": 2.25,
-      "final": 177.25,
+      "total": 177.25,
       "diferencia_al_1": 158.5
     },
     {
@@ -257,9 +257,9 @@
         5.5,
         11.5
       ],
-      "total": 176.25,
+      "points": 176.25,
       "descarte": 0.0,
-      "final": 176.25,
+      "total": 176.25,
       "diferencia_al_1": 159.5
     },
     {
@@ -285,9 +285,9 @@
         14.0,
         12.0
       ],
-      "total": 171.75,
+      "points": 171.75,
       "descarte": 0.0,
-      "final": 171.75,
+      "total": 171.75,
       "diferencia_al_1": 164.0
     },
     {
@@ -313,9 +313,9 @@
         4.5,
         15.0
       ],
-      "total": 170.25,
+      "points": 170.25,
       "descarte": 2.5,
-      "final": 167.75,
+      "total": 167.75,
       "diferencia_al_1": 168.0
     },
     {
@@ -341,9 +341,9 @@
         7.0,
         20.75
       ],
-      "total": 166.75,
+      "points": 166.75,
       "descarte": 0.0,
-      "final": 166.75,
+      "total": 166.75,
       "diferencia_al_1": 169.0
     },
     {
@@ -369,9 +369,9 @@
         3.0,
         6.5
       ],
-      "total": 163.0,
+      "points": 163.0,
       "descarte": 2.25,
-      "final": 160.75,
+      "total": 160.75,
       "diferencia_al_1": 175.0
     },
     {
@@ -397,9 +397,9 @@
         13.75,
         6.25
       ],
-      "total": 150.5,
+      "points": 150.5,
       "descarte": 1.5,
-      "final": 149.0,
+      "total": 149.0,
       "diferencia_al_1": 186.75
     },
     {
@@ -425,9 +425,9 @@
         14.75,
         9.0
       ],
-      "total": 143.75,
+      "points": 143.75,
       "descarte": 0.0,
-      "final": 143.75,
+      "total": 143.75,
       "diferencia_al_1": 192.0
     },
     {
@@ -453,9 +453,9 @@
         9.75,
         13.25
       ],
-      "total": 135.75,
+      "points": 135.75,
       "descarte": 1.75,
-      "final": 134.0,
+      "total": 134.0,
       "diferencia_al_1": 201.75
     },
     {
@@ -481,9 +481,9 @@
         0.0,
         0.0
       ],
-      "total": 134.0,
+      "points": 134.0,
       "descarte": 0.0,
-      "final": 134.0,
+      "total": 134.0,
       "diferencia_al_1": 201.75
     },
     {
@@ -509,9 +509,9 @@
         3.0,
         3.0
       ],
-      "total": 133.25,
+      "points": 133.25,
       "descarte": 0.0,
-      "final": 133.25,
+      "total": 133.25,
       "diferencia_al_1": 202.5
     },
     {
@@ -537,9 +537,9 @@
         20.75,
         16.75
       ],
-      "total": 130.5,
+      "points": 130.5,
       "descarte": 0.0,
-      "final": 130.5,
+      "total": 130.5,
       "diferencia_al_1": 205.25
     },
     {
@@ -565,9 +565,9 @@
         7.75,
         0.5
       ],
-      "total": 125.25,
+      "points": 125.25,
       "descarte": 0.0,
-      "final": 125.25,
+      "total": 125.25,
       "diferencia_al_1": 210.5
     },
     {
@@ -593,9 +593,9 @@
         4.25,
         2.5
       ],
-      "total": 123.75,
+      "points": 123.75,
       "descarte": 0.0,
-      "final": 123.75,
+      "total": 123.75,
       "diferencia_al_1": 212.0
     },
     {
@@ -621,9 +621,9 @@
         12.5,
         6.5
       ],
-      "total": 123.5,
+      "points": 123.5,
       "descarte": 2.75,
-      "final": 120.75,
+      "total": 120.75,
       "diferencia_al_1": 215.0
     },
     {
@@ -649,9 +649,9 @@
         5.0,
         5.25
       ],
-      "total": 112.25,
+      "points": 112.25,
       "descarte": 0.5,
-      "final": 111.75,
+      "total": 111.75,
       "diferencia_al_1": 224.0
     },
     {
@@ -677,9 +677,9 @@
         7.75,
         6.0
       ],
-      "total": 110.75,
+      "points": 110.75,
       "descarte": 0.0,
-      "final": 110.75,
+      "total": 110.75,
       "diferencia_al_1": 225.0
     },
     {
@@ -705,9 +705,9 @@
         13.0,
         14.5
       ],
-      "total": 106.0,
+      "points": 106.0,
       "descarte": 0.0,
-      "final": 106.0,
+      "total": 106.0,
       "diferencia_al_1": 229.75
     },
     {
@@ -733,15 +733,15 @@
         0.0,
         0.0
       ],
-      "total": 95.5,
+      "points": 95.5,
       "descarte": 0.0,
-      "final": 95.5,
+      "total": 95.5,
       "diferencia_al_1": 240.25
     },
     {
       "pos": 27,
       "nro": 23,
-      "nombre": "PIÃ‘EYRO Julio Cesar",
+      "nombre": "PIÑEYRO Julio Cesar",
       "fechas": [
         4.5,
         4.5,
@@ -761,9 +761,9 @@
         0.0,
         0.0
       ],
-      "total": 86.0,
+      "points": 86.0,
       "descarte": 0.0,
-      "final": 86.0,
+      "total": 86.0,
       "diferencia_al_1": 249.75
     },
     {
@@ -789,9 +789,9 @@
         3.0,
         2.25
       ],
-      "total": 84.0,
+      "points": 84.0,
       "descarte": 0.0,
-      "final": 84.0,
+      "total": 84.0,
       "diferencia_al_1": 251.75
     },
     {
@@ -817,9 +817,9 @@
         4.75,
         5.75
       ],
-      "total": 83.75,
+      "points": 83.75,
       "descarte": 0.0,
-      "final": 83.75,
+      "total": 83.75,
       "diferencia_al_1": 252.0
     },
     {
@@ -845,9 +845,9 @@
         5.25,
         3.75
       ],
-      "total": 83.75,
+      "points": 83.75,
       "descarte": 0.0,
-      "final": 83.75,
+      "total": 83.75,
       "diferencia_al_1": 252.0
     },
     {
@@ -873,9 +873,9 @@
         10.0,
         2.0
       ],
-      "total": 83.25,
+      "points": 83.25,
       "descarte": 0.0,
-      "final": 83.25,
+      "total": 83.25,
       "diferencia_al_1": 252.5
     },
     {
@@ -901,9 +901,9 @@
         2.25,
         4.5
       ],
-      "total": 80.25,
+      "points": 80.25,
       "descarte": 0.0,
-      "final": 80.25,
+      "total": 80.25,
       "diferencia_al_1": 255.5
     },
     {
@@ -929,9 +929,9 @@
         4.25,
         3.5
       ],
-      "total": 77.5,
+      "points": 77.5,
       "descarte": 1.5,
-      "final": 76.0,
+      "total": 76.0,
       "diferencia_al_1": 259.75
     },
     {
@@ -957,9 +957,9 @@
         4.5,
         4.25
       ],
-      "total": 77.5,
+      "points": 77.5,
       "descarte": 2.0,
-      "final": 75.5,
+      "total": 75.5,
       "diferencia_al_1": 260.25
     },
     {
@@ -985,9 +985,9 @@
         5.0,
         6.0
       ],
-      "total": 75.25,
+      "points": 75.25,
       "descarte": 0.0,
-      "final": 75.25,
+      "total": 75.25,
       "diferencia_al_1": 260.5
     },
     {
@@ -1013,9 +1013,9 @@
         0.0,
         0.0
       ],
-      "total": 74.25,
+      "points": 74.25,
       "descarte": 0.0,
-      "final": 74.25,
+      "total": 74.25,
       "diferencia_al_1": 261.5
     },
     {
@@ -1041,9 +1041,9 @@
         0.0,
         0.0
       ],
-      "total": 72.75,
+      "points": 72.75,
       "descarte": 0.0,
-      "final": 72.75,
+      "total": 72.75,
       "diferencia_al_1": 263.0
     },
     {
@@ -1069,9 +1069,9 @@
         0.0,
         4.0
       ],
-      "total": 71.5,
+      "points": 71.5,
       "descarte": 0.0,
-      "final": 71.5,
+      "total": 71.5,
       "diferencia_al_1": 264.25
     },
     {
@@ -1097,9 +1097,9 @@
         7.0,
         3.5
       ],
-      "total": 70.0,
+      "points": 70.0,
       "descarte": 0.0,
-      "final": 70.0,
+      "total": 70.0,
       "diferencia_al_1": 265.75
     },
     {
@@ -1125,9 +1125,9 @@
         4.0,
         3.25
       ],
-      "total": 69.75,
+      "points": 69.75,
       "descarte": 0.0,
-      "final": 69.75,
+      "total": 69.75,
       "diferencia_al_1": 266.0
     },
     {
@@ -1153,9 +1153,9 @@
         2.75,
         6.25
       ],
-      "total": 68.5,
+      "points": 68.5,
       "descarte": 0.0,
-      "final": 68.5,
+      "total": 68.5,
       "diferencia_al_1": 267.25
     },
     {
@@ -1181,9 +1181,9 @@
         0.0,
         0.0
       ],
-      "total": 67.0,
+      "points": 67.0,
       "descarte": 0.0,
-      "final": 67.0,
+      "total": 67.0,
       "diferencia_al_1": 268.75
     },
     {
@@ -1209,9 +1209,9 @@
         3.0,
         5.25
       ],
-      "total": 67.0,
+      "points": 67.0,
       "descarte": 0.0,
-      "final": 67.0,
+      "total": 67.0,
       "diferencia_al_1": 268.75
     },
     {
@@ -1237,9 +1237,9 @@
         5.5,
         7.5
       ],
-      "total": 66.75,
+      "points": 66.75,
       "descarte": 0.0,
-      "final": 66.75,
+      "total": 66.75,
       "diferencia_al_1": 269.0
     },
     {
@@ -1265,9 +1265,9 @@
         2.25,
         0.0
       ],
-      "total": 63.75,
+      "points": 63.75,
       "descarte": 0.0,
-      "final": 63.75,
+      "total": 63.75,
       "diferencia_al_1": 272.0
     },
     {
@@ -1293,9 +1293,9 @@
         0.0,
         2.5
       ],
-      "total": 63.75,
+      "points": 63.75,
       "descarte": 0.0,
-      "final": 63.75,
+      "total": 63.75,
       "diferencia_al_1": 272.0
     },
     {
@@ -1321,9 +1321,9 @@
         5.75,
         2.25
       ],
-      "total": 63.5,
+      "points": 63.5,
       "descarte": 0.0,
-      "final": 63.5,
+      "total": 63.5,
       "diferencia_al_1": 272.25
     },
     {
@@ -1349,9 +1349,9 @@
         2.25,
         2.25
       ],
-      "total": 62.0,
+      "points": 62.0,
       "descarte": 0.0,
-      "final": 62.0,
+      "total": 62.0,
       "diferencia_al_1": 273.75
     },
     {
@@ -1377,9 +1377,9 @@
         5.75,
         2.25
       ],
-      "total": 60.75,
+      "points": 60.75,
       "descarte": 0.0,
-      "final": 60.75,
+      "total": 60.75,
       "diferencia_al_1": 275.0
     },
     {
@@ -1405,9 +1405,9 @@
         0.0,
         4.25
       ],
-      "total": 58.5,
+      "points": 58.5,
       "descarte": 0.0,
-      "final": 58.5,
+      "total": 58.5,
       "diferencia_al_1": 277.25
     },
     {
@@ -1433,9 +1433,9 @@
         7.5,
         0.0
       ],
-      "total": 57.5,
+      "points": 57.5,
       "descarte": 0.0,
-      "final": 57.5,
+      "total": 57.5,
       "diferencia_al_1": 278.25
     },
     {
@@ -1461,9 +1461,9 @@
         3.5,
         0.0
       ],
-      "total": 56.75,
+      "points": 56.75,
       "descarte": 0.0,
-      "final": 56.75,
+      "total": 56.75,
       "diferencia_al_1": 279.0
     },
     {
@@ -1489,9 +1489,9 @@
         3.75,
         3.75
       ],
-      "total": 56.0,
+      "points": 56.0,
       "descarte": 0.0,
-      "final": 56.0,
+      "total": 56.0,
       "diferencia_al_1": 279.75
     },
     {
@@ -1517,9 +1517,9 @@
         3.5,
         7.0
       ],
-      "total": 56.0,
+      "points": 56.0,
       "descarte": 0.0,
-      "final": 56.0,
+      "total": 56.0,
       "diferencia_al_1": 279.75
     },
     {
@@ -1545,9 +1545,9 @@
         3.5,
         5.25
       ],
-      "total": 55.5,
+      "points": 55.5,
       "descarte": 0.0,
-      "final": 55.5,
+      "total": 55.5,
       "diferencia_al_1": 280.25
     },
     {
@@ -1573,9 +1573,9 @@
         4.0,
         0.0
       ],
-      "total": 55.5,
+      "points": 55.5,
       "descarte": 0.0,
-      "final": 55.5,
+      "total": 55.5,
       "diferencia_al_1": 280.25
     },
     {
@@ -1601,9 +1601,9 @@
         4.5,
         2.0
       ],
-      "total": 54.75,
+      "points": 54.75,
       "descarte": 0.0,
-      "final": 54.75,
+      "total": 54.75,
       "diferencia_al_1": 281.0
     },
     {
@@ -1629,9 +1629,9 @@
         0.0,
         0.0
       ],
-      "total": 50.25,
+      "points": 50.25,
       "descarte": 0.0,
-      "final": 50.25,
+      "total": 50.25,
       "diferencia_al_1": 285.5
     },
     {
@@ -1657,9 +1657,9 @@
         1.75,
         2.5
       ],
-      "total": 49.5,
+      "points": 49.5,
       "descarte": 0.0,
-      "final": 49.5,
+      "total": 49.5,
       "diferencia_al_1": 286.25
     },
     {
@@ -1685,9 +1685,9 @@
         6.5,
         0.0
       ],
-      "total": 46.75,
+      "points": 46.75,
       "descarte": 0.0,
-      "final": 46.75,
+      "total": 46.75,
       "diferencia_al_1": 289.0
     },
     {
@@ -1713,9 +1713,9 @@
         0.0,
         0.0
       ],
-      "total": 46.75,
+      "points": 46.75,
       "descarte": 0.0,
-      "final": 46.75,
+      "total": 46.75,
       "diferencia_al_1": 289.0
     },
     {
@@ -1741,9 +1741,9 @@
         0.0,
         2.5
       ],
-      "total": 45.5,
+      "points": 45.5,
       "descarte": 0.0,
-      "final": 45.5,
+      "total": 45.5,
       "diferencia_al_1": 290.25
     },
     {
@@ -1769,9 +1769,9 @@
         3.0,
         3.5
       ],
-      "total": 44.25,
+      "points": 44.25,
       "descarte": 0.0,
-      "final": 44.25,
+      "total": 44.25,
       "diferencia_al_1": 291.5
     },
     {
@@ -1797,9 +1797,9 @@
         1.75,
         2.5
       ],
-      "total": 43.75,
+      "points": 43.75,
       "descarte": 0.0,
-      "final": 43.75,
+      "total": 43.75,
       "diferencia_al_1": 292.0
     },
     {
@@ -1825,9 +1825,9 @@
         0.0,
         0.0
       ],
-      "total": 42.0,
+      "points": 42.0,
       "descarte": 0.0,
-      "final": 42.0,
+      "total": 42.0,
       "diferencia_al_1": 293.75
     },
     {
@@ -1853,9 +1853,9 @@
         0.0,
         0.0
       ],
-      "total": 41.75,
+      "points": 41.75,
       "descarte": 0.0,
-      "final": 41.75,
+      "total": 41.75,
       "diferencia_al_1": 294.0
     },
     {
@@ -1881,9 +1881,9 @@
         2.75,
         2.5
       ],
-      "total": 40.75,
+      "points": 40.75,
       "descarte": 0.5,
-      "final": 40.25,
+      "total": 40.25,
       "diferencia_al_1": 295.5
     },
     {
@@ -1909,9 +1909,9 @@
         0.0,
         0.0
       ],
-      "total": 38.75,
+      "points": 38.75,
       "descarte": 0.0,
-      "final": 38.75,
+      "total": 38.75,
       "diferencia_al_1": 297.0
     },
     {
@@ -1937,9 +1937,9 @@
         0.0,
         2.5
       ],
-      "total": 38.75,
+      "points": 38.75,
       "descarte": 0.0,
-      "final": 38.75,
+      "total": 38.75,
       "diferencia_al_1": 297.0
     },
     {
@@ -1965,9 +1965,9 @@
         2.0,
         0.0
       ],
-      "total": 36.75,
+      "points": 36.75,
       "descarte": 0.0,
-      "final": 36.75,
+      "total": 36.75,
       "diferencia_al_1": 299.0
     },
     {
@@ -1993,9 +1993,9 @@
         1.75,
         2.75
       ],
-      "total": 35.25,
+      "points": 35.25,
       "descarte": 0.0,
-      "final": 35.25,
+      "total": 35.25,
       "diferencia_al_1": 300.5
     },
     {
@@ -2021,9 +2021,9 @@
         0.0,
         0.0
       ],
-      "total": 33.25,
+      "points": 33.25,
       "descarte": 0.0,
-      "final": 33.25,
+      "total": 33.25,
       "diferencia_al_1": 302.5
     },
     {
@@ -2049,9 +2049,9 @@
         0.0,
         0.0
       ],
-      "total": 32.5,
+      "points": 32.5,
       "descarte": 0.0,
-      "final": 32.5,
+      "total": 32.5,
       "diferencia_al_1": 303.25
     },
     {
@@ -2077,9 +2077,9 @@
         0.0,
         0.0
       ],
-      "total": 31.5,
+      "points": 31.5,
       "descarte": 0.0,
-      "final": 31.5,
+      "total": 31.5,
       "diferencia_al_1": 304.25
     },
     {
@@ -2105,9 +2105,9 @@
         1.75,
         2.0
       ],
-      "total": 30.5,
+      "points": 30.5,
       "descarte": 0.0,
-      "final": 30.5,
+      "total": 30.5,
       "diferencia_al_1": 305.25
     },
     {
@@ -2133,9 +2133,9 @@
         5.75,
         4.0
       ],
-      "total": 28.5,
+      "points": 28.5,
       "descarte": 0.0,
-      "final": 28.5,
+      "total": 28.5,
       "diferencia_al_1": 307.25
     },
     {
@@ -2161,9 +2161,9 @@
         0.0,
         0.0
       ],
-      "total": 28.5,
+      "points": 28.5,
       "descarte": 0.0,
-      "final": 28.5,
+      "total": 28.5,
       "diferencia_al_1": 307.25
     },
     {
@@ -2189,9 +2189,9 @@
         0.0,
         1.75
       ],
-      "total": 28.0,
+      "points": 28.0,
       "descarte": 0.0,
-      "final": 28.0,
+      "total": 28.0,
       "diferencia_al_1": 307.75
     },
     {
@@ -2217,9 +2217,9 @@
         0.0,
         0.0
       ],
-      "total": 27.75,
+      "points": 27.75,
       "descarte": 0.0,
-      "final": 27.75,
+      "total": 27.75,
       "diferencia_al_1": 308.0
     },
     {
@@ -2245,9 +2245,9 @@
         1.5,
         1.75
       ],
-      "total": 27.25,
+      "points": 27.25,
       "descarte": 0.0,
-      "final": 27.25,
+      "total": 27.25,
       "diferencia_al_1": 308.5
     },
     {
@@ -2273,9 +2273,9 @@
         0.0,
         0.0
       ],
-      "total": 25.75,
+      "points": 25.75,
       "descarte": 0.0,
-      "final": 25.75,
+      "total": 25.75,
       "diferencia_al_1": 310.0
     },
     {
@@ -2301,9 +2301,9 @@
         0.0,
         0.0
       ],
-      "total": 25.0,
+      "points": 25.0,
       "descarte": 0.0,
-      "final": 25.0,
+      "total": 25.0,
       "diferencia_al_1": 310.75
     },
     {
@@ -2329,9 +2329,9 @@
         0.0,
         0.0
       ],
-      "total": 23.75,
+      "points": 23.75,
       "descarte": 0.0,
-      "final": 23.75,
+      "total": 23.75,
       "diferencia_al_1": 312.0
     },
     {
@@ -2357,9 +2357,9 @@
         0.0,
         0.0
       ],
-      "total": 23.25,
+      "points": 23.25,
       "descarte": 0.0,
-      "final": 23.25,
+      "total": 23.25,
       "diferencia_al_1": 312.5
     },
     {
@@ -2385,9 +2385,9 @@
         0.0,
         0.0
       ],
-      "total": 22.75,
+      "points": 22.75,
       "descarte": 0.0,
-      "final": 22.75,
+      "total": 22.75,
       "diferencia_al_1": 313.0
     },
     {
@@ -2413,9 +2413,9 @@
         0.0,
         0.0
       ],
-      "total": 21.0,
+      "points": 21.0,
       "descarte": 0.0,
-      "final": 21.0,
+      "total": 21.0,
       "diferencia_al_1": 314.75
     },
     {
@@ -2441,9 +2441,9 @@
         0.0,
         2.0
       ],
-      "total": 21.0,
+      "points": 21.0,
       "descarte": 0.0,
-      "final": 21.0,
+      "total": 21.0,
       "diferencia_al_1": 314.75
     },
     {
@@ -2469,9 +2469,9 @@
         0.0,
         0.0
       ],
-      "total": 19.75,
+      "points": 19.75,
       "descarte": 0.0,
-      "final": 19.75,
+      "total": 19.75,
       "diferencia_al_1": 316.0
     },
     {
@@ -2497,9 +2497,9 @@
         0.0,
         0.0
       ],
-      "total": 12.0,
+      "points": 12.0,
       "descarte": 0.0,
-      "final": 12.0,
+      "total": 12.0,
       "diferencia_al_1": 323.75
     },
     {
@@ -2525,9 +2525,9 @@
         0.0,
         0.0
       ],
-      "total": 9.25,
+      "points": 9.25,
       "descarte": 0.0,
-      "final": 9.25,
+      "total": 9.25,
       "diferencia_al_1": 326.5
     },
     {
@@ -2553,9 +2553,9 @@
         0.0,
         0.0
       ],
-      "total": 7.5,
+      "points": 7.5,
       "descarte": 0.0,
-      "final": 7.5,
+      "total": 7.5,
       "diferencia_al_1": 328.25
     },
     {
@@ -2581,9 +2581,9 @@
         0.0,
         0.0
       ],
-      "total": 5.5,
+      "points": 5.5,
       "descarte": 0.0,
-      "final": 5.5,
+      "total": 5.5,
       "diferencia_al_1": 330.25
     },
     {
@@ -2609,9 +2609,9 @@
         0.0,
         0.0
       ],
-      "total": 3.75,
+      "points": 3.75,
       "descarte": 0.0,
-      "final": 3.75,
+      "total": 3.75,
       "diferencia_al_1": 332.0
     }
   ]
