@@ -6,14 +6,11 @@
   <meta name="theme-color" content="#0b0f1a" />
   <title>🏆 Tabla de posiciones — Estival</title>
 
-  <!-- Usa tu hoja base con estética rojo/negro -->
   <link rel="stylesheet" href="styles.css" />
-  <!-- Patch mínimo para esta página -->
   <link rel="stylesheet" href="posiciones.v2.css" />
 </head>
 <body>
 
-  <!-- Topbar como en resultados -->
   <nav id="topbar-volver" style="position:sticky; top:0; z-index:999; background:#0b0f1a; padding:8px 12px; border-bottom:1px solid rgba(255,255,255,.15);">
     <button class="button" onclick="window.location.href='../index.html'">⬅️ Volver</button>
   </nav>
@@ -25,11 +22,10 @@
   <main>
     <section id="results">
       <div class="results-toolbar">
-        <input id="results-search" type="search" placeholder="Buscar por N° o nombre…" inputmode="search" autocomplete="off" />
+        <input id="results-search" type="search" placeholder="Buscar por N°, próximo N° o nombre…" inputmode="search" autocomplete="off" />
       </div>
 
       <div class="meta-row">
-        <!-- Solo mostramos 'Cumplidas X fechas' y 'Actualizado', NO el nombre del PDF -->
         <span id="meta" aria-live="polite"></span>
       </div>
 
@@ -39,6 +35,7 @@
             <tr>
               <th data-k="pos">Pos.</th>
               <th data-k="nro">N°</th>
+              <th data-k="varDiff">Var.</th>
               <th data-k="nombre" class="th-left">Nombre</th>
               <th data-k="total">Total</th>
             </tr>
