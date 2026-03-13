@@ -1,8 +1,6 @@
 /* posiciones.v2.css — Dark theme, Roboto everywhere, leader highlight, zebra rows, responsive */
-/* Import Roboto once (regular, medium, bold, black) */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap');
 
-/* Base font + dark page */
 :root { --font-body: 'Roboto', system-ui, -apple-system, 'Segoe UI', Arial, sans-serif; }
 html, body {
   background: #0b0f1a;
@@ -10,7 +8,6 @@ html, body {
   font-family: var(--font-body);
 }
 
-/* Card/table container (match resultados look) */
 #results .table-container{
   background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
   border: 1px solid rgba(255,255,255,.12);
@@ -19,10 +16,8 @@ html, body {
   overflow: hidden;
 }
 
-/* Table */
 #tbl{ width: 100%; border-collapse: separate; border-spacing: 0; font-family: var(--font-body); }
 
-/* Header (sticky with red gradient) */
 #tbl thead th{
   background: linear-gradient(180deg, rgba(255,70,70,.95), rgba(255,70,70,.85));
   color: #fff;
@@ -34,7 +29,6 @@ html, body {
 }
 #tbl thead th.th-left, #tbl thead th[data-k="nombre"]{ text-align: left; }
 
-/* Body cells */
 #tbl tbody td{
   padding: 10px 12px;
   border-bottom: 1px solid rgba(255,255,255,.06);
@@ -44,11 +38,9 @@ html, body {
 #tbl tbody td.name { text-align: left; }
 #tbl tbody td.strong { font-weight: 800; }
 
-/* Zebra stripes */
 #tbl tbody tr:nth-child(odd)  td { background: rgba(255,255,255,.04); }
 #tbl tbody tr:nth-child(even) td { background: rgba(255,255,255,.06); }
 
-/* Leader highlight (Pos. 1 / mayor Total) */
 #tbl tbody tr.leader td{
   background: linear-gradient(90deg, rgba(255,80,80,.55), rgba(255,80,80,.30) 45%, rgba(255,255,255,0) 100%);
   color: #fff;
@@ -56,7 +48,7 @@ html, body {
 #tbl tbody tr.leader td:first-child{
   position: relative;
   font-weight: 900;
-  padding-left: 28px; /* space for trophy */
+  padding-left: 28px;
 }
 #tbl tbody tr.leader td:first-child::before{
   content: "";
@@ -65,13 +57,22 @@ html, body {
   transform: translateY(-1px);
 }
 
-/* Responsive tweaks for phones */
-@media (max-width: 520px){
-  #tbl thead th, #tbl tbody td { padding: 8px 10px; }
+#tbl tbody td.var-cell{
+  font-weight: 900;
+  white-space: nowrap;
+  font-size: .95rem;
+}
+#tbl tbody td.var-cell.up{ color: #5af08a; }
+#tbl tbody td.var-cell.down{ color: #ff6b6b; }
+#tbl tbody td.var-cell.same{ color: #d8dee9; }
+
+@media (max-width: 620px){
+  #tbl thead th, #tbl tbody td { padding: 8px 8px; }
   #results .results-toolbar{ gap: 8px; flex-wrap: wrap; }
+  #tbl thead th:nth-child(3), #tbl tbody td:nth-child(3){ min-width: 84px; }
+  #tbl tbody td.var-cell{ font-size: .88rem; }
 }
 
-/* Meta/credits */
 .meta-row{ color:#aab3c1; margin: 8px 2px 10px; font-size: .9rem; }
 #creditos{ text-align:center; font-size:12px; margin:18px 0 10px; }
 #creditos a{ color:#9aa3ad; text-decoration:none; }
