@@ -1,86 +1,83 @@
 SERIE 1
-21 Schmit
-9 Oyola
-30 Resola
-65 Alza
-51 Onorato
-81 J. Calvo
-113 Marco
+15 Hidalgo
+31 Puccinelli
+105 Zabalegui
+39 Paglialunga
+28 N. Anastasio
+78 J. I. González
+69 Ovejero
 
 SERIE 2
-8 K. Altamirano
-46 Dupont
-18 Schiebelbein
+14 Saldamando
+11 Mancini
+38 Madril
+56 Chiapparo
+63 Jaca Cortejarena
+57 Razquin
 43 Colturi
-67 Hock
-137 R. Dailoff
-96 Becchio
 
 SERIE 3
-56 Chiapparo
-102 Torres
+6 Burgos
 127 Grill
-60 Moyano
-74 G. Manzotti
-57 Razquin
-104 Hardoy
+58 M. Pérez
+36 Macazaga
+116 Zubeldía
+67 Hock
+137 R. Dailoff
 
 SERIE 4
-47 G. Cutini
 41 S. Cutini
-31 Puccinelli
-11 Mancini
-75 Benítez
-34 N. Dailoff
-6 Burgos
+4 C. Roth
+47 G. Cutini
+45 Petracci
+46 Dupont
+81 J. M. Calvo
+142 Olivera
 
 SERIE 5
+13 Rouaix
+98 Fritz
 7 E. Roth
-123 Colaneri
-15 Hidalgo
-53 Pascual
-78 J. González
-48 Yurovsky
-115 A. López
+26 Brezina
+113 Marco
+134 Montanari
 
 SERIE 6
-13 Rouaix
-28 N. Anastasio
-54 Toledo
-26 Brezina
-98 Fritz
-76 B. López
-110 Ford
+30 Resola
+60 Moyano
+9 Oyola
+16 J. C. Rodríguez
+94 Chiesa
+53 Pascual
 
 SERIE 7
-1 Vallejos
-5 R. Altamirano
-50 Andrade
-19 J. I. Todino
-116 Zubeldía
-79 Lucero
+1 VALLEJOS ⚡
+2 FRANCHI 🔥
+21 Schmit
+12 Rey
+48 Yurovsky
+111 Bray
 
 SERIE 8
-29 García López
-69 Ovejero
-36 Macazaga
-2 Franchi
-44 Marcos
-105 Zabalegui
+5 R. Altamirano
+8 K. Altamirano
+76 B. López
+44 N. Marcos
+79 Lucero
+19 J. I. Todino
 
 SERIE 9
-12 Rey
-38 Madril
-14 Saldamando
-22 Bonivardo
-58 M. Pérez
-45 Petracci
+50 Andrade
+102 Torres
+123 Colaneri
+34 N. Dailoff
+51 Onorato
+110 Ford
 
 SERIE 10
-4 C. Roth
 32 Melger
-16 J. C. Rodríguez
-111 Bray
-39 Paglialunga
-63 Jaca Cortejarena
-
+22 Bonivardo
+18 Schiebelbein
+104 Hardoy
+115 A. López
+54 Toledo
