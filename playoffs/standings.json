@@ -1,17 +1,17 @@
 [
   {
-    "pos": 1,
+    "pos": 2,
     "number": 1,
     "name": "Vallejos Luciano",
-    "points": 100.0,
+    "points": 117.0,
     "wins": 5,
     "photo": "Vallejos.jpg"
   },
   {
-    "pos": 2,
+    "pos": 1,
     "number": 2,
     "name": "Franchi Luciano",
-    "points": 97.5,
+    "points": 123.5,
     "wins": 7,
     "photo": "Franchi.jpg"
   },
