@@ -16,10 +16,10 @@
     "photo": "Franchi.jpg"
   },
   {
-    "pos": 3,
+    "pos": 5,
     "number": 5,
     "name": "Altamirano Roy",
-    "points": 66.5,
+    "points": 78.00,
     "wins": 1,
     "photo": "Roy.jpg"
   },
@@ -27,15 +27,15 @@
     "pos": 4,
     "number": 14,
     "name": "Saldamando Fernando",
-    "points": 58.25,
+    "points": 79.25,
     "wins": 0,
     "photo": "Saldamando.jpg"
   },
   {
-    "pos": 5,
+    "pos": 3,
     "number": 11,
     "name": "Mancini Esteban",
-    "points": 56.75,
+    "points": 79.50,
     "wins": 0,
     "photo": "Mancini.jpg"
   },
@@ -43,12 +43,12 @@
     "pos": 6,
     "number": 9,
     "name": "Oyola Matias Sebastian",
-    "points": 55.75,
+    "points": 68.00,
     "wins": 1,
     "photo": "Oyola.jpg"
   },
   {
-    "pos": 7,
+    "pos": 11,
     "number": 21,
     "name": "Schmit Nahuel",
     "points": 55.75,
@@ -56,18 +56,18 @@
     "photo": "Schmit.jpg"
   },
   {
-    "pos": 8,
+    "pos": 7,
     "number": 31,
     "name": "Puccinelli Carlos",
-    "points": 54.75,
+    "points": 67.75,
     "wins": 0,
     "photo": "Puccinelli.jpg"
   },
   {
-    "pos": 9,
+    "pos": 8,
     "number": 123,
     "name": "Colaneri Agustin",
-    "points": 51.5,
+    "points": 67.50,
     "wins": 0,
     "photo": "Colaneri.jpg"
   },
