@@ -1,8 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <title>Show Midget</title>
-  <rect width="64" height="64" rx="14" fill="#0d0e10"/>
-  <rect x="1" y="1" width="62" height="62" rx="13" fill="none" stroke="#303238" stroke-width="2"/>
-  <path d="M10 44 16 20H26L32 31 38 20H48L54 44H43L40 32 34 41H30L24 32 21 44Z" fill="#f2f3f4"/>
-  <path d="M14 50H52L49 55H11Z" fill="#e2282f"/>
-  <path d="M17 12H51L48 16H14Z" fill="#e2282f"/>
+<title>Show Midget · SM</title>
+<rect width="64" height="64" rx="14" fill="#0d0e10"/>
+<rect x="1" y="1" width="62" height="62" rx="13" fill="none" stroke="#303238" stroke-width="2"/>
+<path d="M10 20H30L28 26H16L15 29H25L29 33L26 44H6L8 38H20L21 35H11L7 31Z" fill="#f2f3f4"/>
+<path d="M32 44 36 20H43L47 29 52 20H59L57 44H50L51 33 47 39H43L40 33 38 44Z" fill="#f2f3f4"/>
+<path d="M14 50H52L49 55H11Z" fill="#e2282f"/>
+<path d="M17 12H51L48 16H14Z" fill="#e2282f"/>
 </svg>
