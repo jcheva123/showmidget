@@ -7,6 +7,15 @@
     'https://cdn.statically.io/gh/jcheva123/tiemposweb-2025/main/resultados'
   ];
 
+  const DEMO = new URLSearchParams(location.search).get('demo') === '1';
+  const demoData = path => path === 'fechas.json' ? ['Fecha de ejemplo'] : path.endsWith('index.json') ? ['serie1','serie2','serie3','semifinal1','final'] : {results:[
+    {position:1,number:7,name:'Piloto de ejemplo A',t_final:'1:18.984',laps:4},
+    {position:2,number:24,name:'Piloto de ejemplo B',t_final:'1:19.326',laps:4},
+    {position:3,number:18,name:'Piloto de ejemplo C',t_final:'1:20.052',laps:4,rec:1,penalty_note:'Recargo de ejemplo: cono'},
+    {position:4,number:52,name:'Piloto de ejemplo D',t_final:'1:20.817',laps:4},
+    {position:5,number:31,name:'Piloto de ejemplo E',t_final:'1:22.104',laps:4},
+    {position:6,number:66,name:'Piloto de ejemplo F',t_final:'',laps:2,penalty_note:'Abandono de ejemplo'}]};
+  const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const RACE_LABELS = { prefinal: 'PREFINAL', final: 'FINAL' };
   for (let i=1;i<=13;i++) RACE_LABELS[`serie${i}`] = `SERIE ${i}`;
   for (let i=1;i<=6;i++)  RACE_LABELS[`repechaje${i}`] = `REPECHAJE ${i}`;
@@ -28,22 +37,24 @@
       t.style.cssText='position:fixed;left:50%;bottom:16px;transform:translateX(-50%);padding:8px 12px;background:#222;color:#fff;border-radius:8px;font:600 14px system-ui;z-index:9999;opacity:0;transition:opacity .2s';
       document.body.appendChild(t);
     }
+    t.hidden = false;
     t.textContent = msg || '';
     t.style.opacity = '1';
-    setTimeout(()=>t.style.opacity='0',1600);
+    setTimeout(()=>{t.style.opacity='0';t.hidden=true;},3000);
   }
 function setStatus(_) { /* no-op, oculto cualquier rastro */ }
 
   const pad2 = n => String(n).padStart(2,'0');
-  const fmtDateTime = d => `${pad2(d.getDate())}/${pad2(d.getMonth()+1)}/${d.getFullYear()} ${pad2(d.getHours())}:${pad2(d.getMinutes())}:${pad2(d.getSeconds())}`;
+  const fmtDateTime = d => new Intl.DateTimeFormat('es-AR',{timeZone:'America/Argentina/Buenos_Aires',day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).format(d);
 
   // ---------- HELPERS ----------
   async function fetchJSON(path){
+    if(DEMO) return demoData(path);
     const ts = Date.now();
     for(const base of BASES){
       const url = `${base}/${path}?ts=${ts}`;
       try{
-        const r = await fetch(url, {cache:'no-store'});
+        const r = await fetch(url, {cache:'no-store',signal:AbortSignal.timeout(8000)});
         if(r.ok) return await r.json();
       }catch{}
     }
@@ -51,11 +62,12 @@ function setStatus(_) { /* no-op, oculto cualquier rastro */ }
   }
 
   async function fetchJSONWithMeta(path){
+    if(DEMO) return {data:demoData(path),lastModified:null};
     const ts = Date.now();
     for(const base of BASES){
       const url = `${base}/${path}?ts=${ts}`;
       try{
-        const r = await fetch(url, {cache:'no-store'});
+        const r = await fetch(url, {cache:'no-store',signal:AbortSignal.timeout(8000)});
         if(!r.ok) continue;
         const data = await r.json();
         const lm = r.headers.get('Last-Modified');
@@ -134,7 +146,9 @@ function setStatus(_) { /* no-op, oculto cualquier rastro */ }
       const li=document.createElement('li');
       li.className='race-item';
       li.dataset.race=k;
-      li.textContent=RACE_LABELS[k]||k.toUpperCase();
+      const button=document.createElement('button');
+      button.type='button';button.textContent=RACE_LABELS[k]||k.toUpperCase();
+      li.appendChild(button);
       ul.appendChild(li);
     }
     highlightSelected();
@@ -196,16 +210,10 @@ function setStatus(_) { /* no-op, oculto cualquier rastro */ }
     rows.forEach((r,i)=>{
       const tr=document.createElement('tr');
       if(i%2) tr.classList.add('row-alt');
-      tr.innerHTML = `
-        <td>${r.position ?? ''}</td>
-        <td>${r.number ?? ''}</td>
-        <td>${r.name ?? ''}</td>
-        <td>${formatRecargo(r)}</td>
-        <td>${r.t_final ?? ''}</td>
-        <td>${r.laps ?? ''}</td>
-        <td>${r.penalty_note ?? ''}</td>
-      `;
+      tr.innerHTML = `<td colspan="3"><details class="result-detail"><summary><span class="result-pos">${esc(r.position)}</span><span class="result-pilot"><strong>${esc(r.name)}</strong><small>N° ${esc(r.number)}</small></span><span class="result-time">${esc(r.t_final || '—')}<small>VER DETALLE +</small></span></summary><div class="result-extra"><div>VUELTAS<strong>${esc(r.laps ?? '—')}</strong></div><div>RECARGO<strong>${esc(formatRecargo(r) || 'Sin recargo')}</strong></div><div class="wide">OBSERVACIONES<strong>${esc(r.penalty_note || 'Sin observaciones')}</strong></div></div></details></td>`;
       tbody.appendChild(tr);
+      const query=document.querySelector('#results-search')?.value.trim().toLowerCase();
+      if(query) tr.hidden=!tr.textContent.toLowerCase().includes(query);
     });
   }
 
@@ -218,8 +226,8 @@ function setStatus(_) { /* no-op, oculto cualquier rastro */ }
     }
     if(upd){
       const when = lastModifiedStr ? fmtDateTime(new Date(lastModifiedStr)) : fmtDateTime(new Date());
-      const label = lastModifiedStr ? 'Cargado' : 'Actualizado';
-      upd.textContent = `${label}: ${when} • ${fecha} · ${RACE_LABELS[raceKey]||raceKey.toUpperCase()}`;
+      const label = lastModifiedStr ? 'Archivo actualizado' : 'Consultado';
+      upd.textContent = DEMO ? 'Datos de ejemplo · Vista de diseño' : `${label}: ${when}`;
       upd.hidden=false;
     }
   }
@@ -258,7 +266,8 @@ function setStatus(_) { /* no-op, oculto cualquier rastro */ }
     }catch(e){
       console.error('No se pudo cargar FECHAS', e);
       toast('No se pudieron cargar FECHAS.');
-      sel.innerHTML='<option value="">(sin datos)</option>';
+      sel.innerHTML='<option value="">No se pudieron cargar las fechas</option>';
+      document.querySelector('#results tbody').innerHTML='<tr><td colspan="3" class="error">No pudimos consultar los resultados. Tocá Actualizar para reintentar o abrí la vista con datos de ejemplo.</td></tr>';
     }
   }
 
@@ -282,11 +291,13 @@ function setStatus(_) { /* no-op, oculto cualquier rastro */ }
 
       if(!keys.length){
         const tbody=document.querySelector('#results tbody');
-        if(tbody) tbody.innerHTML='<tr><td colspan="7" class="empty">Sin carreras cargadas aún.</td></tr>';
+        if(tbody) tbody.innerHTML='<tr><td colspan="3" class="empty">Sin carreras cargadas aún.</td></tr>';
         setStatus(`Actualizado — ${f} (sin carreras)`);
         return;
       }
 
+      const savedRace=new URL(location.href).searchParams.get('carrera');
+      if(keys.includes(savedRace)){await loadResults(f,savedRace);return;}
       if (autoPickLatest) {
         const { key: latestKey, meta } = await pickLatestRaceByLM(f, keys);
         await loadResults(f, latestKey, { prefetched: meta });
@@ -307,6 +318,7 @@ function setStatus(_) { /* no-op, oculto cualquier rastro */ }
     if(!f || !k) return;
 
     STATE.fecha=f; STATE.race=k; highlightSelected();
+    const url=new URL(location.href);url.searchParams.set('fecha',f);url.searchParams.set('carrera',k);history.replaceState(null,'',url);
 
     try{
       let meta = opts.prefetched;
@@ -324,7 +336,7 @@ function setStatus(_) { /* no-op, oculto cualquier rastro */ }
       console.error('Error cargando resultados:', err);
       toast('No se pudo cargar resultados.');
       const tbody=document.querySelector('#results tbody');
-      if(tbody) tbody.innerHTML='<tr><td colspan="7" class="error">No se pudo cargar esta carrera.</td></tr>';
+      if(tbody) tbody.innerHTML='<tr><td colspan="3" class="error">No se pudo cargar esta carrera.</td></tr>';
       setStatus('Error al cargar');
     }
   }
@@ -358,11 +370,15 @@ function setStatus(_) { /* no-op, oculto cualquier rastro */ }
         const q = search.value.trim().toLowerCase();
         const rows = document.querySelectorAll('#results tbody tr');
         rows.forEach(tr=>{
-          tr.style.display = tr.textContent.toLowerCase().includes(q) ? '' : 'none';
+          tr.hidden = !tr.textContent.toLowerCase().includes(q);
         });
       });
     }
 
+    if(DEMO) document.getElementById('demo-notice').hidden=false;
+    window.addEventListener('offline',()=>document.getElementById('offline-banner').hidden=false);
+    window.addEventListener('online',()=>document.getElementById('offline-banner').hidden=true);
+    document.getElementById('offline-banner').hidden=navigator.onLine;
     // Carga inicial: última fecha + última carrera
     loadFechas();
   });
