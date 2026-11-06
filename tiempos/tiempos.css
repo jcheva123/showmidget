@@ -21,3 +21,11 @@
 #results tr.race-winner{background:#f5b21b09}
 #results .results-toolbar{margin:26px 0 0;padding-top:20px;border-top:1px solid var(--line)}
 @media(max-width:350px){#results thead th:last-child{width:91px}#results thead th.penalty-heading{width:41px}#results .result-time{font-size:12px}#results tr.race-winner .result-time{font-size:15px}#results .result-pilot strong{font-size:11px}}
+
+/* Todas las carreras visibles: distribución en filas, sin carrusel horizontal. */
+#race-list ul{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;overflow:visible;padding:0;margin:12px 0 22px;list-style:none}
+#race-list li{min-width:0;max-width:none;margin:0}
+#race-list li:not(.race-item){grid-column:1/-1}
+#race-list button{box-sizing:border-box;width:100%;min-height:46px;padding:12px 5px;white-space:normal;line-height:1.3;overflow-wrap:anywhere}
+@media(min-width:520px){#race-list ul{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:350px){#race-list ul{gap:6px}#race-list button{font-size:9px}}
