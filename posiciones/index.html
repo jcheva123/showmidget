@@ -3,26 +3,22 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#0b0f1a" />
-  <title>🏆 RANKING FINAL — Estival finalizado</title>
+  <meta name="theme-color" content="#0D0E10" />
+  <title>Posiciones · Show Midget</title>
 
-  <link rel="stylesheet" href="styles.css" />
-  <link rel="stylesheet" href="posiciones.v2.css" />
+  <link rel="stylesheet" href="/racing.css" />
+  <link rel="stylesheet" href="/posiciones/appearance.css?v=1" />
 <link rel="stylesheet" href="/navigation.css?v=1">
 </head>
 <body class="sm-has-navigation">
 
 
 
-  <header>
-    <h1>🏆 RANKING FINAL</h1>
-  </header>
+  <header class="brandbar"><a class="wordmark" href="/" aria-label="Show Midget inicio">SHOW<span>MIDGET<span class="brand-dot">.</span></span></a><img src="/logocmslow.png" width="88" height="51" alt="Club Midgistas del Sur"></header>
 
-  <main>
+  <main class="app-shell"><section class="page-heading"><div class="eyebrow">RANKING FINAL</div><h1>POSICIONES<br><em>CAMPEONATO.</em></h1></section>
     <section id="results">
-      <div class="results-toolbar">
-        <input id="results-search" type="search" placeholder="Buscar por N°, próximo N° o nombre…" inputmode="search" autocomplete="off" />
-      </div>
+      
 
       <div class="meta-row">
         <span id="meta" aria-live="polite"></span>
@@ -32,11 +28,11 @@
         <table id="tbl">
           <thead>
             <tr>
-              <th data-k="pos">#NUEVO</th>
-              <th data-k="nro">#ANTERIOR</th>
-              <th data-k="varDiff">Dif.</th>
-              <th data-k="nombre" class="th-left">Nombre</th>
-              <th data-k="total">Total</th>
+              <th data-k="pos" title="Posición en el ranking">POS.</th>
+              <th data-k="nro" title="Número actual del piloto">N°</th>
+              <th data-k="varDiff" title="Variación hacia el número de la próxima temporada">VAR.</th>
+              <th data-k="nombre" class="th-left">PILOTO</th>
+              <th data-k="total">PTS.</th>
             </tr>
           </thead>
           <tbody><!-- filas dinámicas --></tbody>
@@ -44,6 +40,9 @@
         <div id="skeleton" class="skeleton" hidden>
           <div class="row"></div><div class="row"></div><div class="row"></div><div class="row"></div>
         </div>
+      </div>
+<div class="results-toolbar">
+        <input id="results-search" type="search" placeholder="Buscar piloto por nombre o número" aria-label="Buscar piloto" inputmode="search" autocomplete="off" />
       </div>
     </section>
   </main>

@@ -1,0 +1,35 @@
+/* Posiciones: identidad CMS y lectura móvil; conserva las cinco columnas. */
+.page-heading{margin-bottom:24px}
+.page-heading h1{font-size:30px;line-height:1.08;margin:12px 0;letter-spacing:-1.3px}
+.page-heading .eyebrow{color:#a2a5ae}
+#results{width:100%;background:none;padding:0;border:0}
+.meta-row{font-size:10px;line-height:1.7;color:#a2a5ae;margin-bottom:16px}
+#results .table-container{overflow-x:auto;padding:0}
+#tbl{width:100%;table-layout:fixed;border-collapse:collapse;background:none}
+#tbl thead th{padding:12px 3px;text-align:center;font-size:8px;font-weight:700;letter-spacing:.4px;color:#a2a5ae;border-bottom:1px solid #303238;white-space:nowrap;position:static;background:none}
+#tbl th[data-k="pos"]{width:30px}
+#tbl th[data-k="nro"]{width:34px}
+#tbl th[data-k="varDiff"]{width:56px}
+#tbl th[data-k="total"]{width:62px}
+#tbl th[data-k="nombre"]{width:auto;text-align:left}
+#tbl thead th:after{content:" ↕";font-size:9px;color:#626872}
+#tbl td{padding:17px 3px;line-height:1.5;border:0;border-bottom:1px solid #303238;font-size:11px;color:#f2f3f4;font-variant-numeric:tabular-nums}
+#tbl .c{text-align:center}
+#tbl .name{text-align:left;overflow-wrap:anywhere;font-weight:600;font-size:12px}
+#tbl .strong{font-weight:800}
+#tbl tbody tr{background:none}
+#tbl tbody tr:nth-child(even){background:#ffffff02}
+#tbl tbody td:first-child{font-weight:800;font-size:14px;color:#a2a5ae}
+#tbl .var-cell{font-size:9px;font-weight:700;white-space:nowrap}
+#tbl .var-cell.up{color:#4cbe85}
+#tbl .var-cell.down{color:#f25b61}
+#tbl .var-cell.same{color:#858b95}
+#tbl tbody tr.leader{background:#f5b21b09}
+#tbl tbody tr.leader .strong{font-size:14px;font-weight:900;color:#f5b21b}
+#tbl tbody tr.leader td:first-child{color:#f5b21b}
+#results .results-toolbar{margin:26px 0 0;padding-top:20px;border-top:1px solid #303238}
+#results-search{font-size:12px}
+#creditos{text-align:center;font-size:10px;padding:15px 0 20px}
+#creditos a{color:#a2a5ae}
+.skeleton .row{height:40px;margin:8px 0;background:#1b1d21;border-radius:6px}
+@media(max-width:350px){#tbl th[data-k="varDiff"]{width:47px}#tbl th[data-k="total"]{width:53px}#tbl .name{font-size:11px}#tbl td{font-size:10px}#tbl tbody tr.leader .strong{font-size:12px}}
