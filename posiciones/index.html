@@ -8,12 +8,11 @@
 
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="posiciones.v2.css" />
+<link rel="stylesheet" href="/navigation.css?v=1">
 </head>
-<body>
+<body class="sm-has-navigation">
 
-  <nav id="topbar-volver" style="position:sticky; top:0; z-index:999; background:#0b0f1a; padding:8px 12px; border-bottom:1px solid rgba(255,255,255,.15);">
-    <button class="button" onclick="window.location.href='../index.html'">⬅️ Volver</button>
-  </nav>
+
 
   <header>
     <h1>🏆 RANKING FINAL</h1>
@@ -54,5 +53,6 @@
   </div>
 
   <script src="posiciones.v2.js"></script>
+<nav class="sm-navigation sm-navigation-3" aria-label="Navegación principal"><a href="/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 9-7 9 7v10H3Z"/><path d="M9 20v-7h6v7"/></svg><span>Inicio</span></a><a href="/tiempos/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>Tiempos</span></a><a href="/posiciones/" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3h8v6a4 4 0 0 1-8 0Zm4 10v7m-4 1h8M8 5H4v2a4 4 0 0 0 4 4m8-6h4v2a4 4 0 0 1-4 4"/></svg><span>Campeonato</span></a></nav>
 </body>
 </html>

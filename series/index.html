@@ -23,8 +23,9 @@
     }
   </style>
   <link rel="stylesheet" href="../styles.css?v=contenders4">
+<link rel="stylesheet" href="/navigation.css?v=1">
 </head>
-<body>
+<body class="sm-has-navigation">
 
   <div id="progress"></div>
   <div id="offline-banner" hidden>Sin conexión. Mostrando datos recientes.</div>
@@ -69,10 +70,6 @@
     </section>
   </main>
 
-  <!-- Botón Volver abajo -->
-  <footer class="footer-actions">
-    <button class="button" type="button" onclick="location.href='../index.html'">⬅️ Volver</button>
-  </footer>
 
   <!-- Reutilizamos helpers del sitio -->
   <script defer src="../enhancements.js"></script>
@@ -83,6 +80,7 @@
     <a href="http://www.primate.com.ar" target="_blank" style="color:#999; text-decoration:none;">by PRIMATE ®</a>
   </div>
   <script defer src="./series.js?v=contenders4"></script>
+<nav class="sm-navigation sm-navigation-3" aria-label="Navegación principal"><a href="/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 9-7 9 7v10H3Z"/><path d="M9 20v-7h6v7"/></svg><span>Inicio</span></a><a href="/tiempos/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>Tiempos</span></a><a href="/posiciones/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3h8v6a4 4 0 0 1-8 0Zm4 10v7m-4 1h8M8 5H4v2a4 4 0 0 0 4 4m8-6h4v2a4 4 0 0 1-4 4"/></svg><span>Campeonato</span></a></nav>
 </body>
 </html>
 

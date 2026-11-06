@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>CMS APP – Selfies</title>
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
   <meta name="theme-color" content="#000000">
@@ -39,12 +39,11 @@
     footer{margin-top:22px;opacity:.8}
     input[type="file"]{display:none}
   </style>
+<link rel="stylesheet" href="/navigation.css?v=1">
 </head>
-<body>
+<body class="sm-has-navigation">
   <div class="wrap">
-   <div class="topbar">
-      <button class="back" onclick="location.href='index.html'">⬅️ Volver</button>
-    </div>
+
 
     <div class="card">
       <h1>📸 Enviá tu Selfie</h1>
@@ -66,7 +65,6 @@
     <input type="hidden" name="imageData" id="imageDataInput"/>
   </form>
   <iframe name="invisibleFrame" style="display:none"></iframe>
-  <!-- Botón Volver abajo -->
 
 <script>
   const fileInput = document.getElementById('fileInput');
@@ -106,5 +104,6 @@
     }, 2000);
   }
 </script>
+<nav class="sm-navigation sm-navigation-3" aria-label="Navegación principal"><a href="/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 9-7 9 7v10H3Z"/><path d="M9 20v-7h6v7"/></svg><span>Inicio</span></a><a href="/mensajes.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 4H3v13h5l4 4v-4h9Z"/><path d="M7 9h10M7 13h6"/></svg><span>Mensajes</span></a><a href="/info.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6m0-11v2"/></svg><span>Info</span></a></nav>
 </body>
 </html>

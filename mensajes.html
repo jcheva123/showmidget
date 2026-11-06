@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>SHOW MIDGET – Mensajes</title>
   <meta name="description" content="Envío de mensajes para mostrarse en pantalla durante el espectáculo."/>
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
@@ -47,11 +47,10 @@ footer.footer-actions { flex-shrink: 0; }
     .contador.alerta{color:#ff5c5c;font-weight:700}
     footer{margin-top:22px;text-align:center;opacity:.8}
   </style>
+<link rel="stylesheet" href="/navigation.css?v=1">
 </head>
-<body>
-   <div class="topbar">
-      <button class="back" onclick="location.href='index.html'">⬅️ Volver</button>
-    </div>
+<body class="sm-has-navigation">
+
   <div class="wrap">
 
     <div class="card">
@@ -131,5 +130,6 @@ footer.footer-actions { flex-shrink: 0; }
       });
   });
 </script>
+<nav class="sm-navigation sm-navigation-3" aria-label="Navegación principal"><a href="/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 9-7 9 7v10H3Z"/><path d="M9 20v-7h6v7"/></svg><span>Inicio</span></a><a href="/selfies.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h4l2-3h6l2 3h4v13H3Z"/><circle cx="12" cy="13" r="4"/></svg><span>Selfies</span></a><a href="/info.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6m0-11v2"/></svg><span>Info</span></a></nav>
 </body>
 </html>

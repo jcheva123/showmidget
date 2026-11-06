@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Club Midgistas del Sur – Info</title>
   <meta name="description" content="Redes oficiales y sponsors del Club Midgistas del Sur."/>
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
@@ -49,8 +49,9 @@
     .columns-2{column-count:2;column-gap:40px}
     @media (max-width:640px){ .columns-2{column-count:1} }
   </style>
+<link rel="stylesheet" href="/navigation.css?v=1">
 </head>
-<body>
+<body class="sm-has-navigation">
   <div class="wrap">
 
 
@@ -77,10 +78,7 @@
       </div>
     </div>
 
-  <!-- Botón Volver abajo -->
-  <footer class="footer-actions">
-    <button class="button" type="button" onclick="location.href='../index.html'">⬅️ Volver</button>
-  </footer>
   </div>
+<nav class="sm-navigation sm-navigation-1" aria-label="Navegación principal"><a href="/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 9-7 9 7v10H3Z"/><path d="M9 20v-7h6v7"/></svg><span>Inicio</span></a></nav>
 </body>
 </html>
