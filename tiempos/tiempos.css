@@ -1,0 +1,23 @@
+/* Ajustes exclusivos de la tabla de Tiempos. */
+#results table{table-layout:fixed}
+#results thead th:first-child{width:30px}
+#results thead th.penalty-heading{width:47px;text-align:center}
+#results thead th:last-child{width:100px;text-align:right}
+#results thead th{padding:10px 4px;font-size:8px;letter-spacing:.4px}
+#results td{vertical-align:top}
+#results .position-cell{padding:18px 4px}
+#results .result-pos{font-size:17px;display:block;width:auto}
+#results .result-detail summary{min-height:76px;padding:15px 5px;gap:0;align-items:flex-start}
+#results .result-pilot strong{font-size:12px;line-height:1.4}
+#results .result-pilot small{font-size:10px}
+#results .result-extra{display:block;padding:0 5px 15px;font-size:9px}
+#results .result-extra>div+div{margin-top:10px}
+#results .penalty-cell{padding:20px 1px;text-align:center}
+#results .result-penalty{font-size:11px;font-weight:600;color:var(--muted);white-space:nowrap}
+#results .result-penalty.has-penalty{color:#f5b21b;font-weight:800}
+#results .time-cell{padding:19px 4px;text-align:right}
+#results .result-time{font-size:13px;white-space:nowrap;font-weight:700;font-variant-numeric:tabular-nums}
+#results tr.race-winner .result-time{color:#f5b21b;font-size:17px;font-weight:900;letter-spacing:-.5px}
+#results tr.race-winner{background:#f5b21b09}
+#results .results-toolbar{margin:26px 0 0;padding-top:20px;border-top:1px solid var(--line)}
+@media(max-width:350px){#results thead th:last-child{width:91px}#results thead th.penalty-heading{width:41px}#results .result-time{font-size:12px}#results tr.race-winner .result-time{font-size:15px}#results .result-pilot strong{font-size:11px}}

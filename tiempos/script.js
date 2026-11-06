@@ -210,7 +210,9 @@ function setStatus(_) { /* no-op, oculto cualquier rastro */ }
     rows.forEach((r,i)=>{
       const tr=document.createElement('tr');
       if(i%2) tr.classList.add('row-alt');
-      tr.innerHTML = `<td colspan="3"><details class="result-detail"><summary><span class="result-pos">${esc(r.position)}</span><span class="result-pilot"><strong>${esc(r.name)}</strong><small>N° ${esc(r.number)}</small></span><span class="result-time">${esc(r.t_final || '—')}<small>VER DETALLE +</small></span></summary><div class="result-extra"><div>VUELTAS<strong>${esc(r.laps ?? '—')}</strong></div><div>RECARGO<strong>${esc(formatRecargo(r) || 'Sin recargo')}</strong></div><div class="wide">OBSERVACIONES<strong>${esc(r.penalty_note || 'Sin observaciones')}</strong></div></div></details></td>`;
+      const penalty = formatRecargo(r);
+      if(Number(r.position) === 1) tr.classList.add('race-winner');
+      tr.innerHTML = `<td class="position-cell"><span class="result-pos">${esc(r.position)}</span></td><td class="pilot-cell"><details class="result-detail"><summary><span class="result-pilot"><strong>${esc(r.name)}</strong><small>N° ${esc(r.number)} <span aria-hidden="true">⌄</span></small></span></summary><div class="result-extra"><div>VUELTAS<strong>${esc(r.laps ?? '—')}</strong></div><div class="wide">OBSERVACIONES<strong>${esc(r.penalty_note || 'Sin observaciones')}</strong></div></div></details></td><td class="penalty-cell"><span class="result-penalty${penalty ? ' has-penalty' : ''}" aria-label="${penalty ? 'Recargo: '+esc(penalty) : 'Sin recargo'}">${esc(penalty || '—')}</span></td><td class="time-cell"><strong class="result-time">${esc(r.t_final || '—')}</strong></td>`;
       tbody.appendChild(tr);
       const query=document.querySelector('#results-search')?.value.trim().toLowerCase();
       if(query) tr.hidden=!tr.textContent.toLowerCase().includes(query);
@@ -267,7 +269,7 @@ function setStatus(_) { /* no-op, oculto cualquier rastro */ }
       console.error('No se pudo cargar FECHAS', e);
       toast('No se pudieron cargar FECHAS.');
       sel.innerHTML='<option value="">No se pudieron cargar las fechas</option>';
-      document.querySelector('#results tbody').innerHTML='<tr><td colspan="3" class="error">No pudimos consultar los resultados. Tocá Actualizar para reintentar o abrí la vista con datos de ejemplo.</td></tr>';
+      document.querySelector('#results tbody').innerHTML='<tr><td colspan="4" class="error">No pudimos consultar los resultados. Tocá Actualizar para reintentar.</td></tr>';
     }
   }
 
@@ -291,7 +293,7 @@ function setStatus(_) { /* no-op, oculto cualquier rastro */ }
 
       if(!keys.length){
         const tbody=document.querySelector('#results tbody');
-        if(tbody) tbody.innerHTML='<tr><td colspan="3" class="empty">Sin carreras cargadas aún.</td></tr>';
+        if(tbody) tbody.innerHTML='<tr><td colspan="4" class="empty">Sin carreras cargadas aún.</td></tr>';
         setStatus(`Actualizado — ${f} (sin carreras)`);
         return;
       }
@@ -336,7 +338,7 @@ function setStatus(_) { /* no-op, oculto cualquier rastro */ }
       console.error('Error cargando resultados:', err);
       toast('No se pudo cargar resultados.');
       const tbody=document.querySelector('#results tbody');
-      if(tbody) tbody.innerHTML='<tr><td colspan="3" class="error">No se pudo cargar esta carrera.</td></tr>';
+      if(tbody) tbody.innerHTML='<tr><td colspan="4" class="error">No se pudo cargar esta carrera.</td></tr>';
       setStatus('Error al cargar');
     }
   }
