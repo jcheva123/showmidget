@@ -1,0 +1,30 @@
+/* Mensajes, Selfies e Info comparten la identidad de la app. */
+.participation-page .page-heading{padding-top:18px;margin-bottom:26px}
+.participation-page h1{font-size:30px;line-height:1.08;margin:12px 0;letter-spacing:-1.2px}
+.participation-page .card{background:#1b1d214d;border:1px solid #303238;border-radius:12px;padding:20px}
+.participation-page .hint{font-size:12px;line-height:1.7;color:#a2a5ae;margin:0 0 22px}
+.participation-page label{display:block;font-size:12px;font-weight:600;margin:18px 0 8px}
+.participation-page input,.participation-page textarea{box-sizing:border-box;width:100%;font-family:inherit;font-size:16px;background:#1b1d21;color:#f2f3f4;border:1px solid #393d46;border-radius:8px;padding:14px;outline-offset:3px}
+.participation-page input::placeholder,.participation-page textarea::placeholder{color:#9499a4}
+.participation-page textarea{min-height:150px;resize:vertical;line-height:1.5}
+.participation-page button{display:block;width:100%;min-height:50px;padding:14px 18px;border:1px solid #e2282f;border-radius:8px;background:#e2282f;color:white;font:800 13px/1.4 Montserrat,Arial,sans-serif;cursor:pointer}
+.participation-page button:disabled{opacity:.55;cursor:wait}
+.participation-page .contador{text-align:right;color:#a2a5ae;font-size:10px;margin:8px 0 22px}
+.participation-page .contador.alerta{color:#ff8287;font-weight:700}
+.participation-page .result,.participation-page #estado{margin-top:16px;font-size:12px;line-height:1.7;overflow-wrap:anywhere}
+.participation-page .result:empty,.participation-page #estado:empty{margin:0}
+.participation-page .result.ok,.participation-page #estado.mensaje-exito{color:#65cf98}
+.camera-mark{display:flex;align-items:center;justify-content:center;width:88px;height:88px;margin:8px auto 28px;background:#e2282f0b;border:1px solid #e2282f40;border-radius:24px;color:#f25b61}
+.camera-mark svg{width:42px;height:42px}
+.participation-page button.action{margin:12px 0}
+.participation-page button.action:first-of-type{background:#1b1d21;border-color:#444852}
+.participation-page input[type="file"]{display:none}
+#preview{display:none;width:100%;max-width:320px;height:auto;max-height:440px;object-fit:contain;margin:22px auto;border-radius:10px}
+.links-heading{font-size:16px;margin:0 0 18px;font-weight:800}
+.participation-page a.link{position:relative;display:flex;flex-direction:column;gap:5px;min-height:70px;padding:16px 30px 16px 15px;margin:10px 0;border:1px solid #303238;border-radius:8px;background:#1b1d21;color:#f2f3f4;font-size:14px;font-weight:800;overflow-wrap:anywhere}
+.participation-page a.link:after{content:"↗";position:absolute;right:14px;top:20px;font-size:18px;color:#f25b61}
+.participation-page a.link span{font-size:11px;font-weight:500;color:#a2a5ae}
+.participation-page h2:not(.links-heading){font-size:12px;color:#a2a5ae;margin:26px 0 12px}
+.hashtags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{font-size:9px;color:#a2a5ae;border:1px solid #303238;border-radius:20px;padding:6px 9px}
+@media(max-width:350px){.participation-page h1{font-size:26px}.participation-page .card{padding:16px}}
