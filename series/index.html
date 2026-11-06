@@ -4,25 +4,11 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
   <title>Series – Orden de partida</title>
-  <meta name="theme-color" content="#0b0f1a"/>
+  <meta name="theme-color" content="#0D0E10"/>
   <!-- Reutiliza la misma estética de tiempos -->
-<style>
-    /* Línea separadora dentro de la tabla para "Primera/Segunda fila" */
-    .row-label td{
-      background: rgba(255,255,255,.08);
-      color: #fff;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: .5px;
-      border-top: 1px solid rgba(255,255,255,.18);
-      border-bottom: 1px solid rgba(255,255,255,.18);
-    }
-    /* Footer simple para el botón Volver */
-    .footer-actions{
-      display:flex; justify-content:center; padding:16px 12px; gap:12px;
-    }
-  </style>
-  <link rel="stylesheet" href="../styles.css?v=contenders4">
+
+  <link rel="stylesheet" href="/racing.css">
+<link rel="stylesheet" href="/series/appearance.css?v=1">
 <link rel="stylesheet" href="/navigation.css?v=1">
 </head>
 <body class="sm-has-navigation">
@@ -30,19 +16,17 @@
   <div id="progress"></div>
   <div id="offline-banner" hidden>Sin conexión. Mostrando datos recientes.</div>
 
-  <header>
-    <h1>📋 Series – Orden de partida</h1>
-  </header>
+  <header class="brandbar"><a class="wordmark" href="/" aria-label="Show Midget inicio">SHOW<span>MIDGET<span class="brand-dot">.</span></span></a><img src="/logocmslow.png" width="88" height="51" alt="Club Midgistas del Sur"></header>
 
-  <main>
+  <main class="app-shell"><section class="page-heading"><h1>SERIES<br><em>ORDEN DE PARTIDA.</em></h1></section><div class="race-tabs"><a class="current" aria-current="page" href="/series/">Series</a><a href="/tiempos/">Tiempos</a></div>
     <section id="race-list" class="card">
-      <h2>CARRERAS DISPONIBLES</h2>
+      <h2>Elegí una serie</h2>
       <ul><!-- botones Serie N se generan aquí --></ul>
     </section>
 
     <section id="results" class="card" aria-live="polite">
       <div class="results-toolbar">
-        <h2>RESULTADOS</h2>
+        <h2>Orden de partida</h2>
         <input id="results-search" type="search" placeholder="Buscar por N° o nombre…" inputmode="search" autocomplete="off"/>
       </div>
 
@@ -57,7 +41,7 @@
             <tr>
               <th>POS.</th>
               <th>N°</th>
-              <th>NOMBRE</th>
+              <th>PILOTO</th>
             </tr>
           </thead>
           <tbody><!-- dinámico --></tbody>
