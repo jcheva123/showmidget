@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#0D0E10">
+  <title>Video a pantalla · Show Midget</title>
+  <link rel="icon" href="/favicon.svg?v=2" type="image/svg+xml">
+  <link rel="stylesheet" href="/racing.css">
+  <link rel="stylesheet" href="/participacion.css?v=1">
+  <link rel="stylesheet" href="/navigation.css?v=1">
+  <link rel="stylesheet" href="/video.css">
+  <script src="/video.js" defer></script>
+</head>
+<body class="sm-has-navigation participation-page video-page">
+  <header class="brandbar">
+    <a class="wordmark" href="/" aria-label="Show Midget inicio">SHOW<span>MIDGET<span class="brand-dot">.</span></span></a>
+    <img src="/logocmslow.png" width="88" height="51" alt="Club Midgistas del Sur">
+  </header>
+  <main class="app-shell">
+    <section class="page-heading"><h1>VIDEO<br><em>A PANTALLA.</em></h1></section>
+    <section class="card" aria-label="Grabación de video">
+      <p class="hint">Hasta 10 segundos · Con sonido</p>
+      <div class="video-stage" id="video-stage" hidden>
+        <video id="video-camera" aria-label="Vista de la cámara" autoplay muted playsinline hidden></video>
+        <video id="video-preview" aria-label="Vista previa del video" controls playsinline hidden></video>
+        <output id="video-clock" aria-label="Segundos transcurridos" hidden></output>
+      </div>
+      <button type="button" id="video-open" hidden>Abrir cámara</button>
+      <button type="button" id="video-record" hidden>Grabar</button>
+      <button type="button" id="video-stop" hidden>Terminar grabación</button>
+      <div class="video-actions" id="video-actions" hidden>
+        <button type="button" class="secondary" id="video-repeat">Repetir</button>
+        <button type="button" id="video-send">Enviar video</button>
+      </div>
+      <p class="hint video-consent" id="video-consent" hidden>Al enviarlo, autorizás que se muestre en las pantallas de la pista y que se reproduzca su sonido.</p>
+      <div class="result" id="video-status" role="status">Comprobando si los envíos están abiertos…</div>
+      <noscript>Activá JavaScript para usar la cámara.</noscript>
+    </section>
+    <footer class="club-footer"><p><strong>Club Midgistas del Sur</strong></p><a href="/info.html">Redes y contacto ↗</a></footer>
+  </main>
+  <nav class="sm-navigation sm-navigation-3" aria-label="Navegación principal">
+    <a href="/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="m3 10 9-7 9 7v10H3Z"/><path d="M9 20v-7h6v7"/></svg><span>Inicio</span></a>
+    <a href="/selfies.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M3 7h4l2-3h6l2 3h4v13H3Z"/><circle cx="12" cy="13" r="4"/></svg><span>Selfies</span></a>
+    <a href="/info.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6m0-11v2"/></svg><span>Info</span></a>
+  </nav>
+</body>
+</html>

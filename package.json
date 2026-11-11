@@ -1,0 +1,11 @@
+{
+  "name": "showmidget",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "mediabunny": "1.65.2"
+  },
+  "scripts": {
+    "build": "node scripts/build-pages.js"
+  }
+}
