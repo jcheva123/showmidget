@@ -57,7 +57,10 @@ async function inspectClip(bytes) {
   try {
     const format = await media.getFormat();
     const tracks = await media.getTracks();
-    if (tracks.length !== 1 || !tracks[0].isVideoTrack()) return null;
+    const videoTracks = tracks.filter((track) => track.isVideoTrack());
+    const audioTracks = tracks.filter((track) => track.isAudioTrack());
+    if (videoTracks.length !== 1 || audioTracks.length > 1
+      || tracks.length !== videoTracks.length + audioTracks.length) return null;
 
     const start = await media.getFirstTimestamp(tracks);
     const end = await media.computeDuration(tracks);
@@ -98,7 +101,7 @@ export async function onRequestPost({ request, env }) {
     if (!bytes) return reply({ error: "El video supera los 5 MB." }, 413);
 
     const format = await inspectClip(bytes);
-    if (!format) return reply({ error: "Grabá un video de hasta 10 segundos y sin audio." }, 422);
+    if (!format) return reply({ error: "Grabá un video de hasta 10 segundos." }, 422);
 
     const response = await fetch(env.VIDEO_SCRIPT_URL, {
       method: "POST",
