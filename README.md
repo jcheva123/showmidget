@@ -16,7 +16,7 @@ Descomprimir el ZIP y subir el CONTENIDO de la carpeta `showmidget-github` a la 
 
 Si se actualiza el repositorio existente, trabajar en una rama y revisar los cambios antes de integrarlos. Conservar la forma habitual de actualizar los archivos de carreras.
 
-Este paquete no requiere npm, compilación ni servidor propio. No incluye metadatos del entorno privado de vista previa.
+La web se aloja en Cloudflare Pages. La función de Video a pantalla requiere las dependencias de npm y la configuración de compilación que figura al final de este documento.
 
 ## 2. Actualizar el proyecto Cloudflare Pages existente
 
@@ -27,14 +27,14 @@ Este paquete no requiere npm, compilación ni servidor propio. No incluye metada
 
 Usar el proyecto Pages **showmidgetqr** de la cuenta actual. No crear un proyecto nuevo. Revisar en su configuración que la conexión Git apunte a `jcheva123/showmidget`, rama de producción `main`.
 
-Subir a la raíz del repositorio el contenido de este paquete. Mantener la configuración de compilación que ya funciona. Si hace falta configurarla para estos archivos estáticos:
+Subir los archivos a la raíz del repositorio. Para incluir Video a pantalla, usar estos ajustes:
 
 | Campo | Valor |
 | --- | --- |
 | Rama de producción | `main` |
 | Framework preset | `None` |
-| Build command | `exit 0` |
-| Build output directory | `.` |
+| Build command | `npm run build` |
+| Build output directory | `dist` |
 | Root directory | Dejar vacío: raíz del repositorio |
 
 Verificar el despliegue en `https://showmidgetqr.pages.dev/` antes de vincular el dominio.
@@ -103,7 +103,7 @@ Desde la carpeta del proyecto:
 python3 -m http.server 8000
 ```
 
-Abrir `http://localhost:8000/`. Usar servidor local; las rutas empiezan en la raíz del sitio, por lo que abrir `index.html` con doble clic no reproduce el alojamiento web.
+Abrir `http://localhost:8000/` para probar las páginas estáticas. Para probar también `/api/video`, instalar las dependencias con `npm ci`, generar los archivos con `npm run build` y usar `npx wrangler pages dev dist` con las variables del piloto en un archivo local `.dev.vars`. Usar servidor local; las rutas empiezan en la raíz del sitio, por lo que abrir `index.html` con doble clic no reproduce el alojamiento web.
 
 ## Tipografía
 
@@ -113,3 +113,56 @@ Montserrat se sirve localmente desde `fonts/`. Su licencia se incluye en `fonts/
 
 - https://developers.cloudflare.com/pages/framework-guides/deploy-anything/
 - https://developers.cloudflare.com/pages/configuration/custom-domains/
+
+## Piloto de Video a pantalla
+
+La página `/video.html` graba desde la cámara frontal, sin audio, y admite hasta
+10 segundos, 5 MB por clip y 100 envíos por fecha. El operador revisa los clips
+en una carpeta privada y descarga los elegidos para Resolume.
+
+### Google Drive y Apps Script
+
+1. En Drive, crear una carpeta privada para la primera fecha. Copiar su ID
+   desde el enlace de la carpeta (la parte que sigue a `/folders/`).
+2. Crear un proyecto nuevo en [Apps Script](https://script.google.com/). Pegar
+   [Code.gs](apps-script/video/Code.gs) y guardar.
+3. En **Configuración del proyecto → Propiedades de secuencia de comandos**,
+   agregar `VIDEO_FOLDER_ID` con ese ID y `VIDEO_UPLOAD_KEY` con una clave
+   aleatoria de al menos 32 caracteres. Por ejemplo, se puede generar con
+   `openssl rand -hex 32`. La clave se guarda solo en Apps Script y Cloudflare.
+4. Elegir **Implementar → Nueva implementación → Aplicación web**. En
+   **Ejecutar como**, seleccionar la cuenta propietaria de la carpeta. En
+   **Quién tiene acceso**, elegir **Cualquier persona**, incluida la opción
+   anónima si el menú la distingue. Autorizar el acceso a Drive y copiar
+   la URL de la implementación, que termina en `/exec`.
+
+La aplicación web acepta escrituras únicamente con la clave de Cloudflare.
+Compartir la carpeta por Drive solo con las cuentas de los operadores.
+
+### Cloudflare Pages
+
+1. En el proyecto **showmidgetqr**, configurar **Build command** como
+   `npm run build` y **Build output directory** como `dist`. Mantener la raíz
+   del repositorio como directorio de origen. Pages instala las dependencias y
+   compila la función ubicada en `functions/api/video.js`.
+2. En **Settings → Variables and Secrets**, agregar estas variables en el
+   entorno que se va a probar (Preview o Production).
+
+   | Nombre | Valor |
+   | --- | --- |
+   | `VIDEO_SCRIPT_URL` | URL `/exec` del nuevo Apps Script. Guardar como secreto. |
+   | `VIDEO_UPLOAD_KEY` | Misma clave que en Apps Script. Guardar como secreto. |
+   | `VIDEO_ABRE` | Inicio de los envíos en ISO 8601 con hora argentina, por ejemplo `2026-11-13T19:00:00-03:00`. |
+   | `VIDEO_CIERRA` | Fin de los envíos, por ejemplo `2026-11-13T23:59:00-03:00`. |
+
+3. Desplegar con las variables ya configuradas. Durante el horario definido,
+   abrir `/video.html` desde un iPhone y un Android, grabar y enviar un clip.
+   Comprobar que Drive reciba ambos, descargarlos y probarlos en Resolume. Si
+   Resolume no abre un WebM, convertirlo a MP4 H.264 antes de cargarlo.
+4. Cuando el recorrido esté probado, cambiar `mostrarVideo` a `true` en
+   `evento.js` para mostrar el botón VIDEO en la botonera.
+
+Para cada fecha, crear una carpeta privada nueva, actualizar `VIDEO_FOLDER_ID`
+en Apps Script y ajustar la ventana horaria en Cloudflare. Mantener los
+originales con su nombre en esa carpeta durante el evento para conservar el
+cupo y detectar reintentos. Los videos se pueden mover o borrar al terminar.
