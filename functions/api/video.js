@@ -17,17 +17,7 @@ function isOpen(env) {
     && now >= start && now < end;
 }
 
-export function onRequestGet({ env, request }) {
-  if (new URL(request.url).searchParams.get("diagnostico") === "1") {
-    return reply({
-      horariosPresentes: Boolean(env.VIDEO_ABRE && env.VIDEO_CIERRA),
-      horarioAbierto: Date.now() >= Date.parse(env.VIDEO_ABRE) && Date.now() < Date.parse(env.VIDEO_CIERRA),
-      urlPresente: Boolean(env.VIDEO_SCRIPT_URL),
-      urlValida: SCRIPT_URL.test(env.VIDEO_SCRIPT_URL),
-      clavePresente: Boolean(env.VIDEO_UPLOAD_KEY),
-      claveValida: env.VIDEO_UPLOAD_KEY?.length >= 32,
-    });
-  }
+export function onRequestGet({ env }) {
   return reply({ open: Boolean(isOpen(env)) });
 }
 
