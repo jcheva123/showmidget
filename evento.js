@@ -2,5 +2,5 @@
 window.SHOW_MIDGET_EVENT = {
   fecha: "FECHA 18",
   sponsor: "DARSUR",
-  mostrarVideo: false
+  mostrarVideo: true
 };
