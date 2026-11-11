@@ -53,3 +53,29 @@
 .tone-prediction{--button-accent:234,183,67}
 .tone-social{--button-accent:235,147,96}
 .tone-neutral{--button-accent:180,186,198}
+
+.menu-button.tone-video {
+  --button-accent: 245, 178, 27;
+  position: relative;
+  gap: 6px;
+  padding: 22px 10px 10px;
+}
+
+.tone-video strong {
+  font-size: clamp(14px, 3.8vw, 19px);
+}
+
+.tone-video strong span { display: block; }
+
+.menu-new {
+  position: absolute;
+  inset: 7px 7px auto auto;
+  padding: 2px 5px;
+  border-radius: 4px;
+  background: #f5b21b;
+  color: #1b1d21;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
