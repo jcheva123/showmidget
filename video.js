@@ -2,7 +2,12 @@
   const MAX_BYTES = 5_000_000;
   // Deja un margen de unos cuadros para que el contenedor no supere diez segundos.
   const RECORD_MS = 9_800;
-  const FORMATS = ["video/mp4;codecs=avc1.42001f", "video/mp4", "video/webm;codecs=vp8", "video/webm"];
+  const FORMATS = [
+    "video/mp4;codecs=avc1.42001f,mp4a.40.2",
+    "video/webm;codecs=vp8,opus",
+    "video/mp4",
+    "video/webm",
+  ];
   const get = (name) => document.getElementById("video-" + name);
   const stage = get("stage");
   const camera = get("camera");
@@ -54,11 +59,11 @@
     open.disabled = true;
     repeat.disabled = true;
     send.disabled = true;
-    report("Abriendo la cámara…");
+    report("Abriendo la cámara y el micrófono…");
     try {
       const opened = await navigator.mediaDevices.getUserMedia({
         video: { facingMode: { ideal: "user" }, width: { ideal: 640 }, height: { ideal: 480 }, frameRate: { ideal: 24 } },
-        audio: false,
+        audio: true,
       });
       if (document.hidden) {
         opened.getTracks().forEach((track) => track.stop());
@@ -79,7 +84,7 @@
     } catch {
       releaseCamera();
       stage.hidden = !clip;
-      report("No pudimos abrir la cámara. Revisá el permiso del navegador e intentá de nuevo.");
+      report("No pudimos abrir la cámara y el micrófono. Revisá los permisos del navegador e intentá de nuevo.");
     } finally {
       open.disabled = false;
       repeat.disabled = false;
@@ -108,7 +113,11 @@
     try {
       const mimeType = FORMATS.find((format) => MediaRecorder.isTypeSupported(format));
       if (!mimeType) throw new Error("Formato no disponible");
-      recorder = new MediaRecorder(stream, { mimeType, videoBitsPerSecond: 1_200_000 });
+      recorder = new MediaRecorder(stream, {
+        mimeType,
+        videoBitsPerSecond: 1_200_000,
+        audioBitsPerSecond: 96_000,
+      });
       recorder.ondataavailable = ({ data }) => {
         if (data.size) chunks.push(data);
       };
