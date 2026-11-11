@@ -116,9 +116,10 @@ Montserrat se sirve localmente desde `fonts/`. Su licencia se incluye en `fonts/
 
 ## Piloto de Video a pantalla
 
-La página `/video.html` graba desde la cámara frontal, sin audio, y admite hasta
+La página `/video.html` graba desde la cámara frontal con sonido y admite hasta
 10 segundos, 5 MB por clip y 100 envíos por fecha. El operador revisa los clips
-en una carpeta privada y descarga los elegidos para Resolume.
+en una carpeta privada y descarga los elegidos para Resolume, donde puede ajustar
+el volumen de cada clip.
 
 ### Google Drive y Apps Script
 
@@ -158,7 +159,7 @@ Compartir la carpeta por Drive solo con las cuentas de los operadores.
 3. Desplegar con las variables ya configuradas. Durante el horario definido,
    abrir `/video.html` desde un iPhone y un Android, grabar y enviar un clip.
    Comprobar que Drive reciba ambos, descargarlos y probarlos en Resolume. Si
-   Resolume no abre un WebM, convertirlo a MP4 H.264 antes de cargarlo.
+   Resolume no abre un WebM, convertirlo a MP4 con video H.264 y audio AAC.
 4. Cuando el recorrido esté probado, cambiar `mostrarVideo` a `true` en
    `evento.js` para mostrar el botón VIDEO en la botonera.
 
