@@ -33,7 +33,7 @@ Subir los archivos a la raíz del repositorio. Para incluir Video a pantalla, us
 | --- | --- |
 | Rama de producción | `main` |
 | Framework preset | `None` |
-| Build command | `npm run build` |
+| Build command | `if [ -f scripts/build-pages.js ]; then npm ci && npm run build; else mkdir -p dist && git archive HEAD \| tar -x -C dist; fi` |
 | Build output directory | `dist` |
 | Root directory | Dejar vacío: raíz del repositorio |
 
@@ -142,9 +142,9 @@ Compartir la carpeta por Drive solo con las cuentas de los operadores.
 ### Cloudflare Pages
 
 1. En el proyecto **showmidgetqr**, configurar **Build command** como
-   `npm run build` y **Build output directory** como `dist`. Mantener la raíz
-   del repositorio como directorio de origen. Pages instala las dependencias y
-   compila la función ubicada en `functions/api/video.js`.
+   el comando de la sección 2 y **Build output directory** como `dist`. El
+   comando también genera la web estática cuando la rama no incluye el piloto.
+   Mantener la raíz del repositorio como directorio de origen.
 2. En **Settings → Variables and Secrets**, agregar estas variables en el
    entorno que se va a probar (Preview o Production).
 
