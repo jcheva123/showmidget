@@ -117,7 +117,7 @@ Montserrat se sirve localmente desde `fonts/`. Su licencia se incluye en `fonts/
 ## Piloto de Video a pantalla
 
 La página `/video.html` graba desde la cámara frontal con sonido y admite hasta
-10 segundos, 5 MB por clip y 100 envíos por fecha. El operador revisa los clips
+10 segundos, 5 MB por clip y 500 videos en la carpeta activa. El operador revisa los clips
 en una carpeta privada y descarga los elegidos para Resolume, donde puede ajustar
 el volumen de cada clip.
 
