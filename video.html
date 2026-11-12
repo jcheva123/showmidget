@@ -9,8 +9,8 @@
   <link rel="stylesheet" href="/racing.css">
   <link rel="stylesheet" href="/participacion.css?v=1">
   <link rel="stylesheet" href="/navigation.css?v=1">
-  <link rel="stylesheet" href="/video.css">
-  <script src="/video.js?v=hd-1" defer></script>
+  <link rel="stylesheet" href="/video.css?v=progress-1">
+  <script src="/video.js?v=progress-1" defer></script>
 </head>
 <body class="sm-has-navigation participation-page video-page">
   <header class="brandbar">
@@ -24,7 +24,7 @@
       <div class="video-stage" id="video-stage" hidden>
         <video id="video-camera" aria-label="Vista de la cámara" autoplay muted playsinline hidden></video>
         <video id="video-preview" aria-label="Vista previa del video" controls playsinline hidden></video>
-        <output id="video-clock" aria-label="Segundos transcurridos" hidden></output>
+        <progress id="video-progress" aria-label="Tiempo de grabación utilizado" max="1" value="0" hidden></progress>
       </div>
       <button type="button" id="video-open" hidden>Abrir cámara</button>
       <button type="button" id="video-record" hidden>Grabar</button>

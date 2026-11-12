@@ -12,7 +12,7 @@
   const stage = get("stage");
   const camera = get("camera");
   const preview = get("preview");
-  const clock = get("clock");
+  const progress = get("progress");
   const open = get("open");
   const record = get("record");
   const stop = get("stop");
@@ -28,7 +28,7 @@
   let previewUrl;
   let uploadId;
   let stopTimer;
-  let clockTimer;
+  let progressTimer;
 
   function report(message, success = false) {
     status.textContent = message;
@@ -99,7 +99,7 @@
 
   function finishRecording() {
     clearTimeout(stopTimer);
-    clearInterval(clockTimer);
+    clearInterval(progressTimer);
     if (recorder?.state === "recording") recorder.stop();
     stop.disabled = true;
   }
@@ -132,10 +132,10 @@
       };
       recorder.onstop = () => {
         clearTimeout(stopTimer);
-        clearInterval(clockTimer);
+        clearInterval(progressTimer);
         releaseCamera();
         stop.hidden = true;
-        clock.hidden = true;
+        progress.hidden = true;
         const result = new Blob(chunks, { type: recorder.mimeType || mimeType });
         if (failed || !result.size || result.size > MAX_BYTES) {
           stage.hidden = true;
@@ -156,15 +156,16 @@
       };
       recorder.start();
       const started = performance.now();
-      clock.textContent = "0 / 10 s";
-      clock.hidden = false;
+      progress.max = RECORD_MS;
+      progress.value = 0;
+      progress.hidden = false;
       record.hidden = true;
       stop.hidden = false;
       stop.disabled = false;
       stop.focus();
-      clockTimer = setInterval(() => {
-        clock.textContent = Math.min(10, Math.floor((performance.now() - started) / 1000)) + " / 10 s";
-      }, 250);
+      progressTimer = setInterval(() => {
+        progress.value = Math.min(RECORD_MS, performance.now() - started);
+      }, 50);
       stopTimer = setTimeout(finishRecording, RECORD_MS);
     } catch {
       releaseCamera();
