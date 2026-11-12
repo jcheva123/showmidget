@@ -1,5 +1,5 @@
 const MAX_VIDEO_BYTES = 5000000;
-const MAX_VIDEOS_PER_EVENT = 100;
+const MAX_VIDEOS_PER_EVENT = 500;
 const VIDEO_NAME = /^showmidget-[0-9a-f-]{36}\.(mp4|webm)$/;
 const UPLOAD_ID = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
 
