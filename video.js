@@ -62,7 +62,12 @@
     report("Abriendo la cámara y el micrófono…");
     try {
       const opened = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: { ideal: "user" }, width: { ideal: 640 }, height: { ideal: 480 }, frameRate: { ideal: 24 } },
+        video: {
+          facingMode: { ideal: "user" },
+          width: { ideal: 1280 },
+          height: { ideal: 720 },
+          frameRate: { ideal: 30 },
+        },
         audio: true,
       });
       if (document.hidden) {
@@ -115,7 +120,7 @@
       if (!mimeType) throw new Error("Formato no disponible");
       recorder = new MediaRecorder(stream, {
         mimeType,
-        videoBitsPerSecond: 1_200_000,
+        videoBitsPerSecond: 3_000_000,
         audioBitsPerSecond: 96_000,
       });
       recorder.ondataavailable = ({ data }) => {
