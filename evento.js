@@ -1,6 +1,6 @@
-// Encabezado de la fecha. Conserva los valores del sitio previo al restyling.
+// Fecha y sponsor de la portada.
 window.SHOW_MIDGET_EVENT = {
-  fecha: "FECHA 18",
-  sponsor: "DARSUR",
+  fecha: "FECHA 1",
+  sponsor: "ESTIVAL",
   mostrarVideo: true
 };
