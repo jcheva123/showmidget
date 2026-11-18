@@ -1,0 +1,334 @@
+[
+  {
+    "nro": 1,
+    "nombre": "Franchi Luciano"
+  },
+  {
+    "nro": 2,
+    "nombre": "Vallejos Luciano"
+  },
+  {
+    "nro": 3,
+    "nombre": "Altamirano Roy"
+  },
+  {
+    "nro": 4,
+    "nombre": "Oyola Matias"
+  },
+  {
+    "nro": 5,
+    "nombre": "Saldamando Fernando"
+  },
+  {
+    "nro": 6,
+    "nombre": "Mancini Esteban"
+  },
+  {
+    "nro": 7,
+    "nombre": "Resola Jonatan"
+  },
+  {
+    "nro": 10,
+    "nombre": "Puccinelli Carlos"
+  },
+  {
+    "nro": 11,
+    "nombre": "Colaneri Agustin"
+  },
+  {
+    "nro": 12,
+    "nombre": "Burgos Sebastian"
+  },
+  {
+    "nro": 13,
+    "nombre": "Bonivardo Fernando"
+  },
+  {
+    "nro": 14,
+    "nombre": "Schiebelbein Gabriel"
+  },
+  {
+    "nro": 15,
+    "nombre": "Altamirano Kevin"
+  },
+  {
+    "nro": 16,
+    "nombre": "Rodriguez Juan Cruz"
+  },
+  {
+    "nro": 18,
+    "nombre": "Roth Ezequiel"
+  },
+  {
+    "nro": 19,
+    "nombre": "Paglialunga Eros"
+  },
+  {
+    "nro": 20,
+    "nombre": "Todino Juan"
+  },
+  {
+    "nro": 21,
+    "nombre": "Perez Meler Agustin"
+  },
+  {
+    "nro": 22,
+    "nombre": "Dupont Braian"
+  },
+  {
+    "nro": 23,
+    "nombre": "Rey Javier"
+  },
+  {
+    "nro": 24,
+    "nombre": "Grill Lucas"
+  },
+  {
+    "nro": 25,
+    "nombre": "Andrade Joaquin"
+  },
+  {
+    "nro": 29,
+    "nombre": "Cutini Gustavo"
+  },
+  {
+    "nro": 32,
+    "nombre": "Garcia Lopez Joaquin"
+  },
+  {
+    "nro": 33,
+    "nombre": "Zabalegui Martin"
+  },
+  {
+    "nro": 34,
+    "nombre": "Torres Luciano"
+  },
+  {
+    "nro": 35,
+    "nombre": "Brezina Gonzalo"
+  },
+  {
+    "nro": 37,
+    "nombre": "Madril Braian"
+  },
+  {
+    "nro": 38,
+    "nombre": "Macazaga Nicolas"
+  },
+  {
+    "nro": 39,
+    "nombre": "Ausili Agustin"
+  },
+  {
+    "nro": 40,
+    "nombre": "Dailoff Nehuen"
+  },
+  {
+    "nro": 43,
+    "nombre": "Fritz Jorge"
+  },
+  {
+    "nro": 44,
+    "nombre": "Petracci Gaston"
+  },
+  {
+    "nro": 45,
+    "nombre": "Bray Juan Pablo"
+  },
+  {
+    "nro": 46,
+    "nombre": "Zubeldia Rodrigo"
+  },
+  {
+    "nro": 47,
+    "nombre": "Ausili Marcelo"
+  },
+  {
+    "nro": 48,
+    "nombre": "Dailoff Ramiro"
+  },
+  {
+    "nro": 49,
+    "nombre": "Coltouri Fabian"
+  },
+  {
+    "nro": 53,
+    "nombre": "Montanari Nicolas"
+  },
+  {
+    "nro": 54,
+    "nombre": "Moyano Antonio"
+  },
+  {
+    "nro": 55,
+    "nombre": "Ovejero Facundo"
+  },
+  {
+    "nro": 57,
+    "nombre": "Lopez Brian"
+  },
+  {
+    "nro": 59,
+    "nombre": "Toledo Joaquin"
+  },
+  {
+    "nro": 60,
+    "nombre": "Razquin Gonzalo"
+  },
+  {
+    "nro": 66,
+    "nombre": "Hock Gaston"
+  },
+  {
+    "nro": 68,
+    "nombre": "Marco Gabriel"
+  },
+  {
+    "nro": 69,
+    "nombre": "Perugini Flavio"
+  },
+  {
+    "nro": 72,
+    "nombre": "Becchio Martin"
+  },
+  {
+    "nro": 73,
+    "nombre": "Jaca Cortejarena Aaron"
+  },
+  {
+    "nro": 75,
+    "nombre": "Ford Lautaro"
+  },
+  {
+    "nro": 77,
+    "nombre": "Rouaix Javier"
+  },
+  {
+    "nro": 80,
+    "nombre": "Pallotti Ivan"
+  },
+  {
+    "nro": 82,
+    "nombre": "Chiesa Alejandro"
+  },
+  {
+    "nro": 87,
+    "nombre": "Calvo Juan Ignacio"
+  },
+  {
+    "nro": 88,
+    "nombre": "Palma Nicolas"
+  },
+  {
+    "nro": 91,
+    "nombre": "Calvo Jose Maria"
+  },
+  {
+    "nro": 95,
+    "nombre": "Renero Alan"
+  },
+  {
+    "nro": 97,
+    "nombre": "Aman Santiago"
+  },
+  {
+    "nro": 98,
+    "nombre": "Perez Fabio"
+  },
+  {
+    "nro": 99,
+    "nombre": "Schiel Juan Pablo"
+  },
+  {
+    "nro": 100,
+    "nombre": "Capdevila Emiliano"
+  },
+  {
+    "nro": 101,
+    "nombre": "Perugini Rodrigo"
+  },
+  {
+    "nro": 103,
+    "nombre": "Lastra Meler Matias"
+  },
+  {
+    "nro": 106,
+    "nombre": "Brezina Federico"
+  },
+  {
+    "nro": 107,
+    "nombre": "Burdiles Daniel"
+  },
+  {
+    "nro": 111,
+    "nombre": "Micheletto Larregui Tobias"
+  },
+  {
+    "nro": 113,
+    "nombre": "Donadio Manuel"
+  },
+  {
+    "nro": 114,
+    "nombre": "Baeza Leandro"
+  },
+  {
+    "nro": 115,
+    "nombre": "Bozetti Ivano"
+  },
+  {
+    "nro": 118,
+    "nombre": "Caputo Fernando"
+  },
+  {
+    "nro": 121,
+    "nombre": "Garaban Axel"
+  },
+  {
+    "nro": 122,
+    "nombre": "Marcos Alihuen"
+  },
+  {
+    "nro": 124,
+    "nombre": "Giordano Valentin"
+  },
+  {
+    "nro": 129,
+    "nombre": "Jacob Kevin"
+  },
+  {
+    "nro": 131,
+    "nombre": "Napoli Cristian"
+  },
+  {
+    "nro": 132,
+    "nombre": "Tartuferi Valentin"
+  },
+  {
+    "nro": 133,
+    "nombre": "Andrada Juan Manuel"
+  },
+  {
+    "nro": 135,
+    "nombre": "Semeraro Nahuel"
+  },
+  {
+    "nro": 137,
+    "nombre": "Dailoff Numa"
+  },
+  {
+    "nro": 139,
+    "nombre": "Fabbi Albano"
+  },
+  {
+    "nro": 141,
+    "nombre": "Blanc Lucas"
+  },
+  {
+    "nro": 149,
+    "nombre": "Calahorra Roberto"
+  },
+  {
+    "nro": 158,
+    "nombre": "Gonzalez Gustavo"
+  }
+]

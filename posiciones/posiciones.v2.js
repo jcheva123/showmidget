@@ -1,4 +1,5 @@
 // posiciones.v2.js — dark, líder destacado, zebra rows; Pos, N°, Var., Nombre, Total
+const inscriptosSource = document.getElementById('tbl').dataset.inscriptos;
 const STATE = { rows: [], sortKey: 'pos', sortDir: 'asc', leader: null };
 
 function fmt(n){ if(n==null) return ''; return Number.isInteger(n)? String(n) : Number(n).toFixed(2); }
@@ -44,11 +45,25 @@ function renderMeta(meta){
   el.textContent = parts.join(' • ');
 }
 
+function renderInscriptosRow(tr, piloto){
+  const number = tr.insertCell();
+  number.className = 'c';
+  number.textContent = piloto.nro;
+  const name = tr.insertCell();
+  name.className = 'name';
+  name.textContent = piloto.nombre;
+}
+
 function renderTable(rows){
   const tb = document.querySelector('#tbl tbody');
   tb.innerHTML = '';
   for(const r of rows){
     const tr = document.createElement('tr');
+    if (inscriptosSource) {
+      renderInscriptosRow(tr, r);
+      tb.appendChild(tr);
+      continue;
+    }
     const isLeader = STATE.leader && r.nro === STATE.leader.nro && r.nombre === STATE.leader.nombre;
     if(isLeader) tr.classList.add('leader');
     tr.innerHTML = `
@@ -91,11 +106,18 @@ function applyFilter(){
 }
 
 async function loadJSON(){
-  const url = new URL('posiciones.json', window.location.href).toString();
+  const url = new URL(inscriptosSource || 'posiciones.json', window.location.href).toString();
   try{
     const res = await fetch(url, { cache: 'no-store' });
     if(!res.ok) throw new Error(res.status + ' ' + res.statusText);
     const data = await res.json();
+    if (inscriptosSource) {
+      if (!Array.isArray(data)) throw new Error('Listado de inscriptos inválido');
+      STATE.rows = data;
+      document.getElementById('meta').textContent = `${STATE.rows.length} pilotos inscriptos`;
+      applyFilter();
+      return;
+    }
     if(!data || !Array.isArray(data.standings)) throw new Error('JSON sin "standings"');
     STATE.rows = data.standings.map(r => {
       const pos = (typeof r.pos === 'number') ? r.pos : (r.pos ? Number(r.pos) : null);
@@ -117,17 +139,16 @@ async function loadJSON(){
     renderMeta(data.meta || {});
     applyFilter();
   }catch(err){
-    console.error('No se pudo cargar posiciones.json', err);
-    const tb = document.querySelector('#tbl tbody');
-    tb.innerHTML = `<tr><td colspan="5" style="color:#ffb3b3">
-      No se pudo cargar <code>posiciones.json</code>.<br>
-      <small>${err.message}. Si abriste el archivo con doble-click (file://), levantá un servidor local.</small>
-    </td></tr>`;
+    console.error('No se pudo cargar la tabla', err);
+    const td = document.querySelector('#tbl tbody').insertRow().insertCell();
+    td.colSpan = inscriptosSource ? 2 : 5;
+    td.textContent = inscriptosSource ? 'No se pudo cargar el listado de inscriptos.' : 'No se pudo cargar la tabla de posiciones.';
   }
 }
 
 function setupSort(){
   document.querySelectorAll('#tbl thead th').forEach(th => {
+    if (th.hidden) return;
     th.style.cursor = 'pointer';
     th.addEventListener('click', () => {
       const k = th.dataset.k;
@@ -141,6 +162,14 @@ function setupSort(){
 
 window.addEventListener('DOMContentLoaded', () => {
   document.getElementById('results-search').addEventListener('input', applyFilter);
+  if (inscriptosSource) {
+    document.title = 'Pilotos inscriptos · Show Midget';
+    document.querySelector('.page-heading .eyebrow').textContent = 'ESTIVAL 2026–2027 · FECHA 1';
+    document.querySelector('.page-heading h1').innerHTML = 'PILOTOS<br><em>INSCRIPTOS.</em>';
+    document.querySelectorAll('#tbl th[data-k="pos"], #tbl th[data-k="varDiff"], #tbl th[data-k="total"]')
+      .forEach(th => { th.hidden = true; });
+    STATE.sortKey = 'nro';
+  }
   setupSort();
   loadJSON();
 });
