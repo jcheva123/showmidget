@@ -145,9 +145,14 @@ function ensureContenderButtonStyles() {
     el.textContent = `Actualizado: ${fecha} ${hora} • ${label}`;
   }
 
-  // ===== 1) Conseguir el TXT (local -> remoto) =====
+  // Consultar GitHub antes de la copia de la última publicación del sitio.
   async function fetchTXT() {
-    // primero probamos los 2 locales
+    const current = "https://raw.githubusercontent.com/jcheva123/showmidget/main/series/Nuevo%20orden%20de%20partida.txt";
+    try {
+      const r = await fetchWithTimeout(`${current}?ts=${Date.now()}`, 2500);
+      if (r.ok) return await r.text();
+    } catch (_) {}
+
     for (const lf of LOCAL_FILES) {
       try {
         const r = await fetchWithTimeout(lf);
@@ -350,11 +355,10 @@ if (isPlayoff) {
         tr.style.outline = "2px solid rgba(255, 64, 64, .9)";
         tr.style.boxShadow = "0 0 14px rgba(255, 64, 64, .45)";
       }
-tr.innerHTML = `
-        <td>${r.position ?? (idx+1)}</td>
-        <td>${r.number}</td>
-        <td>${r.pilot}</td>
-      `;
+      for (const value of [r.position ?? (idx + 1), r.number, r.pilot]) {
+        const cell = tr.insertCell();
+        cell.textContent = value;
+      }
       tbody.appendChild(tr);
     });
 
