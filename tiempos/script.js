@@ -243,7 +243,21 @@ function setStatus(_) { /* no-op, oculto cualquier rastro */ }
       const raw = await fetchJSON('fechas.json');
       let fechas = normalizeFechas(raw);
       fechas = Array.from(new Set(fechas)).sort(fechaSort);
-      if(!fechas.length) throw new Error('fechas-vacias');
+      if(!fechas.length){
+        const listedDates = Array.isArray(raw) ? raw : raw?.fechas;
+        if(!Array.isArray(listedDates) || listedDates.length) throw new Error('fechas-vacias');
+        STATE.fecha=null;
+        STATE.race=null;
+        sel.innerHTML='<option value="">Sin fechas publicadas</option>';
+        const list=document.querySelector('#race-list ul');
+        if(list) list.replaceChildren();
+        for(const id of ['#selected-pill','#last-updated']){
+          const marker=document.querySelector(id);
+          if(marker) marker.hidden=true;
+        }
+        document.querySelector('#results tbody').innerHTML='<tr><td colspan="4" class="empty">Todavía no se publicaron resultados del Estival.</td></tr>';
+        return;
+      }
 
       sel.innerHTML='<option value="">-- Elegir Fecha --</option>';
       for(const f of fechas){
